@@ -37,7 +37,6 @@ public abstract class AbstractAffirmationTest {
   }
 
   /**
-   * Test method for {@link com.openpojo.validation.affirm.Affirm#fail(java.lang.String)}.
    */
   @Test
   public void testFail() {
@@ -60,7 +59,6 @@ public abstract class AbstractAffirmationTest {
   }
 
   /**
-   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmTrue(boolean, java.lang.String)}.
    */
   @Test
   public void testAffirmTrue() {
@@ -74,7 +72,6 @@ public abstract class AbstractAffirmationTest {
   }
 
   /**
-   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmFalse( boolean, java.lang.String)}.
    */
   @Test
   public void testAffirmFalse() {
@@ -88,7 +85,7 @@ public abstract class AbstractAffirmationTest {
   }
 
   /**
-   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmNotNull(java.lang.Object, java.lang.String)}.
+   * Test method for {@link com.openpojo.vaylidation.affirm.Affirm#affirmNotNull(java.lang.Object, java.lang.String)}.
    */
   @Test
   public void testAffirmNotNull() {
@@ -102,7 +99,6 @@ public abstract class AbstractAffirmationTest {
   }
 
   /**
-   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmNull( java.lang.Object, java.lang.String)}.
    */
   @Test
   public void testAffirmNull() {
@@ -117,7 +113,6 @@ public abstract class AbstractAffirmationTest {
 
   /**
    * Test method for
-   * {@link com.openpojo.validation.affirm.Affirm#affirmEquals(java.lang.Object, java.lang.Object, java.lang.String, )}.
    */
   @Test
   @SuppressWarnings("UnnecessaryBoxing")

@@ -22,16 +22,16 @@ import com.openpojo.business.BusinessIdentity;
 import com.openpojo.business.identity.IdentityFactory;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.utils.IdentityHandlerStub;
 import com.openpojo.validation.utils.ValidationHelper;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This rules ensures that object.equals(Object) and object.hashCode() are dispatching their calls to BusinessIdentity.
  * Use this tester to if you are using @BusinessKey and passing on your equals and hashCode calls to
  * {@link BusinessIdentity}.
- *
  * This Tester is NOT thread safe.
  *
  * @author oshoukry
@@ -62,13 +62,13 @@ public final class BusinessIdentityTester implements Tester {
   }
 
   private void checkHashCode(Object firstPojoClassInstance, IdentityHandlerStub identityHandlerStub) {
-    Affirm.affirmTrue(identityHandlerStub.getHashCodeReturn() == firstPojoClassInstance.hashCode(), String.format("Class=[%s] not dispatching 'hashCode()' calls to BusinessIdentity",
-            firstPojoClassInstance.getClass()));
+      assertEquals((int) identityHandlerStub.getHashCodeReturn(), firstPojoClassInstance.hashCode(), String.format("Class=[%s] not dispatching 'hashCode()' calls to BusinessIdentity",
+              firstPojoClassInstance.getClass()));
   }
 
   private void checkEquality(Object instance1, Object instance2, IdentityHandlerStub identityHandlerStub) {
-    Affirm.affirmTrue(identityHandlerStub.getAreEqualReturn() == instance1.equals(instance2), String.format("Class=[%s] not dispatching 'equals()' calls to BusinessIdentity",
-            instance1.getClass()));
+      assertEquals(identityHandlerStub.getAreEqualReturn(), instance1.equals(instance2), String.format("Class=[%s] not dispatching 'equals()' calls to BusinessIdentity",
+              instance1.getClass()));
   }
 
 }

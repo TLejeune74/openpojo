@@ -33,7 +33,6 @@ import com.openpojo.reflection.impl.sample.classes.AClassWithAbstractSetter;
 import com.openpojo.reflection.impl.sample.classes.AClassWithSyntheticMethod;
 import com.openpojo.reflection.impl.sample.classes.ClassWithSyntheticConstructor;
 import com.openpojo.reflection.impl.sample.classes.PojoMethodClass;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -46,9 +45,6 @@ public class PojoMethodImplTest {
   private PojoClass pojoClass;
   private List<PojoMethod> pojoMethods;
 
-  /**
-   * @throws java.lang.Exception
-   */
   @BeforeEach
   public void setUp() throws Exception {
     pojoClass = PojoClassFactory.getPojoClass(PojoMethodClass.class);
@@ -62,12 +58,10 @@ public class PojoMethodImplTest {
   public void testGetAnnotation() {
     for (PojoMethod pojoMethod : pojoMethods) {
       if (pojoMethod.getName().equals("methodWithAnnotation")) {
-        Affirm.affirmNotNull("removed SomeAnnotation annotation from methodWithAnnotation?",
-            pojoMethod.getAnnotation(SomeAnnotation.class));
+        assertNotNull(pojoMethod.getAnnotation(SomeAnnotation.class), "removed SomeAnnotation annotation from methodWithAnnotation?");
       }
       if (pojoMethod.getName().equals("methodWithoutAnnotation")) {
-        Affirm.affirmNull("SomeAnnotation annotation added to methodWithoutAnnotation?",
-            pojoMethod.getAnnotation(SomeAnnotation.class));
+        assertNull(pojoMethod.getAnnotation(SomeAnnotation.class), "SomeAnnotation annotation added to methodWithoutAnnotation?");
       }
     }
   }
@@ -76,20 +70,18 @@ public class PojoMethodImplTest {
   public void multipleAnnotationsShouldBeReturned() {
     for (PojoMethod pojoMethod : pojoMethods) {
       if (pojoMethod.getName().equals("methodWithMultipleAnnotations")) {
-        Affirm.affirmEquals(String.format("Annotations added/removed from method=[%s]", pojoMethod),
-            2,
-            pojoMethod.getAnnotations().size());
+        assertEquals(2, pojoMethod.getAnnotations().size(), String.format("Annotations added/removed from method=[%s]", pojoMethod));
         List<Class<?>> expectedAnnotations = new LinkedList<Class<?>>();
         expectedAnnotations.add(SomeAnnotation.class);
         expectedAnnotations.add(AnotherAnnotation.class);
         for (Annotation annotation : pojoMethod.getAnnotations()) {
-          Affirm.affirmTrue(String.format("Expected annotations [%s] not found, instead found [%s]",
-              expectedAnnotations, annotation.annotationType()), expectedAnnotations.contains(annotation.annotationType()));
+          assertTrue( expectedAnnotations.contains(annotation.annotationType()), String.format("Expected annotations [%s] not found, instead found [%s]",
+                  expectedAnnotations, annotation.annotationType()));
         }
         return;
       }
     }
-    Affirm.fail(String.format("methodWithMultipleAnnotations renamed? expected in [%s]", pojoClass));
+    fail(String.format("methodWithMultipleAnnotations renamed? expected in [%s]", pojoClass));
   }
 
   /**
@@ -99,22 +91,22 @@ public class PojoMethodImplTest {
   public void testIsFinal() {
     for (PojoMethod pojoMethod : pojoMethods) {
       if (pojoMethod.getName().equals("finalMethod")) {
-        Affirm.affirmTrue("Failed to check final", pojoMethod.isFinal());
+        assertTrue( pojoMethod.isFinal(), "Failed to check final");
         return;
       }
     }
-    Affirm.fail("finalMethod missing!!");
+    fail("finalMethod missing!!");
   }
 
   @Test
   public void testIsNonFinal() {
     for (PojoMethod pojoMethod : pojoMethods) {
       if (pojoMethod.getName().equals("nonFinalMethod")) {
-        Affirm.affirmTrue("Failed to check non final", !pojoMethod.isFinal());
+          assertFalse(pojoMethod.isFinal(), "Failed to check non final");
         return;
       }
     }
-    Affirm.fail("nonFinalMethod missing!!");
+    fail("nonFinalMethod missing!!");
   }
 
   @Test
@@ -122,11 +114,11 @@ public class PojoMethodImplTest {
     String prefix = "privateMethod";
     PojoMethod pojoMethod = getPojoMethodStartingWith(prefix);
 
-    Affirm.affirmNotNull("method not found [" + prefix + "]", pojoMethod);
-    Affirm.affirmTrue("isPrivate() check on method=[" + pojoMethod + "] returned false!!", pojoMethod.isPrivate());
-    Affirm.affirmFalse("isPackagePrivate() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isPackagePrivate());
-    Affirm.affirmFalse("isProtected() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isProtected());
-    Affirm.affirmFalse("isPublic() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isPublic());
+    assertNotNull(pojoMethod, "method not found [" + prefix + "]");
+    assertTrue(pojoMethod.isPrivate(), "isPrivate() check on method=[" + pojoMethod + "] returned false!!");
+    assertFalse( pojoMethod.isPackagePrivate(), "isPackagePrivate() check on method=[" + pojoMethod + "] returned true!!");
+    assertFalse( pojoMethod.isProtected(), "isProtected() check on method=[" + pojoMethod + "] returned true!!");
+    assertFalse( pojoMethod.isPublic(), "isPublic() check on method=[" + pojoMethod + "] returned true!!");
   }
 
   @Test
@@ -134,11 +126,11 @@ public class PojoMethodImplTest {
     String prefix = "packagePrivateMethod";
     PojoMethod pojoMethod = getPojoMethodStartingWith(prefix);
 
-    Affirm.affirmNotNull("method not found [" + prefix + "]", pojoMethod);
-    Affirm.affirmTrue("isPackagePrivate() check on method=[" + pojoMethod + "] returned false!!", pojoMethod.isPackagePrivate());
-    Affirm.affirmFalse("isPrivate() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isPrivate());
-    Affirm.affirmFalse("isProtected() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isProtected());
-    Affirm.affirmFalse("isPublic() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isPublic());
+    assertNotNull( pojoMethod, "method not found [" + prefix + "]");
+    assertTrue( pojoMethod.isPackagePrivate(), "isPackagePrivate() check on method=[" + pojoMethod + "] returned false!!");
+    assertFalse( pojoMethod.isPrivate(), "isPrivate() check on method=[" + pojoMethod + "] returned true!!");
+    assertFalse( pojoMethod.isProtected(), "isProtected() check on method=[" + pojoMethod + "] returned true!!");
+    assertFalse( pojoMethod.isPublic(), "isPublic() check on method=[" + pojoMethod + "] returned true!!");
   }
 
   @Test
@@ -146,11 +138,11 @@ public class PojoMethodImplTest {
     String prefix = "protectedMethod";
     PojoMethod pojoMethod = getPojoMethodStartingWith(prefix);
 
-    Affirm.affirmNotNull("method not found [" + prefix + "]", pojoMethod);
-    Affirm.affirmTrue("isProtected() check on method=[" + pojoMethod + "] returned false!!", pojoMethod.isProtected());
-    Affirm.affirmFalse("isPrivate() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isPrivate());
-    Affirm.affirmFalse("isPackagePrivate() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isPackagePrivate());
-    Affirm.affirmFalse("isPublic() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isPublic());
+    assertNotNull(pojoMethod,"method not found [" + prefix + "]");
+    assertTrue(pojoMethod.isProtected(), "isProtected() check on method=[" + pojoMethod + "] returned false!!");
+    assertFalse(pojoMethod.isPrivate(), "isPrivate() check on method=[" + pojoMethod + "] returned true!!");
+    assertFalse( pojoMethod.isPackagePrivate(), "isPackagePrivate() check on method=[" + pojoMethod + "] returned true!!");
+    assertFalse(pojoMethod.isPublic(), "isPublic() check on method=[" + pojoMethod + "] returned true!!");
   }
 
   @Test
@@ -158,11 +150,11 @@ public class PojoMethodImplTest {
     String prefix = "publicMethod";
     PojoMethod pojoMethod = getPojoMethodStartingWith(prefix);
 
-    Affirm.affirmNotNull("method not found [" + prefix + "]", pojoMethod);
-    Affirm.affirmTrue("isPublic() check on method=[" + pojoMethod + "] returned false!!", pojoMethod.isPublic());
-    Affirm.affirmFalse("isPrivate() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isPrivate());
-    Affirm.affirmFalse("isPackagePrivate() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isPackagePrivate());
-    Affirm.affirmFalse("isProtected() check on method=[" + pojoMethod + "] returned true!!", pojoMethod.isProtected());
+    assertNotNull(pojoMethod,"method not found [" + prefix + "]");
+    assertTrue( pojoMethod.isPublic(), "isPublic() check on method=[" + pojoMethod + "] returned false!!");
+    assertFalse(pojoMethod.isPrivate(), "isPrivate() check on method=[" + pojoMethod + "] returned true!!");
+    assertFalse( pojoMethod.isPackagePrivate(), "isPackagePrivate() check on method=[" + pojoMethod + "] returned true!!");
+    assertFalse( pojoMethod.isProtected(), "isProtected() check on method=[" + pojoMethod + "] returned true!!");
   }
 
   private PojoMethod getPojoMethodStartingWith(String prefix) {
@@ -176,33 +168,33 @@ public class PojoMethodImplTest {
   public void testIsStatic() {
     for (PojoMethod pojoMethod : pojoMethods) {
       if (pojoMethod.getName().equals("staticMethod")) {
-        Affirm.affirmTrue("Failed to check static method", pojoMethod.isStatic());
+        assertTrue( pojoMethod.isStatic(), "Failed to check static method");
         return;
       }
     }
-    Affirm.fail("staticMethod missing!!");
+    fail("staticMethod missing!!");
   }
 
   @Test
   public void testIsNotStatic() {
     for (PojoMethod pojoMethod : pojoMethods) {
       if (pojoMethod.getName().equals("nonStaticMethod")) {
-        Affirm.affirmTrue("Failed to check non static method", !pojoMethod.isStatic());
+          assertFalse(pojoMethod.isStatic(), "Failed to check non static method");
         return;
       }
     }
-    Affirm.fail("nonStaticMethod missing!!");
+    fail("nonStaticMethod missing!!");
   }
 
   @Test
   public void testIsNotSynthetic() {
     for (PojoMethod pojoMethod : pojoMethods) {
       if (pojoMethod.getName().equals("isNotSyntheticMethod")) {
-        Affirm.affirmTrue("Failed to check isNotSynthetic method", !pojoMethod.isSynthetic());
+          assertFalse(pojoMethod.isSynthetic(), "Failed to check isNotSynthetic method");
         return;
       }
     }
-    Affirm.fail("isNotSyntheticMethod missing!!");
+    fail("isNotSyntheticMethod missing!!");
   }
 
   @Test
@@ -210,11 +202,11 @@ public class PojoMethodImplTest {
     PojoClass syntheticPojoClass = PojoClassFactory.getPojoClass(AClassWithSyntheticMethod.class);
     for (PojoMethod pojoMethod : syntheticPojoClass.getPojoMethods()) {
       if (!pojoMethod.getName().equals("doSomethingSneaky") && !pojoMethod.isConstructor()) {
-        Affirm.affirmFalse("Failed to check synthetic method [" + pojoMethod + "]", !pojoMethod.isSynthetic());
+          assertTrue(pojoMethod.isSynthetic(), "Failed to check synthetic method [" + pojoMethod + "]");
         return;
       }
     }
-    Affirm.fail("failed to find a synthetic method in class");
+    fail("failed to find a synthetic method in class");
   }
 
   @Test
@@ -234,7 +226,7 @@ public class PojoMethodImplTest {
   public void shouldNotIncludeAbstractGetterMethod() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(AClassWithAbstractGetter.class);
     boolean hasAbstractGetterMethod = false;
-    PojoField pojoField = pojoClass.getPojoFields().get(0);
+    PojoField pojoField = pojoClass.getPojoFields().getFirst();
 
     String expectedGetterName = "get" + pojoField.getName().substring(0, 1).toUpperCase() + pojoField.getName().substring(1,
         pojoField.getName().length());
@@ -252,7 +244,7 @@ public class PojoMethodImplTest {
   public void shouldNotIncludeAbstractSetterMethod() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(AClassWithAbstractSetter.class);
     boolean hasAbstractSetterMethod = false;
-    PojoField pojoField = pojoClass.getPojoFields().get(0);
+    PojoField pojoField = pojoClass.getPojoFields().getFirst();
 
     String expectedSetterName = "set" + pojoField.getName().substring(0, 1).toUpperCase() + pojoField.getName().substring(1,
         pojoField.getName().length());

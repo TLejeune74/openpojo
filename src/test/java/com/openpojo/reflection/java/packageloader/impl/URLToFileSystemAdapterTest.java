@@ -20,13 +20,15 @@ package com.openpojo.reflection.java.packageloader.impl;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import com.openpojo.reflection.exception.ReflectionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -48,13 +50,13 @@ public class URLToFileSystemAdapterTest {
   }
 
   public void whenNullURLShouldThrowException() {
-      assertThrows(ReflectionException.class, new URLToFileSystemAdapter(null));
+      assertThrows(ReflectionException.class, () -> new URLToFileSystemAdapter(null));
   }
 
   @Test
-  public void invalidURLShouldThrowException() throws MalformedURLException {
-    URLToFileSystemAdapter urlToFileSystemAdapter = new URLToFileSystemAdapter(new URL("file://Not A Parse-able URI"));
-    assertThrows(ReflectionException.class, urlToFileSystemAdapter.getAsURI());
+  public void invalidURLShouldThrowException() throws MalformedURLException, URISyntaxException {
+    URLToFileSystemAdapter urlToFileSystemAdapter = new URLToFileSystemAdapter(new URI("file://Not A Parse-able URI").toURL());
+    assertThrows(ReflectionException.class, () -> urlToFileSystemAdapter.getAsURI());
     // fail("Invalid URL should've failed to transfer to URI");
   }
 
@@ -78,11 +80,11 @@ public class URLToFileSystemAdapterTest {
 
   private void validateURLtoExpectedFilePath(String expectedFilePath, String url) {
     try {
-      URLToFileSystemAdapter urlToFileSystemAdapter = new URLToFileSystemAdapter(new URL(url));
+      URLToFileSystemAdapter urlToFileSystemAdapter = new URLToFileSystemAdapter(new URI(url).toURL());
       String absolutePath = urlToFileSystemAdapter.getAsFile().getAbsolutePath();
-      Assert.assertEquals(expectedFilePath, absolutePath);
-    } catch (MalformedURLException e) {
-      Assert.fail("Exception encountered: " + e);
+      assertEquals(expectedFilePath, absolutePath);
+    } catch (MalformedURLException | URISyntaxException e) {
+      fail("Exception encountered: " + e);
       e.printStackTrace();
     }
   }

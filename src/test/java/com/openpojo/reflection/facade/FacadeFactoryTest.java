@@ -25,8 +25,9 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.facade.sampleclasses.FirstClass;
 import com.openpojo.reflection.facade.sampleclasses.SecondClass;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FacadeFactoryTest {
   Class<?> firstClass = FirstClass.class;
@@ -40,14 +41,14 @@ public class FacadeFactoryTest {
 
   private final void checkReturnedFacade(final Class<?> expected, final String... facades) {
     final PojoClass facade = FacadeFactory.getLoadedFacadePojoClass(facades);
-    Affirm.affirmNotNull(String.format("Failed to load from the valid list of facades [%s]?!", Arrays.toString(facades)), facade);
+    assertNotNull(facade, String.format("Failed to load from the valid list of facades [%s]?!", Arrays.toString(facades)));
 
-    Affirm.affirmEquals("Wrong facade returned!!", expected, facade.getClazz());
+    assertEquals(expected, facade.getClazz(), "Wrong facade returned!!");
 
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldThrowErorr() {
-    FacadeFactory.getLoadedFacadePojoClass(new String[] { RandomFactory.getRandomValue(String.class) });
+    assertThrows(ReflectionException.class, () -> FacadeFactory.getLoadedFacadePojoClass(new String[] { RandomFactory.getRandomValue(String.class) }));
   }
 }

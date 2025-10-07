@@ -25,9 +25,11 @@ import com.openpojo.log.Logger;
 import com.openpojo.log.LoggerFactory;
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.random.service.RandomGeneratorService;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ServiceRegistrarTest {
 
@@ -172,7 +174,7 @@ public class ServiceRegistrarTest {
   @Test
   public void defaultRandomGeneratorServicePrePopulated() {
     reportDifferences();
-    Affirm.affirmEquals("Types added / removed?", expectedDefaultTypes.size(), randomGeneratorService.getRegisteredTypes().size());
+    assertEquals( expectedDefaultTypes.size(), randomGeneratorService.getRegisteredTypes().size(), "Types added / removed?");
   }
 
   private void reportDifferences() {
@@ -194,8 +196,8 @@ public class ServiceRegistrarTest {
   public void RandomGeneratedValue() {
     final RandomGenerator defaultRandomGenerator = randomGeneratorService.getDefaultRandomGenerator();
     for (final Class<?> type : expectedDefaultTypes) {
-      Affirm.affirmFalse(String.format("Error default random generator returned when expected a registered " + "type " +
-          "[%s]", type), defaultRandomGenerator.equals(randomGeneratorService.getRandomGeneratorByType(type)));
+      assertFalse(defaultRandomGenerator.equals(randomGeneratorService.getRandomGeneratorByType(type)), String.format("Error default random generator returned when expected a registered " + "type " +
+              "[%s]", type));
     }
   }
 }

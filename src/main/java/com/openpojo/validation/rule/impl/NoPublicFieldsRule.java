@@ -20,8 +20,9 @@ package com.openpojo.validation.rule.impl;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This rule ensures that no fields declared with public visibility.
@@ -33,7 +34,7 @@ public final class NoPublicFieldsRule implements Rule {
   public void evaluate(final PojoClass pojoClass) {
     for (PojoField fieldEntry : pojoClass.getPojoFields()) {
       if (fieldEntry.isPublic()) {
-        Affirm.fail(String.format("Public fields=[%s] not allowed", fieldEntry));
+        fail(String.format("Public fields=[%s] not allowed", fieldEntry));
       }
     }
   }

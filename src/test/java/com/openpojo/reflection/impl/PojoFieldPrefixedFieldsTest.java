@@ -27,15 +27,13 @@ import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.sample.classes.AClassWithFieldsNotPrefixed;
 import com.openpojo.reflection.impl.sample.classes.AClassWithFieldsPrefixed;
 import com.openpojo.reflection.utils.AttributeHelper;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PojoFieldPrefixedFieldsTest {
 
@@ -51,8 +49,7 @@ public class PojoFieldPrefixedFieldsTest {
     AttributeHelper.registerFieldPrefix("m");
     PojoClass pojoClass = PojoClassFactory.getPojoClass(AClassWithFieldsPrefixed.class);
     for (PojoField pojoField : pojoClass.getPojoFields()) {
-      Affirm.affirmTrue(String.format("Getters / Setters not found on field =[%s]", pojoField), pojoField.hasGetter() &&
-          pojoField.hasSetter());
+      assertTrue(pojoField.hasGetter() && pojoField.hasSetter(), String.format("Getters / Setters not found on field =[%s]", pojoField));
     }
   }
 
@@ -60,8 +57,7 @@ public class PojoFieldPrefixedFieldsTest {
   public void shouldNotHaveGettersAndSetters() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(AClassWithFieldsPrefixed.class);
     for (PojoField pojoField : pojoClass.getPojoFields()) {
-      Affirm.affirmFalse(String.format("Getters / Setters not found on field =[%s]", pojoField), pojoField.hasGetter() ||
-          pojoField.hasSetter());
+      assertFalse(pojoField.hasGetter() || pojoField.hasSetter(), String.format("Getters / Setters not found on field =[%s]", pojoField));
     }
   }
 

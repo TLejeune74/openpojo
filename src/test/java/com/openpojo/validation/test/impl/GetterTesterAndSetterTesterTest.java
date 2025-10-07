@@ -26,7 +26,8 @@ import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.test.impl.sampleclasses.Good_AnAbstractClassWithAbstractSetterGetter;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GetterTesterAndSetterTesterTest {
   private static final String TESTPACKAGE = GetterTesterAndSetterTesterTest.class.getPackage().getName() + ".sampleclasses";
@@ -52,7 +53,7 @@ public class GetterTesterAndSetterTesterTest {
   public void shouldPassSetterTest() {
     List<PojoClass> goodPojoClasses = getGoodPojoClasses();
 
-    Assert.assertEquals("Classes added/removed?", 4, goodPojoClasses.size());
+    assertEquals( 4, goodPojoClasses.size(), "Classes added/removed?");
     for (final PojoClass pojoClass : goodPojoClasses) {
       invokeRun(pojoClass, new SetterTester());
       invokeRun(pojoClass, new GetterTester());
@@ -68,22 +69,24 @@ public class GetterTesterAndSetterTesterTest {
   @Test
   public void shouldFailSetterTest() {
     List<PojoClass> badPojoClasses = getBadPojoClasses();
-    Assert.assertEquals("Classes added/removed?", 1, badPojoClasses.size());
+    assertEquals( 1, badPojoClasses.size(), "Classes added/removed?");
     for (final PojoClass pojoClass : badPojoClasses) {
       try {
         invokeRun(pojoClass, new SetterTester());
-        Assert.fail("Should not have passed");
+        fail("Should not have passed");
       } catch (AssertionError ignored) {
 
       }
     }
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void shouldFailGetterTest() {
-    for (final PojoClass pojoClass : getBadPojoClasses()) {
-      invokeRun(pojoClass, new GetterTester());
-    }
+      assertThrows(AssertionError.class, () -> {
+          for (final PojoClass pojoClass : getBadPojoClasses()) {
+              invokeRun(pojoClass, new GetterTester());
+          }
+      });
   }
 
   private void invokeRun(final PojoClass classToTest, final Tester tester) {

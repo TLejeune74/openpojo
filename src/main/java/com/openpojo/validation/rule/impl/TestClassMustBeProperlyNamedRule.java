@@ -26,8 +26,9 @@ import java.util.Collection;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.java.load.ClassUtil;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * There are three default accepted naming schemes for test classes.
@@ -46,8 +47,7 @@ public class TestClassMustBeProperlyNamedRule implements Rule {
 
   public static final String[] DEFAULT_PREFIX_TOKENS = { "Test" };
   public static final String[] DEFAULT_SUFFIX_TOKENS = { "Test", "TestCase" };
-  public static final String[] DEFAULT_ANNOTATIONS = { "org.testng.annotations.Test", "org.junit.jupiter.api.Test",
-      "org.junit.jupiter.api.Test" };
+  public static final String[] DEFAULT_ANNOTATIONS = { "org.junit.jupiter.api.Test" };
 
   private final Collection<String> prefixes;
   private final Collection<String> suffixes;
@@ -85,21 +85,19 @@ public class TestClassMustBeProperlyNamedRule implements Rule {
       }
     }
 
-    if (loadedAnnotations.size() == 0) {
-      ArrayList<String> namedAnnotations = new ArrayList<String>();
-      namedAnnotations.addAll(annotations);
+    if (loadedAnnotations.isEmpty()) {
+        ArrayList<String> namedAnnotations = new ArrayList<>(annotations);
       throw new IllegalStateException("No annotations loaded, expected any of " + namedAnnotations);
     }
   }
 
-  @SuppressWarnings("unchecked")
   public void evaluate(PojoClass pojoClass) {
     if (!pojoClass.isConcrete() || properlyNamed(pojoClass))
       return;
 
     for (Class<? extends Annotation> annotation : loadedAnnotations) {
       if (isAnnotatedOrParentAnnotated(pojoClass, annotation)) {
-        Affirm.fail("Test class [" + pojoClass.getName() + "] does not start with " + prefixes.toString() + " or ends with "
+        fail("Test class [" + pojoClass.getName() + "] does not start with " + prefixes.toString() + " or ends with "
             + suffixes.toString());
       }
     }

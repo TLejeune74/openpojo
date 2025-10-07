@@ -30,7 +30,6 @@ import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.impl.TestClassMustBeProperlyNamedRule;
 import com.openpojo.validation.test.Tester;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,6 +37,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.impl.PojoClassFactory.getPojoClass;
 import static com.openpojo.reflection.impl.PojoClassFactory.getPojoClassesRecursively;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -113,26 +113,22 @@ public class StructuralTest {
 
   private static class NonInstantiableTester implements Tester {
     public void run(PojoClass pojoClass) {
-      Affirm.affirmEquals("Should have only one constructor [" + pojoClass.getName() + "]",
-          1,
-          pojoClass.getPojoConstructors().size());
+      assertEquals(1, pojoClass.getPojoConstructors().size(), "Should have only one constructor [" + pojoClass.getName() + "]");
       PojoMethod constructor = pojoClass.getPojoConstructors().get(0);
-      Affirm.affirmTrue("Constructor should be private [" + pojoClass.getName() + "]", constructor.isPrivate());
+      assertTrue(constructor.isPrivate(), "Constructor should be private [" + pojoClass.getName() + "]");
       try {
         InstanceFactory.getInstance(pojoClass);
-        Affirm.fail("Class [" + pojoClass.getName() + "] should have throw exception upon creation");
+        fail("Class [" + pojoClass.getName() + "] should have throw exception upon creation");
       } catch (ReflectionException re) {
         Throwable actual = re;
         while (actual != null && !(actual instanceof UnsupportedOperationException))
           actual = actual.getCause();
 
         if (actual == null)
-          Affirm.fail("Expected " + UnsupportedOperationException.class.getName()
+          fail("Expected " + UnsupportedOperationException.class.getName()
               + " to be thrown when constructing [" + pojoClass.getName() + "] but was " + re);
         else
-          Affirm.affirmEquals("Expected message miss-match"
-              , pojoClass.getName() + " should not be constructed!"
-              , actual.getMessage());
+          assertEquals(pojoClass.getName() + " should not be constructed!", actual.getMessage(), "Expected message miss-match");
       }
     }
   }
@@ -142,11 +138,10 @@ public class StructuralTest {
     List<Class<?>> nonInstantiables = Arrays.asList(NON_INSTANTIABLES);
     List<PojoClass> staticClasses = getPojoClassesRecursively("com.openpojo", new NonStaticClassesFilter());
     for (PojoClass entry : staticClasses)
-      Affirm.affirmContains("Detected class [" + entry.getName() + "] not being tested", entry.getClazz(), nonInstantiables);
+      assertSame(entry.getClazz(), nonInstantiables, "Detected class [" + entry.getName() + "] not being tested");
 
     for (Class<?> nonInstantiable : nonInstantiables)
-      Affirm.affirmContains("Detected class [" + nonInstantiable.getName() + "] being tested but was filtered out",
-          getPojoClass(nonInstantiable), staticClasses);
+      assertSame(getPojoClass(nonInstantiable), staticClasses, "Detected class [" + nonInstantiable.getName() + "] being tested but was filtered out");
   }
 
   private static class NonStaticClassesFilter implements PojoClassFilter {

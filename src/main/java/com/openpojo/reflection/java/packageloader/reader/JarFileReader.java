@@ -20,9 +20,7 @@ package com.openpojo.reflection.java.packageloader.reader;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.JarURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -135,13 +133,13 @@ public class JarFileReader {
     return classNames;
   }
 
-  public static String getJarFileNameFromURLPath(String name) {
+  public static String getJarFileNameFromURLPath(String name) throws URISyntaxException {
     String fileName = "";
 
     if (null != name && name.indexOf(Java.JAR_FILE_PATH_SEPARATOR) > 0) {
       fileName = name.substring(0, name.indexOf(Java.JAR_FILE_PATH_SEPARATOR));
       try {
-        URLToFileSystemAdapter urlToFileSystemAdapter = new URLToFileSystemAdapter(new URL(fileName));
+        URLToFileSystemAdapter urlToFileSystemAdapter = new URLToFileSystemAdapter(new URI(fileName).toURL());
         fileName = urlToFileSystemAdapter.getAsFile().getAbsolutePath();
       } catch (MalformedURLException ignored) {
       }

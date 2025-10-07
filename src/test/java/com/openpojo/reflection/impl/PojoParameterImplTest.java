@@ -29,14 +29,10 @@ import java.util.Queue;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.PojoParameter;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -52,10 +48,10 @@ public class PojoParameterImplTest {
     for (PojoMethod constructor : pojoClass.getPojoConstructors()) {
       if (!constructor.isSynthetic()) {
         List<PojoParameter> pojoParameters = constructor.getPojoParameters();
-        assertThat(pojoParameters.size(), is(greaterThan(1)));
+        assertTrue(pojoParameters.size() > 1);
         for (int i = 1; i < pojoParameters.size(); i++) {
           PojoParameter parameter = pojoParameters.get(i);
-          assertThat(parameter.isParameterized(), is(Matchers.equalTo(true)));
+            assertTrue(parameter.isParameterized());
         }
       }
     }

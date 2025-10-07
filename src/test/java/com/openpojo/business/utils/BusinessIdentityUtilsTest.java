@@ -26,15 +26,15 @@ import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BusinessIdentityUtilsTest {
 
-  @Test(UnsupportedOperationException.class)
+  @Test
   public void shouldNotBeAbleToConstruct() {
     try {
       PojoClass pojoClass = PojoClassFactory.getPojoClass(BusinessIdentityUtils.class);
-      org.testng.Assert.assertEquals(1, pojoClass.getPojoConstructors().size());
+      assertEquals(1, pojoClass.getPojoConstructors().size());
       InstanceFactory.getLeastCompleteInstance(pojoClass);
     } catch (ReflectionException re) {
       Throwable cause = re.getCause();
@@ -61,7 +61,7 @@ public class BusinessIdentityUtilsTest {
   public void whenArrayAndSecondElementHasNonNullAndFirstElementIsNullShouldReturnFalse() {
     final Integer[] firstObject = new Integer[] { 1, null };
     Integer[] secondObject = new Integer[] { 1, 2 };
-    Assert.assertFalse("Should return false", BusinessIdentityUtils.areEqual(new BusinessKeyField() {
+    assertFalse(BusinessIdentityUtils.areEqual(new BusinessKeyField() {
       public boolean isComposite() {
         return false;
       }
@@ -81,6 +81,6 @@ public class BusinessIdentityUtilsTest {
       public boolean isArray() {
         return true;
       }
-    }, firstObject, secondObject, false));
+    }, firstObject, secondObject, false), "Should return false");
   }
 }

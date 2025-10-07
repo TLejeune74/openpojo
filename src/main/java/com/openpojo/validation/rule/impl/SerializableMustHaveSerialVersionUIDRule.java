@@ -22,8 +22,10 @@ import java.io.Serializable;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This Rule ensures that all Serializable classes define "serialVersionUID".
@@ -38,21 +40,20 @@ public class SerializableMustHaveSerialVersionUIDRule implements Rule {
       for (PojoField pojoField : pojoClass.getPojoFields()) {
         if (pojoField.getName().equalsIgnoreCase(SERIAL_VERSION_UID)) {
           if (!pojoField.getName().equals(SERIAL_VERSION_UID)) {
-            Affirm.affirmEquals(String.format("Case miss-match on serialVersionUID field on Serializable class [%s]", pojoClass),
-                SERIAL_VERSION_UID, pojoField.getName());
+            assertEquals(SERIAL_VERSION_UID, pojoField.getName(), String.format("Case miss-match on serialVersionUID field on Serializable class [%s]", pojoClass));
           }
           if (!(pojoField.isStatic() && pojoField.isFinal())) {
-            Affirm.fail(String.format("[%s] must be defined as [static final] on Serializable class [%s]",
+            fail(String.format("[%s] must be defined as [static final] on Serializable class [%s]",
                 SERIAL_VERSION_UID, pojoClass));
           }
           if (pojoField.getType() != long.class) {
-            Affirm.fail(String.format("[%s] must be defined as [long] on Serializable class [%s]",
+            fail(String.format("[%s] must be defined as [long] on Serializable class [%s]",
                 SERIAL_VERSION_UID, pojoClass));
           }
           return;
         }
       }
-      Affirm.fail(String.format("No [%s] field defined on Serializable class [%s]", SERIAL_VERSION_UID, pojoClass));
+      fail(String.format("No [%s] field defined on Serializable class [%s]", SERIAL_VERSION_UID, pojoClass));
     }
   }
 }

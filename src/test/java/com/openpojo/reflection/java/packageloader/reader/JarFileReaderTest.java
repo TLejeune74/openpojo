@@ -18,6 +18,7 @@
 
 package com.openpojo.reflection.java.packageloader.reader;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.Set;
 
@@ -26,9 +27,9 @@ import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.reflection.java.Java;
 import com.openpojo.utils.samplejar.SampleJar;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -39,21 +40,21 @@ public class JarFileReaderTest {
   public void onlyPrivateConstructors() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(JarFileReader.class);
     for (PojoMethod method : pojoClass.getPojoConstructors()) {
-      Assert.assertTrue("Constructor must be private [" + method + "]", method.isPrivate());
+      assertTrue(method.isPrivate(), "Constructor must be private [" + method + "]");
     }
   }
 
   @Test
   public void canCreate() {
     JarFileReader jarFileReader = JarFileReader.getInstance((String)null);
-    Assert.assertNotNull(jarFileReader);
+    assertNotNull(jarFileReader);
   }
 
   @Test
   public void canCreateUsingInvalidJarFileUrl() {
     JarFileReader jarfileReader = JarFileReader.getInstance((URL) null);
-    Assert.assertNotNull(jarfileReader);
-    Assert.assertFalse(jarfileReader.isValid());
+    assertNotNull(jarfileReader);
+    assertFalse(jarfileReader.isValid());
   }
 
   @Test
@@ -61,47 +62,47 @@ public class JarFileReaderTest {
     JarFileReader urlJarFileReader = JarFileReader.getInstance(SampleJar.getJarURL());
     JarFileReader filepathJarFileReader = JarFileReader.getInstance(SampleJar.getJarFilePath());
 
-    Assert.assertTrue("Invalid URL JarFile [" + SampleJar.getJarURLPath() + "]", urlJarFileReader.isValid());
-    Assert.assertTrue("Invalid filepath JarFile [" + SampleJar.getJarFilePath() + "]", filepathJarFileReader.isValid());
+    assertTrue(urlJarFileReader.isValid(), "Invalid URL JarFile [" + SampleJar.getJarURLPath() + "]");
+    assertTrue(filepathJarFileReader.isValid(), "Invalid filepath JarFile [" + SampleJar.getJarFilePath() + "]");
 
     Set<String> urlClassNames = urlJarFileReader.getClassNames();
     Set<String> filepathClassNames = filepathJarFileReader.getClassNames();
-    Assert.assertEquals(urlClassNames.size(), filepathClassNames.size());
+    assertEquals(urlClassNames.size(), filepathClassNames.size());
 
     for (String urlEntry : urlClassNames) {
-      Assert.assertTrue("Failed to find urlEntry [" + urlEntry + "]", filepathClassNames.contains(urlEntry));
+      assertTrue(filepathClassNames.contains(urlEntry), "Failed to find urlEntry [" + urlEntry + "]");
     }
   }
 
   @Test
   public void shouldReturnFalseWhenInvalidFile() {
     JarFileReader jarFileReader = JarFileReader.getInstance((String)null);
-    Assert.assertFalse(jarFileReader.isValid());
+    assertFalse(jarFileReader.isValid());
   }
 
   @Test
   public void shouldReturnFalseIfFileIsNotJarFile() throws Exception {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(this.getClass());
-    String sourcePath = (new URL(pojoClass.getSourcePath())).getPath();
+    String sourcePath = (new URI(pojoClass.getSourcePath())).getPath();
     JarFileReader jarFileReader = JarFileReader.getInstance(sourcePath);
-    Assert.assertFalse(jarFileReader.isValid());
+    assertFalse(jarFileReader.isValid());
   }
 
   @Test
   public void isValidReturnsTrueWhenFileIsJar() throws Exception {
     JarFileReader jarFileReader = JarFileReader.getInstance(SampleJar.getJarFilePath());
-    Assert.assertTrue(jarFileReader.isValid());
+    assertTrue(jarFileReader.isValid());
   }
 
   @Test
   public void canReadEntries() {
     String jarFile = getJarFile("rt.jar");
-    Assert.assertNotNull(jarFile);
+    assertNotNull(jarFile);
     JarFileReader jarFileReader = JarFileReader.getInstance(jarFile);
-    Assert.assertNotNull(jarFileReader);
-    Assert.assertTrue("rt.jar should be valid", jarFileReader.isValid());
+    assertNotNull(jarFileReader);
+    assertTrue(jarFileReader.isValid(), "rt.jar should be valid");
     Set<String> classNames = jarFileReader.getClassNames();
-    Assert.assertThat(classNames.size(), Matchers.greaterThan(10000)); // actual number is 20,651
+    assertTrue(classNames.size() > 10000); // actual number is 20,651
   }
 
   private String getJarFile(String jarFileName) {

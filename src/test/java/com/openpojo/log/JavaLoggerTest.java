@@ -25,9 +25,11 @@ import com.openpojo.log.impl.JavaLogger;
 import com.openpojo.utils.log.LogHelper;
 import com.openpojo.utils.log.MockAppender;
 import com.openpojo.utils.log.MockAppenderJavaLogger;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -91,9 +93,9 @@ public class JavaLoggerTest extends AbstractLoggerBase {
       log.error(variance.getMessage(), variance.getParams());
       logEvents = LogHelper.getFatalEvents(getMockAppender(), getCategory());
 
-      Affirm.affirmEquals(String.format("Lost [%s] message?", "ERROR"), count + 1, logEvents.size());
-      Affirm.affirmEquals("Error wired?", 0, LogHelper.getErrorEvents(getMockAppender(), getCategory()).size());
-      Affirm.affirmEquals("Message malformed", variance.getExpected(), logEvents.get(count).getMessage());
+      assertEquals( count + 1, logEvents.size(), String.format("Lost [%s] message?", "ERROR"));
+      assertEquals( 0, LogHelper.getErrorEvents(getMockAppender(), getCategory()).size(), "Error wired?");
+      assertEquals(variance.getExpected(), logEvents.get(count).message(), "Message malformed");
 
       count++;
     }
@@ -102,9 +104,9 @@ public class JavaLoggerTest extends AbstractLoggerBase {
       log.error(variance.getMessage());
       logEvents = LogHelper.getFatalEvents(getMockAppender(), getCategory());
 
-      Affirm.affirmEquals(String.format("Lost [%s] message?", "ERROR"), count + 1, logEvents.size());
-      Affirm.affirmEquals("Error wired?", 0, LogHelper.getErrorEvents(getMockAppender(), getCategory()).size());
-      Affirm.affirmEquals("Message malformed", variance.getExpected(), logEvents.get(count).getMessage());
+      assertEquals(count + 1, logEvents.size(), String.format("Lost [%s] message?", "ERROR"));
+      assertEquals( 0, LogHelper.getErrorEvents(getMockAppender(), getCategory()).size(), "Error wired?");
+      assertEquals( variance.getExpected(), logEvents.get(count).message(), "Message malformed");
 
       count++;
     }
@@ -114,8 +116,7 @@ public class JavaLoggerTest extends AbstractLoggerBase {
   @Test
   public void testToString() {
     Logger log = LoggerFactory.getLogger(getCategory());
-    Affirm.affirmTrue(String.format("toString() failed on [%s] got [%s]!", JavaLogger.class.getName(), log.toString()), log
-        .toString().startsWith("com.openpojo.log.impl.JavaLogger [@") && log.toString().contains(": logger=java.util" + "" +
-        ".logging.Logger@") && log.toString().endsWith("]"));
+    assertTrue(log.toString().startsWith("com.openpojo.log.impl.JavaLogger [@") && log.toString().contains(": logger=java.util" +
+        ".logging.Logger@") && log.toString().endsWith("]"), String.format("toString() failed on [%s] got [%s]!", JavaLogger.class.getName(), log.toString()) );
   }
 }

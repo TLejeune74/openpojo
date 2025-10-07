@@ -24,7 +24,6 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,11 +39,11 @@ public class CacheStorageFactoryTest {
           PojoClass cacheStorageFactoryPojo = PojoClassFactory.getPojoClass(CacheStorageFactory.class);
 
           List<PojoMethod> pojoConstructors = cacheStorageFactoryPojo.getPojoConstructors();
-          Affirm.affirmEquals( 1, pojoConstructors.size(), "Should have only one constructor");
-          Affirm.affirmTrue( pojoConstructors.get(0).isPrivate(), "Constructor must be private");
+          assertEquals( 1, pojoConstructors.size(), "Should have only one constructor");
+          assertTrue( pojoConstructors.getFirst().isPrivate(), "Constructor must be private");
 
           try {
-              pojoConstructors.get(0).invoke(null, (Object[]) null);
+              pojoConstructors.getFirst().invoke(null, (Object[]) null);
           } catch (ReflectionException re) {
               throw re.getCause().getCause();
           }

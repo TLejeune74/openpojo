@@ -82,7 +82,7 @@ public class ValidationHelperTest {
     assertEquals(1, warnEvents.size());
     String expectedMessage = "ASM not loaded while attempting to execute behavioural tests on non-constructable class["
         + this.getClass() + "], either filter abstract classes or add asm to your classpath.";
-    assertEquals(expectedMessage, warnEvents.get(0).getMessage());
+    assertEquals(expectedMessage, warnEvents.getFirst().message());
   }
 
   private static class StaticFinalData {

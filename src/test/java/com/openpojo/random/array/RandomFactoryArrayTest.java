@@ -21,8 +21,9 @@ package com.openpojo.random.array;
 import java.lang.reflect.Array;
 
 import com.openpojo.random.RandomFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author oshoukry
@@ -33,7 +34,7 @@ public class RandomFactoryArrayTest {
   public void shouldCreateRandomArray() {
     final Class<?> type = anyArrayType();
     final Object firstInstance = RandomFactory.getRandomValue(type);
-    Affirm.affirmNotNull("Failed to get random array", firstInstance);
+    assertNotNull( firstInstance, "Failed to get random array");
 
     final Object secondInstance = RandomFactory.getRandomValue(type);
 

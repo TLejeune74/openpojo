@@ -24,9 +24,11 @@ import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -43,8 +45,7 @@ public class ExceptionsTest {
 
   @Test
   public void checkCount() {
-    Affirm.affirmEquals(String.format("Classes added/removed that implement Throwable found[%s]?", pojoExceptionClasses),
-        EXPECTED_EXCEPTION_COUNT, pojoExceptionClasses.size());
+    assertEquals(EXPECTED_EXCEPTION_COUNT, pojoExceptionClasses.size(), String.format("Classes added/removed that implement Throwable found[%s]?", pojoExceptionClasses));
   }
 
   @Test
@@ -59,7 +60,7 @@ public class ExceptionsTest {
   public void ensureConstructorsPrivate(final List<PojoMethod> constructors) {
 
     for (final PojoMethod constructor : constructors) {
-      Affirm.affirmTrue(String.format("Constructor must be private [%s]!!", constructor), constructor.isPrivate());
+      assertTrue(constructor.isPrivate(),String.format("Constructor must be private [%s]!!", constructor));
     }
   }
 
@@ -72,21 +73,21 @@ public class ExceptionsTest {
       if (getInstance.getName().equals("getInstance")) {
         if (getInstance.getParameterTypes().length == 1) {
           final Throwable instance = (Throwable) getInstance.invoke(null, someMessage);
-          Affirm.affirmEquals(String.format("Message changed in Exception[%s] using getInstance(String)?!", pojoExceptionClass)
+          assertEquals(String.format("Message changed in Exception[%s] using getInstance(String)?!", pojoExceptionClass)
               , someMessage, instance.getMessage());
         }
 
         if (getInstance.getParameterTypes().length == 2) {
           final Throwable instance = (Throwable) getInstance.invoke(null, someMessage, cause);
-          Affirm.affirmEquals(String.format("Message changed in Exception[%s] using getInstance(String, Throwable)?!",
+          assertEquals(String.format("Message changed in Exception[%s] using getInstance(String, Throwable)?!",
               pojoExceptionClass), someMessage, instance.getMessage());
-          Affirm.affirmEquals(String.format("Cause changed in Exception[%s] using getInstance(String, Throwable)?!",
-              pojoExceptionClass), cause, instance.getCause());
+          assertEquals( cause, instance.getCause(), String.format("Cause changed in Exception[%s] using getInstance(String, Throwable)?!",
+                  pojoExceptionClass));
         }
         getInstanceCount++;
       }
     }
-    Affirm.affirmEquals(String.format("getInstance methods not in line with constructors count for Exception [%s]",
-        pojoExceptionClass), pojoExceptionClass.getPojoConstructors().size(), getInstanceCount);
+    assertEquals( pojoExceptionClass.getPojoConstructors().size(), getInstanceCount, String.format("getInstance methods not in line with constructors count for Exception [%s]",
+            pojoExceptionClass));
   }
 }

@@ -20,20 +20,19 @@ package com.openpojo.reflection.java.packageloader.reader;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.java.packageloader.impl.URLToFileSystemAdapter;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Test.assertEquals;
-import static org.junit.jupiter.api.Test.assertThat;
-import static org.junit.jupiter.api.Test.fail;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author oshoukry
@@ -48,28 +47,28 @@ public class FileSystemReaderTest {
     file.mkdir();
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     file.delete();
   }
 
   @Test
-  public void shouldNotFailForEmptyPaths() throws MalformedURLException {
-    URL url = new URL("file://" + file.getAbsolutePath());
+  public void shouldNotFailForEmptyPaths() throws MalformedURLException, URISyntaxException {
+    URL url = new URI("file://" + file.getAbsolutePath()).toURL();
     FileSystemReader fileSystemReader = FileSystemReader.getInstance(url);
-    assertThat(fileSystemReader, notNullValue());
-    assertThat(fileSystemReader.getSubPackagesOfPackage("").size(), is(0));
-    assertThat(fileSystemReader.getTypesInPackage("").size(), is(0));
+    assertNotNull(fileSystemReader);
+    assertEquals(0, fileSystemReader.getSubPackagesOfPackage("").size());
+      assertEquals(0,fileSystemReader.getTypesInPackage("").size());
   }
 
   @Test
-  public void throwsProperException() throws MalformedURLException {
+  public void throwsProperException() throws MalformedURLException, URISyntaxException {
     String anyUrl = anyUrl();
     try {
-      FileSystemReader.getInstance(new URL(anyUrl));
+      FileSystemReader.getInstance(new URI(anyUrl).toURL());
       fail("Expected exception not thrown!");
-    } catch (ReflectionException re) {
-      URLToFileSystemAdapter ufsa = new URLToFileSystemAdapter(new URL(anyUrl));
+    } catch (ReflectionException | URISyntaxException re) {
+      URLToFileSystemAdapter ufsa = new URLToFileSystemAdapter(new URI(anyUrl).toURL());
       assertEquals("Failed to retrieve entries in path: "
               + "[" + ufsa.getAsFile().getAbsolutePath() + "]"
               + " created from URI: [" + ufsa.getAsURI() + "].  Please report this issue @ http://openpojo.com"

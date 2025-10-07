@@ -21,9 +21,10 @@ package com.openpojo.validation.test.impl;
 import com.openpojo.business.identity.IdentityFactory;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.utils.IdentityHandlerStub;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -38,6 +39,6 @@ public class ToStringTester implements Tester {
 
     IdentityFactory.registerIdentityHandler(identityHandlerStub);
 
-    Affirm.affirmEquals("Expected string mismatch", identityHandlerStub.getToStringReturn(), instance.toString());
+    assertEquals( identityHandlerStub.getToStringReturn(), instance.toString(), "Expected string mismatch");
   }
 }

@@ -19,8 +19,9 @@
 package com.openpojo.random.impl;
 
 import com.openpojo.random.exception.RandomGeneratorException;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author oshoukry
@@ -34,7 +35,7 @@ public class DefaultRandomGeneratorTest {
     //noinspection EmptyCatchBlock
     try {
       defaultRandomGenerator.getTypes();
-      Affirm.fail("Should've failed to call getTypes");
+      fail("Should've failed to call getTypes");
     } catch (RandomGeneratorException expected) {
     }
   }

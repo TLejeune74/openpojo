@@ -20,9 +20,10 @@ package com.openpojo.validation.rule.impl;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.utils.ValidationHelper;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This rule ensures that no fields declared with public visibility unless they
@@ -35,7 +36,7 @@ public final class NoPublicFieldsExceptStaticFinalRule implements Rule {
   public void evaluate(final PojoClass pojoClass) {
     for (PojoField fieldEntry : pojoClass.getPojoFields()) {
       if (fieldEntry.isPublic() && !ValidationHelper.isStaticFinal(fieldEntry)) {
-        Affirm.fail(String.format("Non 'static final' Public fields=[%s] not allowed", fieldEntry));
+        fail(String.format("Non 'static final' Public fields=[%s] not allowed", fieldEntry));
       }
     }
   }

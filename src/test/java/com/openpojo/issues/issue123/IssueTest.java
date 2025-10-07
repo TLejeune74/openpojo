@@ -26,7 +26,8 @@ import com.openpojo.reflection.java.Java;
 import com.openpojo.reflection.java.load.ClassUtil;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class IssueTest {
 
@@ -37,13 +38,13 @@ public class IssueTest {
     String classNameAsPath = aClass.getName().replace(Java.PACKAGE_DELIMITER, Java.PATH_DELIMITER) + Java.CLASS_EXTENSION;
     URL resource = cl.getResource(classNameAsPath);
 
-    assertThat(resource, notNullValue());
+    assertNotNull(resource);
     String location = resource.toString();
 
-    assertThat(location, startsWith("jar:file:/"));
-    assertThat(location, endsWith(classNameAsPath));
+    assertTrue(location.startsWith("jar:file:/"));
+    assertTrue(location.endsWith(classNameAsPath));
 
-    assertThat(location, not(containsString("//")));
+    assertFalse(location.contains("//"));
   }
 
   @Test
@@ -51,10 +52,10 @@ public class IssueTest {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassUtil.loadClass(TestingClassData.className));
     String sourcePath = pojoClass.getSourcePath();
 
-    assertThat(sourcePath, startsWith(TestingClassData.expectedPathStartsWith));
-    assertThat(sourcePath, containsString(TestingClassData.expectedPathContains1));
-    assertThat(sourcePath, containsString(TestingClassData.expectedPathContains2));
-    assertThat(sourcePath, endsWith(TestingClassData.expectedPathEndsWith));
+      assertTrue(sourcePath.startsWith(TestingClassData.expectedPathStartsWith));
+      assertTrue(sourcePath.contains(TestingClassData.expectedPathContains1));
+      assertTrue(sourcePath.contains(TestingClassData.expectedPathContains2));
+      assertTrue(sourcePath.endsWith(TestingClassData.expectedPathEndsWith));
   }
 
   private static class TestingClassData {

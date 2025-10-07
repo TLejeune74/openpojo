@@ -29,11 +29,10 @@ import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.sample.annotation.AnotherAnnotation;
 import com.openpojo.reflection.impl.sample.annotation.SomeAnnotation;
 import com.openpojo.registry.ServiceRegistrar;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -61,15 +60,15 @@ public class PojoPackageImplTest {
       if (ServiceRegistrar.getInstance().getPojoCoverageFilterService().include(pojoClass))
         counter++;
     }
-    Affirm.affirmEquals(String.format("classes added/removed to package=[%s]?", packageName), EXPECTED_CLASSES, counter);
+    assertEquals(EXPECTED_CLASSES, counter,String.format("classes added/removed to package=[%s]?", packageName));
   }
 
   @Test
   public void shouldReturnEmptyListNoAnnotation() {
     final PojoPackage pojoPackage = PojoPackageFactory.getPojoPackage(this.getClass().getPackage().getName()
         + ".packagenoannotation");
-    Affirm.affirmTrue(String.format("Annotations added? expected none [%s]", pojoPackage), pojoPackage.getAnnotations() != null
-        && pojoPackage.getAnnotations().size() == 0);
+    assertTrue(pojoPackage.getAnnotations() != null
+        && pojoPackage.getAnnotations().size() == 0, String.format("Annotations added? expected none [%s]", pojoPackage));
   }
 
   @Test
@@ -77,8 +76,7 @@ public class PojoPackageImplTest {
     final PojoPackage pojoPackage = PojoPackageFactory.getPojoPackage(this.getClass().getPackage().getName()
         + ".packagemanyannotations");
     final Class<? extends Annotation> expectedAnnotationClass = SomeAnnotation.class;
-    Affirm.affirmNotNull(String.format("[%s] removed from package [%s]?", expectedAnnotationClass, pojoPackage), pojoPackage
-        .getAnnotation(expectedAnnotationClass));
+    assertNotNull(pojoPackage.getAnnotation(expectedAnnotationClass), String.format("[%s] removed from package [%s]?", expectedAnnotationClass, pojoPackage));
   }
 
   @Test
@@ -86,10 +84,9 @@ public class PojoPackageImplTest {
     final String packageName = this.getClass().getPackage().getName() + ".packagenopackageinfo";
     final List<PojoClass> pojoClasses = PojoClassFactory.getPojoClasses(packageName);
 
-    Affirm.affirmTrue("No classes in package?", pojoClasses.size() > 0);
+    assertTrue(pojoClasses.size() > 0, "No classes in package?");
     for (final PojoClass pojoClass : pojoClasses) {
-      Affirm.affirmTrue(String.format("package-info added to package [%s]?", packageName),
-          !pojoClass.getName().endsWith("package-info"));
+      assertFalse(pojoClass.getName().endsWith("package-info"),String.format("package-info added to package [%s]?", packageName));
     }
 
   }
@@ -98,31 +95,30 @@ public class PojoPackageImplTest {
   public void shouldReturnNullAnnotationNoPackageInfo() {
     final PojoPackage pojoPackage = PojoPackageFactory.getPojoPackage(this.getClass().getPackage().getName()
         + ".packagenopackageinfo");
-    Affirm.affirmNull(String.format("package-info added to package [%s]?", pojoPackage),
-        pojoPackage.getAnnotation(SomeAnnotation.class));
+    assertNull(pojoPackage.getAnnotation(SomeAnnotation.class), String.format("package-info added to package [%s]?", pojoPackage));
   }
 
   @Test
   public void shouldReturnEmptyListAnnotationNoPackageInfo() {
     final PojoPackage pojoPackage = PojoPackageFactory.getPojoPackage(this.getClass().getPackage().getName()
         + ".packagenopackageinfo");
-    Affirm.affirmEquals(String.format("package-info with annotations added to package [%s]?", pojoPackage),
+    assertEquals(
         0,
-        pojoPackage.getAnnotations().size());
+        pojoPackage.getAnnotations().size(), String.format("package-info with annotations added to package [%s]?", pojoPackage));
   }
 
   @Test
   public void shouldReturnAnnotationList() {
     final PojoPackage pojoPackage = PojoPackageFactory.getPojoPackage(this.getClass().getPackage().getName()
         + ".packagemanyannotations");
-    Affirm.affirmEquals(String.format("Annotations added/removed? [%s]", pojoPackage), 2, pojoPackage.getAnnotations().size());
+    assertEquals( 2, pojoPackage.getAnnotations().size(), String.format("Annotations added/removed? [%s]", pojoPackage));
 
     final List<Class<?>> expectedAnnotations = new LinkedList<Class<?>>();
     expectedAnnotations.add(SomeAnnotation.class);
     expectedAnnotations.add(AnotherAnnotation.class);
     for (final Annotation annotation : pojoPackage.getAnnotations()) {
-      Affirm.affirmTrue(String.format("Expected annotations [%s] not found, instead found [%s]", expectedAnnotations,
-          annotation.annotationType()), expectedAnnotations.contains(annotation.annotationType()));
+      assertTrue(expectedAnnotations.contains(annotation.annotationType()), String.format("Expected annotations [%s] not found, instead found [%s]", expectedAnnotations,
+              annotation.annotationType()));
     }
   }
 
@@ -131,19 +127,19 @@ public class PojoPackageImplTest {
     final String packageName = this.getClass().getPackage().getName();
 
     final PojoPackage pojoPackage = PojoPackageFactory.getPojoPackage(packageName);
-    Affirm.affirmEquals("Mismatch in packageName!!", packageName, pojoPackage.getName());
+    assertEquals("Mismatch in packageName!!", packageName, pojoPackage.getName());
 
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailNoSuchPackage() {
     String randomPackageName = RandomFactory.getRandomValue(String.class);
-    PojoPackageFactory.getPojoPackage(randomPackageName);
+    assertThrows(ReflectionException.class, () -> PojoPackageFactory.getPojoPackage(randomPackageName));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void shouldThrowIllegalArgumentException() {
-    @SuppressWarnings("unused") final PojoPackage pojoPackage = new PojoPackageImpl(null);
+    assertThrows(IllegalArgumentException.class, () -> new PojoPackageImpl(null));
   }
 
   @Test

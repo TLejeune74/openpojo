@@ -26,6 +26,7 @@ import com.openpojo.business.identity.IdentityFactory;
 import com.openpojo.business.identity.IdentityHandler;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -33,9 +34,9 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class IdentityFactoryTest {
 
-  @Test(expected = java.lang.IllegalArgumentException.class)
+  @Test
   public void shouldNotAllowRegistrationOfNullHandler() {
-    IdentityFactory.registerIdentityHandler(null);
+      assertThrows(IllegalArgumentException.class, () -> IdentityFactory.registerIdentityHandler(null));
   }
 
   @Test

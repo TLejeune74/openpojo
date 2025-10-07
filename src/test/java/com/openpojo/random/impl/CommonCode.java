@@ -19,10 +19,8 @@
 package com.openpojo.random.impl;
 
 import com.openpojo.random.RandomGenerator;
-import com.openpojo.validation.affirm.Affirm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -36,11 +34,11 @@ public class CommonCode {
    */
   @SuppressWarnings("ConstantConditions")
   public static void testDoGenerateForClass(final RandomGenerator randomGenerator, final Class<?> type) {
-    Affirm.affirmTrue(String.format("Failed to get the requested type=[%s] from [%s] received=[%s] instead", type,
-        randomGenerator, randomGenerator.doGenerate(type)), type.isInstance(randomGenerator.doGenerate(type)));
+    assertTrue( type.isInstance(randomGenerator.doGenerate(type)), String.format("Failed to get the requested type=[%s] from [%s] received=[%s] instead", type,
+            randomGenerator, randomGenerator.doGenerate(type)));
     Object object = type.cast(randomGenerator.doGenerate(type));
 
-    Affirm.affirmNotNull(String.format("Request to registered type [%s] must return non-null value!!", type), object);
+    assertNotNull(object, String.format("Request to registered type [%s] must return non-null value!!", type));
 
     Object anotherObject = randomGenerator.doGenerate(type);
     if (object.equals(anotherObject)) { // Just incase they are the same
@@ -55,8 +53,7 @@ public class CommonCode {
         }
       }
     }
-    Affirm.affirmFalse(String.format("[%s] generating the same values for type=[%s]", randomGenerator, type),
-        object.equals(anotherObject));
+    assertFalse(object.equals(anotherObject), String.format("[%s] generating the same values for type=[%s]", randomGenerator, type));
   }
 
   public static void testGetType(final RandomGenerator randomGenerator, final Class<?> type, final int expectedCount) {

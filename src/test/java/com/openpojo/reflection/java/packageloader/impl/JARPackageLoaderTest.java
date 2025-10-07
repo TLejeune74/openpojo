@@ -27,9 +27,10 @@ import java.util.Set;
 
 import com.openpojo.log.utils.MessageFormatter;
 import com.openpojo.reflection.java.Java;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -108,12 +109,11 @@ public class JARPackageLoaderTest {
 
     Set<String> subPackagesNames = jarPackage.getSubPackages();
 
-    Affirm.affirmEquals(MessageFormatter.format("SubPackages added/removed to {0} found[{1}]?!", packageName, subPackagesNames)
-        , expectedSubPackagesNames.length, subPackagesNames.size());
+    assertEquals(expectedSubPackagesNames.length, subPackagesNames.size(),
+            MessageFormatter.format("SubPackages added/removed to {0} found[{1}]?!", packageName, subPackagesNames));
 
     for (String expectedPackageName : expectedSubPackagesNames) {
-      Affirm.affirmTrue(MessageFormatter.format("Expected package[{0}] not found", expectedPackageName),
-          subPackagesNames.contains(expectedPackageName));
+      assertTrue(subPackagesNames.contains(expectedPackageName), MessageFormatter.format("Expected package[{0}] not found", expectedPackageName));
     }
   }
 
@@ -126,12 +126,10 @@ public class JARPackageLoaderTest {
       classesNames.add(((Class<?>) type).getName());
     }
 
-    Affirm.affirmEquals(MessageFormatter.format("Classes added/removed to {0} found[{1}]?!", packageName, classesNames),
-        expectedClassesNames.length, classesNames.size());
+    assertEquals(expectedClassesNames.length, classesNames.size(), MessageFormatter.format("Classes added/removed to {0} found[{1}]?!", packageName, classesNames));
 
     for (String expectedClassName : classesNames) {
-      Affirm.affirmTrue(MessageFormatter.format("Expected class[{0}] not found", expectedClassName),
-          classesNames.contains(expectedClassName));
+      assertTrue(classesNames.contains(expectedClassName), MessageFormatter.format("Expected class[{0}] not found", expectedClassName));
     }
   }
 
@@ -141,11 +139,11 @@ public class JARPackageLoaderTest {
       resources = Thread.currentThread().getContextClassLoader().getResources(
           packageName.replace(Java.PACKAGE_DELIMITER, Java.PATH_DELIMITER));
     } catch (IOException e) {
-      Affirm.fail(MessageFormatter.format("Failed to get resources for package[{0}] got exception[{1}]", packageName, e));
+      fail(MessageFormatter.format("Failed to get resources for package[{0}] got exception[{1}]", packageName, e));
     }
     URL resource = resources.nextElement();
 
-    Affirm.affirmEquals(MessageFormatter.format("[{0}] not located in a jar file!!", packageName), "jar", resource.getProtocol());
+    assertEquals(MessageFormatter.format("[{0}] not located in a jar file!!", packageName), "jar", resource.getProtocol());
 
     return new JARPackageLoader(resource, packageName);
   }

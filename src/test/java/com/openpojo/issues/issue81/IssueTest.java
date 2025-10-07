@@ -23,6 +23,7 @@ import java.util.List;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.utils.samplejar.SampleJar;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,7 +37,7 @@ public class IssueTest {
    */
   @Test
   public void shouldNotThrowNoClassDefFoundError() {
-    final Package aPackage = org.testng.Assert.class.getPackage();
+    final Package aPackage = Assertions.class.getPackage();
     final String packageName = aPackage.getName();
     List<PojoClass> pojoClasses = PojoClassFactory.getPojoClassesRecursively(packageName, null);
     assertTrue(pojoClasses.size() > 0, "Should have found some classes");

@@ -28,9 +28,10 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RandomInstanceFromInterfaceRandomGeneratorTest {
 
@@ -45,46 +46,46 @@ public class RandomInstanceFromInterfaceRandomGeneratorTest {
 
   @Test
   public void shouldReturnAProxy() {
-    Affirm.affirmNotNull("Interface instance not generated", aSimpleInterface);
+    assertNotNull(aSimpleInterface, "Interface instance not generated");
   }
 
   @Test
   public void shouldReturnANewInstanceEveryTime() {
-    Affirm.affirmFalse("Same instance returned or faulty equality implementation on proxy",
-        aSimpleInterface.equals(proxyGenerator.doGenerate(ASimpleInterface.class)));
+    assertFalse(aSimpleInterface.equals(proxyGenerator.doGenerate(ASimpleInterface.class)),
+            "Same instance returned or faulty equality implementation on proxy");
   }
 
   @Test
   public void shouldReturnFalseWithNullEquals() {
-    Affirm.affirmFalse("Should be false", aSimpleInterface.equals(null));
+    assertFalse(aSimpleInterface.equals(null), "Should be false");
   }
 
   @Test
   public void shouldReturnRandomNonNullValuesForInterfaceMethods() {
     final ASimpleInterface aSimpleInterface = proxyGenerator.doGenerate(ASimpleInterface.class);
 
-    Affirm.affirmNotNull("Generated proxy getName() returned null", aSimpleInterface.getName());
+    assertNotNull( aSimpleInterface.getName(), "Generated proxy getName() returned null");
 
     final String name = aSimpleInterface.getName();
     final String otherName = aSimpleInterface.getName();
     if (name.equals(otherName)) { // Just in case they are the same by chance.
-      Affirm.affirmFalse(String.format("RandomProxyFactory=[%s] returned a non-Random Pojo Proxy",
-          RandomInstanceFromInterfaceRandomGenerator.getInstance()), name.equals(aSimpleInterface.getName()));
+      assertFalse(name.equals(aSimpleInterface.getName()), String.format("RandomProxyFactory=[%s] returned a non-Random Pojo Proxy",
+              RandomInstanceFromInterfaceRandomGenerator.getInstance()));
     }
   }
 
   @Test
   public void shouldImplementAccuratetoStringAndhashCode() {
     final String toString = aSimpleInterface.toString();
-    Affirm.affirmNotNull("toString() on proxy returned null", toString);
-    Affirm.affirmTrue(String.format("toString returned [%s] expected it to begin with [%s] and contain [@]", toString, "$Proxy"),
-        toString.contains("$Proxy") && toString.contains("@"));
+    assertNotNull("toString() on proxy returned null", toString);
+    assertTrue(toString.contains("$Proxy") && toString.contains("@"),
+            String.format("toString returned [%s] expected it to begin with [%s] and contain [@]", toString, "$Proxy"));
 
-    Affirm.affirmTrue("toString() doesn't end with hashCode()", toString.endsWith(String.valueOf(aSimpleInterface.hashCode())));
+    assertTrue(toString.endsWith(String.valueOf(aSimpleInterface.hashCode())), "toString() doesn't end with hashCode()");
 
     final ASimpleInterface anotherSimpleInterface = proxyGenerator.doGenerate(ASimpleInterface.class);
-    Affirm.affirmTrue("Generated Proxy hashCode() should not return equal values across instances",
-        aSimpleInterface.hashCode() != anotherSimpleInterface.hashCode());
+    assertTrue(
+        aSimpleInterface.hashCode() != anotherSimpleInterface.hashCode(), "Generated Proxy hashCode() should not return equal values across instances");
   }
 
   @Test
@@ -100,40 +101,40 @@ public class RandomInstanceFromInterfaceRandomGeneratorTest {
 
     List<AConcreteClass> theList = anInterfaceWithGenericMethodReturnType.aListOfAConcreteClass();
 
-    Affirm.affirmNotNull("Should not be null", theList);
-    Affirm.affirmTrue("Should not be empty", theList.size() > 0);
+    assertNotNull(theList, "Should not be null");
+    assertTrue(theList.size() > 0, "Should not be empty");
     for (Object entry : theList)
-      Affirm.affirmEquals("Should be of correct type", AConcreteClass.class, entry.getClass());
+      assertEquals(AConcreteClass.class, entry.getClass(), "Should be of correct type");
 
     int[] anIntArray = anInterfaceWithGenericMethodReturnType.anIntArray();
-    Affirm.affirmNotNull("Should not be null", anIntArray);
-    Affirm.affirmTrue("Should not be empty", anIntArray.length > 0);
+    assertNotNull( anIntArray, "Should not be null");
+    assertTrue( anIntArray.length > 0, "Should not be empty");
     for (int entry : anIntArray)
-      Affirm.affirmFalse("should not be equal", entry == entry + 1);
+      assertFalse(entry == entry + 1, "should not be equal");
 
     String aString = anInterfaceWithGenericMethodReturnType.aString();
-    Affirm.affirmNotNull("Should not be null", aString);
-    Affirm.affirmTrue("Should not be empty", aString.length() > 0);
+    assertNotNull(aString, "Should not be null");
+    assertTrue(aString.length() > 0, "Should not be empty");
 
     boolean voidMethodInvoked = false;
     PojoClass pojoClass = PojoClassFactory.getPojoClass(anInterfaceWithGenericMethodReturnType.getClass());
     for (PojoMethod pojoMethod : pojoClass.getPojoMethods()) {
       if (pojoMethod.getName().equals("aVoid")) {
-        Affirm.affirmNull("Should be null", pojoMethod.invoke(anInterfaceWithGenericMethodReturnType));
+        assertNull(pojoMethod.invoke(anInterfaceWithGenericMethodReturnType), "Should be null");
         voidMethodInvoked = true;
       }
     }
-    Affirm.affirmTrue("Void method not found!!", voidMethodInvoked);
+    assertTrue( voidMethodInvoked, "Void method not found!!");
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailAbstractClass() {
-    proxyGenerator.doGenerate(AnAbstractClass.class);
+      assertThrows(ReflectionException.class, () -> proxyGenerator.doGenerate(AnAbstractClass.class));
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailConcreteClass() {
-    proxyGenerator.doGenerate(AConcreteClass.class);
+      assertThrows(ReflectionException.class, () -> proxyGenerator.doGenerate(AConcreteClass.class));
   }
 
 }

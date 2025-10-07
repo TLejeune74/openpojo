@@ -22,12 +22,12 @@ import com.openpojo.log.LoggerFactory;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.utils.SameInstanceIdentityHandlerStub;
 import com.openpojo.validation.utils.ValidationHelper;
 
 import static com.openpojo.validation.utils.ToStringHelper.safeToString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test the setter and ensure it sets the field being tested if and only if a Setter method was defined.
@@ -50,8 +50,7 @@ public class SetterTester implements Tester {
 
         fieldEntry.invokeSetter(classInstance, value);
 
-        Affirm.affirmEquals(value,
-            fieldEntry.get(classInstance), "Setter test failed, non equal value for field=[" + fieldEntry + "]");
+        assertEquals(value, fieldEntry.get(classInstance), "Setter test failed, non equal value for field=[" + fieldEntry + "]");
 
         SameInstanceIdentityHandlerStub.unregisterIdentityHandlerStubForValue(value);
       } else {

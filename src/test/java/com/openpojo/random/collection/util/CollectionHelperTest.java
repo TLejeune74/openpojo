@@ -24,9 +24,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author oshoukry
@@ -36,13 +35,13 @@ public class CollectionHelperTest {
   public void shouldReturnWithoutGenerationIfTypeIsNull() {
     List emptyList = new ArrayList();
     Collection actual = CollectionHelper.buildCollections(emptyList, null);
-    assertThat(actual.size(), is(0));
-    assertThat((List)actual, sameInstance(emptyList));
+    assertEquals(0, actual.size());
+    assertSame(emptyList, actual);
   }
 
   @Test
   public void shouldReturnNullIfCollectionIsNull() {
-    assertThat(CollectionHelper.buildCollections(null, null), nullValue());
-    assertThat(CollectionHelper.buildCollections(null, this.getClass()), nullValue());
+    assertNull(CollectionHelper.buildCollections(null, null));
+    assertNotNull(CollectionHelper.buildCollections(null, this.getClass()));
   }
 }

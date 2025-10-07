@@ -18,8 +18,9 @@
 
 package com.openpojo.random.util;
 
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -32,13 +33,13 @@ public class SerializableComparableObjectTest {
     SerializableComparableObjectStub secondInstance = new SerializableComparableObjectStub();
 
     secondInstance.hashCode = firstInstance.hashCode() - 1;
-    Affirm.affirmEquals("CompareTo should return 1", 1, firstInstance.compareTo(secondInstance));
+    assertEquals( 1, firstInstance.compareTo(secondInstance), "CompareTo should return 1");
 
     secondInstance.hashCode = firstInstance.hashCode() + 1;
-    Affirm.affirmEquals("CompareTo should return -1", -1, firstInstance.compareTo(secondInstance));
+    assertEquals( -1, firstInstance.compareTo(secondInstance), "CompareTo should return -1");
 
     secondInstance.hashCode = firstInstance.hashCode();
-    Affirm.affirmEquals("CompareTo should return 0", 0, firstInstance.compareTo(secondInstance));
+    assertEquals( 0, firstInstance.compareTo(secondInstance), "CompareTo should return 0");
   }
 
   private class SerializableComparableObjectStub extends SerializableComparableObject {

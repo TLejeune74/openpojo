@@ -29,6 +29,8 @@ import com.openpojo.reflection.impl.PojoClassFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author oshoukry
@@ -40,7 +42,7 @@ public class URIRandomGeneratorTest {
     PojoClass uriPojoClass = PojoClassFactory.getPojoClass(URIRandomGenerator.class);
     for (PojoMethod constructor : uriPojoClass.getPojoConstructors()) {
       if (!constructor.isSynthetic())
-        assertTrue(constructor + " should be private", constructor.isPrivate());
+        assertTrue(constructor.isPrivate(), constructor + " should be private");
     }
   }
 
@@ -91,10 +93,10 @@ public class URIRandomGeneratorTest {
     assertNotNull(generatedURI.getHost());
   }
 
-  @Test (expected = RandomGeneratorException.class)
+  @Test
   public void willThrowExceptionWhenHostPrefixMalformed() {
     URIRandomGenerator.getInstance().setUriPrefix("<");
-    URIRandomGenerator.getInstance().doGenerate(URI.class);
+    assertThrows(RandomGeneratorException.class, () -> URIRandomGenerator.getInstance().doGenerate(URI.class));
   }
 
   @AfterEach

@@ -32,9 +32,11 @@ import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.utils.CloseableHelper;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This tester ensures that you are able to serialize and deserialize objects without any errors.
@@ -66,9 +68,9 @@ public class SerializableTester implements Tester {
       try {
         byte[] serializedObject = serialize(pojoClass, instance);
         Object instance2 = deSerialize(serializedObject, instance.getClass());
-        Affirm.affirmNotNull(instance2, "Failed to load serialized object [" + instance + "]");
+        assertNotNull(instance2, "Failed to load serialized object [" + instance + "]");
       } catch (Exception e) {
-        Affirm.fail("Failed to run " + this.getClass().getName() + " - Got exception [" + e + "] on PojoClass " + pojoClass);
+        fail("Failed to run " + this.getClass().getName() + " - Got exception [" + e + "] on PojoClass " + pojoClass);
       }
     } else {
       logger.warn("Class [" + clazz + "] is not serializable, skipping validation");
@@ -81,12 +83,8 @@ public class SerializableTester implements Tester {
       for (PojoField field : currentPojo.getPojoFields()) {
         PojoClass fieldClass = PojoClassFactory.getPojoClass(field.getType());
         if (useStrictValidation && !fieldClass.extendz(Serializable.class) && fieldClass.isInterface() && !field.isTransient()) {
-          Affirm.fail("Field ["
-                  + field.getName()
-                  + "] is an interface that allows non-Serializable types on a Serializable ["
-                  + pojoClass.getClazz()
-                  + "]"
-              );
+          fail("Field ["+ field.getName() + "] is an interface that allows non-Serializable types on a Serializable ["
+                  + pojoClass.getClazz() + "]");
         }
         if (field.get(instance) == null)
           field.set(instance, RandomFactory.getRandomValue(field));
@@ -105,7 +103,7 @@ public class SerializableTester implements Tester {
       objectOutputStream.writeObject(object);
     } catch (NotSerializableException notSerializable) {
       final String failMessage = getFailMessage(pojoClass, notSerializable);
-      Affirm.fail(failMessage);
+      fail(failMessage);
     } catch (IOException e) {
       throw new RuntimeException(e);
     } finally {

@@ -27,6 +27,8 @@ import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author oshoukry
@@ -38,7 +40,7 @@ public class UUIDRandomGeneratorTest {
     PojoClass uuidPojoClass = PojoClassFactory.getPojoClass(UUIDRandomGenerator.class);
     for (PojoMethod constructor : uuidPojoClass.getPojoConstructors()) {
       if (!constructor.isSynthetic())
-        assertTrue(constructor + " should be private", constructor.isPrivate());
+        assertTrue(constructor.isPrivate(), constructor + " should be private");
     }
   }
 

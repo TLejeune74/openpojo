@@ -30,6 +30,8 @@ import com.openpojo.validation.rule.impl.NoFieldShadowingRule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author oshoukry
  */
@@ -41,17 +43,17 @@ public class IssueTest {
     pojoValidator = ValidatorBuilder.create().with(new NoFieldShadowingRule()).build();
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void shouldFailBecauseShadowingParentField() {
     final PojoClass pojoClass = PojoClassFactory.getPojoClass(ChildClass.class /* ParentClass.class is parent */);
-    pojoValidator.validate(pojoClass);
+    assertThrows(AssertionError.class, () -> pojoValidator.validate(pojoClass));
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void shouldFailBecauseShadowingParentsParentField() {
     final PojoClass pojoClass = PojoClassFactory.getPojoClass(AChildOfAnotherChildClass.class /* AnotherChildClass.class
     is parent */);
-    pojoValidator.validate(pojoClass);
+      assertThrows(AssertionError.class, () -> pojoValidator.validate(pojoClass));
   }
 
   @Test

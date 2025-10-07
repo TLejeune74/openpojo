@@ -29,11 +29,12 @@ import com.openpojo.reflection.coverage.service.PojoCoverageFilterServiceFactory
 import com.openpojo.reflection.coverage.service.impl.DefaultPojoCoverageFilterService;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.registry.ServiceRegistrar;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -74,17 +75,17 @@ public class CloverPojoClassAdapterTest {
     int expectedFieldCount = 4;
     if (Clover4.getInstance().isLoaded())
       expectedFieldCount++;
-    Affirm.affirmEquals("Fields added/removed?", expectedFieldCount, cloverInstrumentedPojoClass.getPojoFields().size());
-    Affirm.affirmEquals("Methods added/removed?", 3, cloverInstrumentedPojoClass.getPojoMethods().size());
+    assertEquals(expectedFieldCount, cloverInstrumentedPojoClass.getPojoFields().size(), "Fields added/removed?");
+    assertEquals( 3, cloverInstrumentedPojoClass.getPojoMethods().size(), "Methods added/removed?");
   }
 
   @Test
   public void shouldSkipFieldsStartingWith__CLR() {
-    Affirm.affirmEquals("Cobertura fields not filtered?", 2, cloverCleanedPojoClass.getPojoFields().size());
+    assertEquals( 2, cloverCleanedPojoClass.getPojoFields().size(), "Cobertura fields not filtered?");
   }
 
   @Test
   public void shouldNotSkipAnyMethods() {
-    Affirm.affirmEquals("Cobertura methods not filtered?", 3, cloverCleanedPojoClass.getPojoMethods().size());
+    assertEquals( 3, cloverCleanedPojoClass.getPojoMethods().size(), "Cobertura methods not filtered?");
   }
 }

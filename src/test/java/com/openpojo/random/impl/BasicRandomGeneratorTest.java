@@ -24,11 +24,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.openpojo.random.RandomGenerator;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.openpojo.random.impl.CommonCode.testDoGenerateForClass;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class BasicRandomGeneratorTest {
   private RandomGenerator basicRandomGenerator;
@@ -173,8 +174,7 @@ public class BasicRandomGeneratorTest {
    */
   @Test
   public void testUnregisteredType() {
-    Affirm.affirmNull(String.format("Request to non-registered type [%s] must return null!!", this.getClass()),
-        basicRandomGenerator.doGenerate(this.getClass()));
+    assertNull(basicRandomGenerator.doGenerate(this.getClass()), String.format("Request to non-registered type [%s] must return null!!", this.getClass()));
 
   }
 
@@ -183,7 +183,6 @@ public class BasicRandomGeneratorTest {
    */
   @Test
   public final void testGetTypes() {
-    Affirm.affirmEquals("New Types added/removed to BasicRandomGenerator?", EXPECTED_BASIC_TYPES,
-        basicRandomGenerator.getTypes().size());
+    assertEquals( EXPECTED_BASIC_TYPES, basicRandomGenerator.getTypes().size(), "New Types added/removed to BasicRandomGenerator?");
   }
 }

@@ -34,6 +34,8 @@ import com.openpojo.validation.test.impl.SetterTester;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * This is a logging tester used for testing.
  *
@@ -53,13 +55,13 @@ public class PojoValidatorTest {
         .with(loggingTester)
         .build();
 
-    Assert.assertEquals(0, loggingRule.getLogs().size());
-    Assert.assertEquals(0, loggingTester.getLogs().size());
+    assertEquals(0, loggingRule.getLogs().size());
+    assertEquals(0, loggingTester.getLogs().size());
 
     pojoValidator.validate(PojoClassFactory.getPojoClass(PojoValidatorTest.class));
 
-    Assert.assertEquals(1, loggingRule.getLogs().size());
-    Assert.assertEquals(1, loggingTester.getLogs().size());
+    assertEquals(1, loggingRule.getLogs().size());
+    assertEquals(1, loggingTester.getLogs().size());
   }
 
   @Test
@@ -87,8 +89,8 @@ public class PojoValidatorTest {
         .with((Tester) ruleTesterMock)
         .build();
     pojoValidator.validate(PojoStubFactory.getStubPojoClass(methodValueReturn));
-    Assert.assertTrue("Evaluate not run on " + pojoType + " class", ruleTesterMock.evaluateCalled);
-    Assert.assertTrue("Rule called on " + pojoType + " class", !ruleTesterMock.runCalled);
+    assertTrue(ruleTesterMock.evaluateCalled, "Evaluate not run on " + pojoType + " class");
+      assertFalse(ruleTesterMock.runCalled, "Rule called on " + pojoType + " class");
   }
 
   @Test
@@ -102,7 +104,7 @@ public class PojoValidatorTest {
         .build();
 
     pojoValidator.validate(PojoStubFactory.getStubPojoClass(methodValueReturn));
-    Assert.assertTrue("Tester not called", ruleTesterMock.runCalled);
+    assertTrue( ruleTesterMock.runCalled, "Tester not called");
   }
 
   @Test

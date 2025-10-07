@@ -30,12 +30,9 @@ import com.openpojo.random.sampleclasses.hierarchy.ClassExtendingClassImplementi
 import com.openpojo.random.sampleclasses.hierarchy.ClassImplementingSomeInterface;
 import com.openpojo.random.sampleclasses.hierarchy.SomeInterface;
 import com.openpojo.random.sampleclasses.hierarchy.SomeInterfaceRandomGenerator;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -92,10 +89,9 @@ public class RandomFactoryTest {
 
     final Object someInstance = RandomFactory.getRandomValue(clazz);
 
-    Affirm.affirmNotNull(String.format("Null value returned for random instance of [%s]", clazz.getName()), someInstance);
+    assertNotNull(someInstance, String.format("Null value returned for random instance of [%s]", clazz.getName()));
 
-    Affirm.affirmFalse(String.format("Non randomized instance returned (i.e. same object) for [%s]", clazz.getName()),
-        someInstance.equals(RandomFactory.getRandomValue(clazz)));
+    assertFalse(someInstance.equals(RandomFactory.getRandomValue(clazz)), String.format("Non randomized instance returned (i.e. same object) for [%s]", clazz.getName()));
   }
 
   @Test
@@ -106,16 +102,13 @@ public class RandomFactoryTest {
     final Class<?> classExtendingClassImplmentingSomeInterface = ClassExtendingClassImplementingSomeInterface.class;
     Object instance = RandomFactory.getRandomValue(someInterface);
 
-    Affirm.affirmNotNull(String.format("RandomFactory failed to retrieve random instance for interface [%s]", someInterface),
-        instance);
+    assertNotNull(instance, String.format("RandomFactory failed to retrieve random instance for interface [%s]", someInterface));
 
-    Affirm.affirmEquals("RandomFactory failed to lookup proper random generator from heirarchy",
-        classExtendingClassImplmentingSomeInterface, instance.getClass());
+    assertEquals(classExtendingClassImplmentingSomeInterface, instance.getClass(), "RandomFactory failed to lookup proper random generator from heirarchy");
 
     instance = RandomFactory.getRandomValue(classImplementingSomeInterface);
 
-    Affirm.affirmEquals("RandomFactory failed to lookup proper random generator from heirarchy",
-        classExtendingClassImplmentingSomeInterface, instance.getClass());
+      assertEquals(classExtendingClassImplmentingSomeInterface, instance.getClass(), "RandomFactory failed to lookup proper random generator from heirarchy");
   }
 
   @Test

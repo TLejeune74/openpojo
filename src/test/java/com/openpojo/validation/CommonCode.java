@@ -19,9 +19,10 @@
 package com.openpojo.validation;
 
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.test.Tester;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author oshoukry
@@ -44,7 +45,7 @@ public final class CommonCode {
     for (Class<?> clazz : failClasses) {
       try {
         rule.evaluate(PojoClassFactory.getPojoClass(clazz));
-        Affirm.fail(String.format("Rule = [%s] failed to detect error while evaluating class= [%s]", rule, clazz));
+        fail(String.format("Rule = [%s] failed to detect error while evaluating class= [%s]", rule, clazz));
       } catch (AssertionError ae) {
         if (ae.getMessage().contains("Rule = [")) {
           throw ae;
@@ -57,7 +58,7 @@ public final class CommonCode {
     for (Class<?> clazz : failClasses) {
       try {
         tester.run(PojoClassFactory.getPojoClass(clazz));
-        Affirm.fail(String.format("Tester = [%s] failed to detect error while evaluating class= [%s]", tester, clazz));
+        fail(String.format("Tester = [%s] failed to detect error while evaluating class= [%s]", tester, clazz));
       } catch (AssertionError ae) {
         if (ae.getMessage().contains("Tester = [")) {
           throw ae;

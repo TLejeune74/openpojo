@@ -21,14 +21,16 @@ package com.openpojo.random.dynamic;
 import com.openpojo.random.exception.RandomGeneratorException;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author oshoukry
  */
 public class EnumRandomGeneratorTest {
 
-  @Test(expected = RandomGeneratorException.class)
+  @Test
   public void shouldThrowExceptionWhenEnumHasNoValues() {
-    EnumRandomGenerator.getInstance().doGenerate(EmptyEnum.class);
+    assertThrows(RandomGeneratorException.class, () -> EnumRandomGenerator.getInstance().doGenerate(EmptyEnum.class));
   }
 
   public enum EmptyEnum {

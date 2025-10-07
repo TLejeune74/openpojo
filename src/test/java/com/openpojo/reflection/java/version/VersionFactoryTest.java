@@ -98,7 +98,8 @@ public class VersionFactoryTest {
   @Test
   public void shouldGetASMVersion() {
     final Version version = getImplementationVersion(ClassUtil.loadClass(ASMDetector.ASM_CLASS_NAME));
-    assertThat(version.getVersion(), Matchers.anyOf(startsWith("5."), startsWith("6."), startsWith("7.")));
+    final String sAsm = version.getVersion();
+    assertTrue(sAsm.startsWith("5.") || sAsm.startsWith("6.") || sAsm.startsWith("7."));
   }
 
   @Test

@@ -39,6 +39,8 @@ import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author oshoukry
  */
@@ -75,8 +77,7 @@ public abstract class BaseMapRandomGeneratorTest {
       if (!constructor.isSynthetic())
         constructors.add(constructor);
     }
-    assertEquals("Should only have one constructor [" + mapRandomGeneratorPojo.getPojoConstructors() + "]", 1,
-        constructors.size());
+    assertEquals( 1, constructors.size(), "Should only have one constructor [" + mapRandomGeneratorPojo.getPojoConstructors() + "]");
 
     PojoMethod constructor = constructors.get(0);
 
@@ -93,47 +94,49 @@ public abstract class BaseMapRandomGeneratorTest {
   @Test
   public void shouldOnlyReturnMapClassFromGetTypes() {
     Collection<Class<?>> types = getInstance().getTypes();
-    assertNotNull("Should not be null", types);
-    assertEquals("Should only have one type", 1, types.size());
-    assertEquals("Should only be " + getExpectedTypeClass().getName(), getExpectedTypeClass(), types.iterator().next());
+    assertNotNull(types, "Should not be null");
+    assertEquals( 1, types.size(), "Should only have one type");
+    assertEquals( getExpectedTypeClass(), types.iterator().next(), "Should only be " + getExpectedTypeClass().getName());
   }
 
   @Test
   public void generatedTypeShouldBeAssignableToDeclaredType() {
     Class<?> declaredType = getInstance().getTypes().iterator().next();
     Object generatedInstance = getInstance().doGenerate(declaredType);
-    Assert.assertTrue("[" + declaredType.getName() + " is not assignable to " + generatedInstance.getClass().getName() +
-        "]", declaredType.isAssignableFrom(generatedInstance.getClass()));
+    assertTrue(declaredType.isAssignableFrom(generatedInstance.getClass()), "[" + declaredType.getName() + " is not assignable to " + generatedInstance.getClass().getName() +
+            "]");
   }
 
-  @Test(expected = RandomGeneratorException.class)
+  @Test
   public void shouldThrowExceptionForDoGenerateForOtherThanMapClass() {
-    getInstance().doGenerate(ALeafChildClass.class);
+    assertThrows(RandomGeneratorException.class, () -> getInstance().doGenerate(ALeafChildClass.class));
   }
 
-  @Test(expected = RandomGeneratorException.class)
+  @Test
   public void shouldThrowExceptionForDoGenerateForParameterizedOtherThanMapClass() {
-    getInstance().doGenerate(new Parameterizable() {
-      public Class<?> getType() {
-        return ALeafChildClass.class;
-      }
+      assertThrows(RandomGeneratorException.class, () -> {
+          getInstance().doGenerate(new Parameterizable() {
+              public Class<?> getType() {
+                  return ALeafChildClass.class;
+              }
 
-      public boolean isParameterized() {
-        throw new IllegalStateException("Unimplemented!!");
-      }
+              public boolean isParameterized() {
+                  throw new IllegalStateException("Unimplemented!!");
+              }
 
-      public List<Type> getParameterTypes() {
-        throw new IllegalStateException("Unimplemented!!");
-      }
-    });
+              public List<Type> getParameterTypes() {
+                  throw new IllegalStateException("Unimplemented!!");
+              }
+          });
+      });
   }
 
   @Test
   public void shouldGenerateCorrectTypeMapForRequestedMap() {
     Map someObject = (Map) getInstance().doGenerate(getExpectedTypeClass());
-    Assert.assertNotNull("Should not be null", someObject);
-    Assert.assertEquals("Should be a " + getGeneratedTypeClass().getName(), getGeneratedTypeClass(), someObject.getClass());
-    Assert.assertTrue("Should not be Empty", someObject.size() > 0);
+    assertNotNull(someObject, "Should not be null");
+    assertEquals(getGeneratedTypeClass(), someObject.getClass(), "Should be a " + getGeneratedTypeClass().getName());
+    assertTrue(someObject.size() > 0, "Should not be Empty");
   }
 
   @Test
@@ -141,12 +144,12 @@ public abstract class BaseMapRandomGeneratorTest {
   public void shouldGenerateParametrizableCorrectMapForRequest() {
     Map<SimpleType1, SimpleType2> mapOfType1AndType2 = (Map) getInstance().doGenerate(getParameterizedType());
 
-    Assert.assertNotNull("Should not be null", mapOfType1AndType2);
-    Assert.assertTrue("Should not be empty", mapOfType1AndType2.size() > 0);
+    assertNotNull( mapOfType1AndType2, "Should not be null");
+    assertTrue( mapOfType1AndType2.size() > 0, "Should not be empty");
     for (Map.Entry<?, ?> entry : mapOfType1AndType2.entrySet()) {
-      Assert.assertNotNull("Should not be null", entry);
-      Assert.assertEquals("Key should be " + getGenericType1().getName(), getGenericType1(), entry.getKey().getClass());
-      Assert.assertEquals("Value be " + getGenericType2().getName(), getGenericType2(), entry.getValue().getClass());
+      assertNotNull(entry, "Should not be null");
+      assertEquals( getGenericType1(), entry.getKey().getClass(), "Key should be " + getGenericType1().getName());
+      assertEquals(getGenericType2(), entry.getValue().getClass(), "Value be " + getGenericType2().getName());
     }
   }
 
@@ -157,14 +160,14 @@ public abstract class BaseMapRandomGeneratorTest {
   }
 
   protected void assertMapHasExpectedTypes(Map<?, ?> generatedMap, Class<?> type1, Class<?> type2) {
-    Assert.assertNotNull("Should not be null", generatedMap);
-    Assert.assertEquals(getGeneratedTypeClass(), generatedMap.getClass());
-    Assert.assertTrue("Should not be empty", generatedMap.size() > 0);
+    assertNotNull(generatedMap, "Should not be null");
+    assertEquals(getGeneratedTypeClass(), generatedMap.getClass());
+      assertFalse(generatedMap.isEmpty(), "Should not be empty");
     for (Map.Entry<?, ?> entry : generatedMap.entrySet()) {
-      Assert.assertNotNull("Should not be null", entry.getKey());
-      Assert.assertEquals("Key should be " + type1.getName(), type1, entry.getKey().getClass());
-      Assert.assertNotNull("Should not be null", entry.getValue());
-      Assert.assertEquals("Key should be " + type2.getName(), type2, entry.getValue().getClass());
+      assertNotNull(entry.getKey(), "Should not be null");
+      assertEquals(type1, entry.getKey().getClass(), "Key should be " + type1.getName());
+      assertNotNull( entry.getValue(), "Should not be null");
+      assertEquals( type2, entry.getValue().getClass(), "Key should be " + type2.getName());
     }
   }
 

@@ -24,12 +24,13 @@ import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.affirm.Affirmation;
 import com.openpojo.validation.affirm.AffirmationFactory;
 import com.openpojo.validation.affirm.JUnitAssertAffirmation;
 import com.openpojo.validation.test.impl.GetterTester;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -42,7 +43,7 @@ public class IssueTest {
     byte[] first = new byte[] { (byte) 0xaa, (byte) 0xab, (byte) 0xac };
     byte[] second = first.clone();
 
-    Affirm.affirmEquals("A clone failed to be seen as equal", first, second);
+    assertEquals(first, second, "A clone failed to be seen as equal");
   }
 
   @Test

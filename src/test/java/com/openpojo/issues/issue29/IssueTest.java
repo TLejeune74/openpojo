@@ -27,10 +27,10 @@ import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.adapt.PojoClassAdapter;
 import com.openpojo.reflection.adapt.impl.JacocoPojoClassAdapter;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author oshoukry
@@ -61,13 +61,13 @@ public class IssueTest {
 
     for (PojoField pojoField : cleansedPojoClass.getPojoFields()) {
       if (pojoField.getName().equals(JACOCO_FIELD_NAME)) {
-        Affirm.fail(JACOCO_FIELD_NAME + " field is still visible!!");
+        fail(JACOCO_FIELD_NAME + " field is still visible!!");
       }
     }
 
     for (PojoMethod pojoMethod : cleansedPojoClass.getPojoMethods()) {
       if (pojoMethod.getName().equals(JACOCO_METHOD_NAME)) {
-        Affirm.fail(JACOCO_METHOD_NAME + " method is still visible!!");
+        fail(JACOCO_METHOD_NAME + " method is still visible!!");
       }
     }
 

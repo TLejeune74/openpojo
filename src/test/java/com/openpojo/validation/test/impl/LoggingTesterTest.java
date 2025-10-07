@@ -23,6 +23,7 @@ import java.util.List;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
 import com.openpojo.reflection.impl.PojoClassFactory;
+import com.openpojo.utils.log.LogEvent;
 import com.openpojo.utils.log.SpyAppender;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
@@ -31,7 +32,6 @@ import com.openpojo.validation.test.impl.sampleclasses.AClassWithFieldThatThrows
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.event.LoggingEvent;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -63,11 +63,11 @@ public abstract class LoggingTesterTest {
   public void shouldSuccessfullyValidateEvenIfLoggingFails() {
     validator.validate(PojoClassFactory.getPojoClass(sampleClass));
 
-    final List<LoggingEvent> eventsForLogger = spyAppender.getEventsForLogger(tester.getClass());
+    final List<LogEvent> eventsForLogger = spyAppender.getEventsForLogger(tester.getClass());
     assertEquals(1, eventsForLogger.size());
 
     String expectedLog = getExpectedLogMessage();
-      assertEquals(expectedLog, eventsForLogger.get(0).getMessage().toString());
+      assertEquals(expectedLog, eventsForLogger.getFirst().message());
   }
 
   private String getExpectedLogMessage() {
@@ -79,7 +79,7 @@ public abstract class LoggingTesterTest {
 
   private PojoField getPojoField() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(sampleClass);
-    return pojoClass.getPojoFields().get(0);
+    return pojoClass.getPojoFields().getFirst();
   }
 
   @AfterEach

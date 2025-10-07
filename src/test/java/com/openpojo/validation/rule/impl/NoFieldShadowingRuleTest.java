@@ -32,9 +32,10 @@ import com.openpojo.validation.rule.impl.sampleclasses.NoShadowChildOfSerializab
 import com.openpojo.validation.rule.impl.sampleclasses.NoShadowSerializableChild;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 /**
  * @author oshoukry
@@ -73,16 +74,16 @@ public class NoFieldShadowingRuleTest {
   public void ensureAParentClassWithOneFieldSampleClassIsAccurate() {
     PojoClass aParentClassWithOneField = PojoClassFactory.getPojoClass(NoShadowAParentClassWithOneField.class);
     List<PojoField> pojoFields = aParentClassWithOneField.getPojoFields();
-    Assert.assertThat(pojoFields.size(), is(1));
-    Assert.assertThat(pojoFields.get(0).getName(), is("aField"));
+    assertEquals(1, pojoFields.size());
+      assertEquals("aField", pojoFields.get(0).getName());
   }
 
   @Test
   public void ensureAChildWithFieldShadowingIsAccurateWW() {
     PojoClass aChildWithFieldShadowing = PojoClassFactory.getPojoClass(NoShadowAChildWithFieldShadowing.class);
     List<PojoField> pojoFields = aChildWithFieldShadowing.getPojoFields();
-    Assert.assertThat(pojoFields.size(), is(1));
-    Assert.assertThat(pojoFields.get(0).getName(), is("aField"));
+      assertEquals(1, pojoFields.size());
+      assertEquals("aField", pojoFields.get(0).getName());
   }
 
   @Test
@@ -90,9 +91,9 @@ public class NoFieldShadowingRuleTest {
     PojoClass aChildWithFieldShadowing = PojoClassFactory.getPojoClass(NoShadowAChildWithFieldShadowing.class);
     try {
       validator.validate(aChildWithFieldShadowing);
-      Assert.fail("Expected [NoShadowAChildWithFieldShadowing.class] to fail NoFieldShadowRule but didn't");
+      fail("Expected [NoShadowAChildWithFieldShadowing.class] to fail NoFieldShadowRule but didn't");
     } catch (AssertionError ae) {
-      Assert.assertEquals("Field=[PojoFieldImpl " +
+      assertEquals("Field=[PojoFieldImpl " +
           "[field=private java.lang.String com.openpojo.validation.rule.impl.sampleclasses.NoShadowAChildWithFieldShadowing.aField, " +
           "fieldGetter=null, " +
           "fieldSetter=null]] " +
@@ -123,7 +124,7 @@ public class NoFieldShadowingRuleTest {
         .build();
     try {
       validator.validate(aChildWithFieldShadowing);
-      Assert.fail("Should've failed shadow check");
+      fail("Should've failed shadow check");
     } catch (AssertionError ignored) {
 
     }

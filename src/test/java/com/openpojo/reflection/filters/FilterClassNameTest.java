@@ -24,8 +24,10 @@ import java.lang.reflect.Proxy;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoClassFilter;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FilterClassNameTest extends IdentitiesAreEqual {
 
@@ -40,13 +42,13 @@ public class FilterClassNameTest extends IdentitiesAreEqual {
 
     for (final String className : classNames) {
       final PojoClass pojoClassStub = PojoStubFactory.getStubPojoClass(className);
-      Affirm.affirmTrue(String.format("[%s] didn't include class [%s]!!", filter, className), filter.include(pojoClassStub));
+      assertTrue( filter.include(pojoClassStub), String.format("[%s] didn't include class [%s]!!", filter, className));
     }
 
     classNames = new String[] { "package.Test.Class", "TestClass.package" };
     for (final String className : classNames) {
       final PojoClass pojoClassStub = PojoStubFactory.getStubPojoClass(className);
-      Affirm.affirmFalse(String.format("[%s] didn't exclude class [%s]!!", filter, className), filter.include(pojoClassStub));
+      assertFalse( filter.include(pojoClassStub), String.format("[%s] didn't exclude class [%s]!!", filter, className));
     }
   }
 
@@ -61,7 +63,7 @@ public class FilterClassNameTest extends IdentitiesAreEqual {
 
     for (final String className : classNames) {
       PojoClass pojoClassStub = PojoStubFactory.getStubPojoClass(className);
-      Affirm.affirmFalse(String.format("[%s] didn't exclude class [%s]!!", filter, className), filter.include(pojoClassStub));
+      assertFalse(filter.include(pojoClassStub), String.format("[%s] didn't exclude class [%s]!!", filter, className));
     }
 
   }
@@ -84,13 +86,13 @@ public class FilterClassNameTest extends IdentitiesAreEqual {
 
     for (final String className : classNames) {
       final PojoClass pojoClassStub = PojoStubFactory.getStubPojoClass(className);
-      Affirm.affirmTrue(String.format("[%s] didn't include class [%s]!!", filter, className), filter.include(pojoClassStub));
+      assertTrue(filter.include(pojoClassStub), String.format("[%s] didn't include class [%s]!!", filter, className));
     }
 
     classNames = new String[] { "Testmodel", "com.mypackage.modelClass", "model", "pojomodel.model" };
     for (final String className : classNames) {
       final PojoClass pojoClassStub = PojoStubFactory.getStubPojoClass(className);
-      Affirm.affirmFalse(String.format("[%s] didn't exclude class [%s]!!", filter, className), filter.include(pojoClassStub));
+      assertFalse(filter.include(pojoClassStub), String.format("[%s] didn't exclude class [%s]!!", filter, className));
     }
   }
 

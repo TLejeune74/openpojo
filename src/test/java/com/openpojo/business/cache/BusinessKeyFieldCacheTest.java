@@ -21,11 +21,11 @@ package com.openpojo.business.cache;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -50,6 +50,6 @@ public class BusinessKeyFieldCacheTest {
     String anyCacheEntry = "SomeClass";
     cache.add(anyCacheEntry, someList);
 
-    Affirm.affirmTrue("Should keep the same instance", someList == cache.get(anyCacheEntry));
+    assertTrue(someList == cache.get(anyCacheEntry), "Should keep the same instance");
   }
 }

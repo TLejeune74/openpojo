@@ -26,19 +26,18 @@ import java.util.List;
 import com.openpojo.log.utils.MessageFormatter;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 //@formatter:off
 /**
  * This rule ensures that no subclass shadows fields defined in a parent class.
- *
  *{@code
  *  For example:
  *   Public class A {
  *     private String myString;
  *   }
- *
  *   Public class B extends A {
  *     private String myString;
  *   }
@@ -52,7 +51,7 @@ public class NoFieldShadowingRule implements Rule {
 
   private static final String SERIAL_VERSION_UID_FIELD_NAME = "serialVersionUID";
   private static final Class<?> SERIAL_VERSION_UID_FIELD_TYPE = long.class;
-  private List<String> fieldNamesToSkip;
+  private final List<String> fieldNamesToSkip;
 
   public NoFieldShadowingRule(String... fieldNamesToSkip) {
     this.fieldNamesToSkip = Arrays.asList(fieldNamesToSkip);
@@ -70,7 +69,7 @@ public class NoFieldShadowingRule implements Rule {
     for (final PojoField childPojoField : childPojoFields) {
       if (!childPojoField.isSynthetic() && !isSerializable(childPojoField, pojoClass) && !inSkipList(childPojoField))
         if (contains(childPojoField.getName(), parentPojoFields))
-          Affirm.fail(MessageFormatter.format("Field=[{0}] shadows field with the same name in parent class=[{1}]",
+          fail(MessageFormatter.format("Field=[{0}] shadows field with the same name in parent class=[{1}]",
               childPojoField, parentPojoFields));
     }
 

@@ -25,9 +25,11 @@ import com.openpojo.log.impl.SLF4JLogger;
 import com.openpojo.utils.log.LogHelper;
 import com.openpojo.utils.log.MockAppender;
 import com.openpojo.utils.log.MockAppenderLog4J;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -78,9 +80,9 @@ public class SL4JLoggerTest extends AbstractLoggerBase {
       log.fatal(variance.getMessage(), variance.getParams());
       logEvents = LogHelper.getErrorEvents(getMockAppender(), getCategory());
 
-      Affirm.affirmEquals(String.format("Lost [%s] message?", "FATAL"), count + 1, logEvents.size());
-      Affirm.affirmEquals("Fatal wired?", 0, LogHelper.getFatalEvents(getMockAppender(), getCategory()).size());
-      Affirm.affirmEquals("Message malformed", variance.getExpected(), logEvents.get(count).getMessage());
+      assertEquals(count + 1, logEvents.size(), String.format("Lost [%s] message?", "FATAL"));
+      assertEquals( 0, LogHelper.getFatalEvents(getMockAppender(), getCategory()).size(), "Fatal wired?");
+      assertEquals( variance.getExpected(), logEvents.get(count).message(), "Message malformed");
 
       count++;
     }
@@ -89,9 +91,9 @@ public class SL4JLoggerTest extends AbstractLoggerBase {
       log.fatal(variance.getMessage());
       logEvents = LogHelper.getErrorEvents(getMockAppender(), getCategory());
 
-      Affirm.affirmEquals(String.format("Lost [%s] message?", "FATAL"), count + 1, logEvents.size());
-      Affirm.affirmEquals("Fatal wired?", 0, LogHelper.getFatalEvents(getMockAppender(), getCategory()).size());
-      Affirm.affirmEquals("Message malformed", variance.getExpected(), logEvents.get(count).getMessage());
+      assertEquals( count + 1, logEvents.size(), String.format("Lost [%s] message?", "FATAL"));
+      assertEquals( 0, LogHelper.getFatalEvents(getMockAppender(), getCategory()).size(), "Fatal wired?");
+      assertEquals( variance.getExpected(), logEvents.get(count).message(), "Message malformed");
 
       count++;
     }
@@ -101,8 +103,9 @@ public class SL4JLoggerTest extends AbstractLoggerBase {
   @Test
   public void testToString() {
     Logger log = LoggerFactory.getLogger(getCategory());
-    Affirm.affirmTrue(String.format("toString() failed on [%s]!", SLF4JLogger.class.getName()),
+    assertTrue(
         log.toString().startsWith("com.openpojo.log.impl.SLF4JLogger [@")
-            && log.toString().endsWith(": logger=org.slf4j.impl.Log4jLoggerAdapter(com.openpojo.log.SL4JLoggerTest)]"));
+            && log.toString().endsWith(": logger=org.slf4j.impl.Log4jLoggerAdapter(com.openpojo.log.SL4JLoggerTest)]"),
+            String.format("toString() failed on [%s]!", SLF4JLogger.class.getName()));
   }
 }

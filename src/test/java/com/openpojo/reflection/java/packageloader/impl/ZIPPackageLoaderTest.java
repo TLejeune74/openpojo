@@ -28,8 +28,10 @@ import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.reflection.java.Java;
 import com.openpojo.utils.samplejar.SampleJar;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -50,15 +52,15 @@ public class ZIPPackageLoaderTest {
       Class entry = urlClassLoader.loadClass(className);
       PojoClass pojoClass = PojoClassFactory.getPojoClass(entry);
 
-      Affirm.affirmEquals("Should be equal", SampleJar.getJarURLPath() + className.replace(Java.PACKAGE_DELIMITER, Java.PATH_DELIMITER) +
-          Java.CLASS_EXTENSION, "jar:" + pojoClass.getSourcePath());
+      assertEquals(SampleJar.getJarURLPath() + className.replace(Java.PACKAGE_DELIMITER, Java.PATH_DELIMITER) +
+          Java.CLASS_EXTENSION, "jar:" + pojoClass.getSourcePath(), "Should be equal");
 
       if (pojoClass.getName().equals("com.openpojotest.AClass")) {
         for (PojoMethod pojoMethod : pojoClass.getPojoMethods()) {
           if (pojoMethod.getName().equals("sayHello")) {
             Object instance = InstanceFactory.getInstance(pojoClass);
             String hello = (String) pojoMethod.invoke(instance);
-            Affirm.affirmEquals("sayHello failed!!", "Hello World!", hello);
+            assertEquals("sayHello failed!!", "Hello World!", hello);
             saidHello = true;
           }
         }
@@ -68,7 +70,7 @@ public class ZIPPackageLoaderTest {
           if (pojoMethod.getName().equals("getGreetingMessage")) {
             Object instance = InstanceFactory.getInstance(pojoClass);
             String greetingMessage = (String) pojoMethod.invoke(instance, randomString);
-            Affirm.affirmEquals("getGreetingMessage failed!!", "Hello " + randomString + ", so good to meet you",
+            assertEquals("getGreetingMessage failed!!", "Hello " + randomString + ", so good to meet you",
                 greetingMessage);
             gotGreetingMessage = true;
           }
@@ -76,7 +78,7 @@ public class ZIPPackageLoaderTest {
       }
     }
 
-    Affirm.affirmTrue("Should have saidHello & gotGreetingMessage", saidHello && gotGreetingMessage);
+    assertTrue(saidHello && gotGreetingMessage, "Should have saidHello & gotGreetingMessage");
   }
 
 }

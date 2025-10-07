@@ -26,7 +26,8 @@ import com.openpojo.log.LoggerFactory;
 import com.openpojo.utils.log.LogEvent;
 import com.openpojo.utils.log.LogHelper;
 import com.openpojo.utils.log.MockAppender;
-import com.openpojo.validation.affirm.Affirm;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -112,8 +113,8 @@ public abstract class AbstractLoggerBase {
           throw new IllegalArgumentException("Unknown LogLevel");
       }
 
-      Affirm.affirmEquals(String.format("Lost [%s] message?", logLevel.name()), count + 1, logEvents.size());
-      Affirm.affirmEquals("Message malformed", variance.getExpected(), logEvents.get(count).getMessage());
+      assertEquals( count + 1, logEvents.size(), String.format("Lost [%s] message?", logLevel.name()));
+      assertEquals( variance.getExpected(), logEvents.get(count).message(), "Message malformed");
 
       count++;
     }
@@ -147,8 +148,8 @@ public abstract class AbstractLoggerBase {
           throw new IllegalArgumentException("Unknown LogLevel");
       }
 
-      Affirm.affirmEquals(String.format("Lost [%s] message?", logLevel.name()), count + 1, logEvents.size());
-      Affirm.affirmEquals("Message malformed", variance.getExpected(), logEvents.get(count).getMessage());
+      assertEquals( count + 1, logEvents.size(), String.format("Lost [%s] message?", logLevel.name()));
+      assertEquals( variance.getExpected(), logEvents.get(count).message(), "Message malformed");
 
       count++;
     }

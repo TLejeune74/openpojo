@@ -24,41 +24,40 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoClassFilter;
 import com.openpojo.reflection.filters.sampleclasses.SampleEnum;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author oshoukry
  */
 public class FilterEnumTest extends IdentitiesAreEqual {
+    private static final int EXPECTED_NON_FILTERED_COUNT = 6;
+    private static final int EXPECTED_FILTERED_COUNT = 5;
 
   private final String sampleClassesPackage = this.getClass().getPackage().getName() + ".sampleclasses";
   private final PojoClassFilter enumFilter = new FilterEnum();
   private final List<PojoClass> filteredPojoClasses = PojoClassFactory.getPojoClasses(sampleClassesPackage, enumFilter);
-  private final int EXPECTED_FILTERED_COUNT = 5;
 
   private final List<PojoClass> nonFilteredPojoClasses = PojoClassFactory.getPojoClasses(sampleClassesPackage);
-  private final int EXPECTED_NON_FILTERED_COUNT = 6;
 
   @Test
   public void shouldConfirmSampleClassCount() {
-    Affirm.affirmEquals(String.format("Classes added/removed from [%s]?", sampleClassesPackage), EXPECTED_NON_FILTERED_COUNT,
-        nonFilteredPojoClasses.size());
-    Affirm.affirmEquals(String.format("Classes added/removed from [%s]?", sampleClassesPackage), EXPECTED_FILTERED_COUNT,
-        filteredPojoClasses.size());
+    assertEquals( EXPECTED_NON_FILTERED_COUNT, nonFilteredPojoClasses.size(), String.format("Classes added/removed from [%s]?", sampleClassesPackage));
+    assertEquals(EXPECTED_FILTERED_COUNT, filteredPojoClasses.size(), String.format("Classes added/removed from [%s]?", sampleClassesPackage));
   }
 
   @Test
   public void shouldIncludeNonEnum() {
     for (PojoClass pojoClass : filteredPojoClasses) {
-      Affirm.affirmFalse(String.format("[%s] should have been filtered out!!", pojoClass), pojoClass.isEnum());
+      assertFalse( pojoClass.isEnum(), String.format("[%s] should have been filtered out!!", pojoClass));
     }
   }
 
   @Test
   public final void shouldExcludeEnum() {
-    Affirm.affirmFalse(String.format("[%s] didn't exclude enum!!", enumFilter), enumFilter.include(PojoClassFactory
-        .getPojoClass(SampleEnum.class)));
+    assertFalse(enumFilter.include(PojoClassFactory.getPojoClass(SampleEnum.class)), String.format("[%s] didn't exclude enum!!", enumFilter));
 
   }
 

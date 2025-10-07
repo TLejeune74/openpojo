@@ -26,9 +26,11 @@ import java.util.List;
 
 import com.openpojo.random.RandomFactory;
 import com.openpojo.random.RandomGenerator;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author oshoukry
@@ -43,14 +45,14 @@ public class DefaultRandomGeneratorServiceTest {
 
   @Test
   public void shouldReturnNameBasedOnClassName() {
-    Affirm.affirmEquals("Name returned doesn't match class name", DefaultRandomGeneratorService.class.getName(),
-        defaultRandomGeneratorService.getName());
+    assertEquals(DefaultRandomGeneratorService.class.getName(),
+        defaultRandomGeneratorService.getName(), "Name returned doesn't match class name");
   }
 
   @Test
   public void defaultRandomGeneratorMustNotBeInitialized() {
-    Affirm.affirmNull(String.format("defaultRandomGenerator must be initialized to null for [%s]",
-        defaultRandomGeneratorService), defaultRandomGeneratorService.getDefaultRandomGenerator());
+    assertNull( defaultRandomGeneratorService.getDefaultRandomGenerator(), String.format("defaultRandomGenerator must be initialized to null for [%s]",
+            defaultRandomGeneratorService));
   }
 
   @Test
@@ -58,23 +60,22 @@ public class DefaultRandomGeneratorServiceTest {
     final RandomGenerator randomGenerator = RandomFactory.getRandomValue(RandomGenerator.class);
     defaultRandomGeneratorService.setDefaultRandomGenerator(randomGenerator);
 
-    Affirm.affirmEquals("Setter & Getter must match passed in value", randomGenerator,
-        defaultRandomGeneratorService.getDefaultRandomGenerator());
+    assertEquals(randomGenerator,
+        defaultRandomGeneratorService.getDefaultRandomGenerator(), "Setter & Getter must match passed in value");
   }
 
   @Test
   public void shouldGetTypeBasedOnRegisteredRandomGenerator() {
     final Class<?> type = DefaultRandomGeneratorServiceTest.class;
 
-    Affirm.affirmNull("Should not have received a valid random generator for non registered type",
-        defaultRandomGeneratorService.getRandomGeneratorByType(type));
+    assertNull(defaultRandomGeneratorService.getRandomGeneratorByType(type), "Should not have received a valid random generator for non registered type");
 
     final DummyRandomGenerator dummyRandomGenerator = new DummyRandomGenerator();
     dummyRandomGenerator.setTypes(new Class<?>[] { type });
     defaultRandomGeneratorService.registerRandomGenerator(dummyRandomGenerator);
 
-    Affirm.affirmEquals("Incorrect random generator returned", dummyRandomGenerator,
-        defaultRandomGeneratorService.getRandomGeneratorByType(type));
+    assertEquals(dummyRandomGenerator,
+        defaultRandomGeneratorService.getRandomGeneratorByType(type), "Incorrect random generator returned");
 
   }
 
@@ -88,8 +89,7 @@ public class DefaultRandomGeneratorServiceTest {
 
     defaultRandomGeneratorService.getRandomGeneratorByType(List.class).doGenerate(List.class);
 
-    Affirm.affirmEquals("Incorrect random generator returned (doGenerate should've incremented call count)", 1,
-        dummyRandomGenerator.getCounter());
+    assertEquals( 1, dummyRandomGenerator.getCounter(), "Incorrect random generator returned (doGenerate should've incremented call count)");
   }
 
   @Test
@@ -111,7 +111,7 @@ public class DefaultRandomGeneratorServiceTest {
 
     int tolerance = 20;
 
-    while (tolerance > 0 && expectedRandomGenerators.size() > 0) {
+    while (tolerance > 0 && !expectedRandomGenerators.isEmpty()) {
       defaultRandomGeneratorService.getRandomGeneratorByType(List.class).doGenerate(List.class);
       for (int index = 0; index < expectedRandomGenerators.size(); index++) {
         final DummyRandomGenerator expectedDummyRandomGenerator = expectedRandomGenerators.get(index);
@@ -122,8 +122,7 @@ public class DefaultRandomGeneratorServiceTest {
       tolerance--;
     }
 
-    Affirm.affirmEquals("Failed to return all possible valid random generators based on assignability", 0,
-        expectedRandomGenerators.size());
+    assertEquals( 0, expectedRandomGenerators.size(), "Failed to return all possible valid random generators based on assignability");
 
   }
 

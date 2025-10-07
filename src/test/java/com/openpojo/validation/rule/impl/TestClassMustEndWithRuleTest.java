@@ -29,6 +29,7 @@ import com.openpojo.validation.rule.impl.sampleclasses.ATestNGClassEndsWithTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -49,20 +50,20 @@ public class TestClassMustEndWithRuleTest {
     testClassMustEndWithRule.evaluate(aGoodTestClassPojo);
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void shouldFailValidation() {
     Class<?> aBadTestClass = ASMService.getInstance().createSubclassFor(this.getClass(),
         new DefaultSubClassDefinition(this.getClass(), "ABadClassName"));
     PojoClass aBadTestClassPojo = PojoClassFactory.getPojoClass(aBadTestClass);
-    testClassMustEndWithRule.evaluate(aBadTestClassPojo);
+    assertThrows(AssertionError.class, () -> testClassMustEndWithRule.evaluate(aBadTestClassPojo));
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void aClassThatHasTestNotAsStartOrEndShouldFailValidation() {
     Class<?> aBadTestClass = ASMService.getInstance().createSubclassFor(this.getClass(),
         new DefaultSubClassDefinition(this.getClass(), getUniqueClassName("ABadTestClassName")));
     PojoClass aBadTestClassPojo = PojoClassFactory.getPojoClass(aBadTestClass);
-    testClassMustEndWithRule.evaluate(aBadTestClassPojo);
+      assertThrows(AssertionError.class, () -> testClassMustEndWithRule.evaluate(aBadTestClassPojo));
   }
 
   @Test
@@ -73,12 +74,12 @@ public class TestClassMustEndWithRuleTest {
     testClassMustEndWithRule.evaluate(aBadTestClassPojo);
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void aClassThatHasTestSuiteButDoesntEndWithTestCaseShouldFailValidation() {
     Class<?> testClass = ASMService.getInstance().createSubclassFor(this.getClass(),
         new DefaultSubClassDefinition(this.getClass(), "AClassTestCaseAndSomethingElse"));
     PojoClass aBadTestClassPojo = PojoClassFactory.getPojoClass(testClass);
-    testClassMustEndWithRule.evaluate(aBadTestClassPojo);
+      assertThrows(AssertionError.class, () -> testClassMustEndWithRule.evaluate(aBadTestClassPojo));
   }
 
   @Test
@@ -101,13 +102,13 @@ public class TestClassMustEndWithRuleTest {
     testClassMustEndWithRule.evaluate(PojoClassFactory.getPojoClass(aTestClassThatEndsWithTest));
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void aTestNGClassThatDoesntEndWithTestShouldFail() {
     final Class<ATestNGClassEndsWithTest> parentClass = ATestNGClassEndsWithTest.class;
     Class<?> aBadTestClass = ASMService.getInstance().createSubclassFor(parentClass,
         new DefaultSubClassDefinition(parentClass, getUniqueClassName("ABadTestClassName")));
     PojoClass aBadTestClassPojo = PojoClassFactory.getPojoClass(aBadTestClass);
-    testClassMustEndWithRule.evaluate(aBadTestClassPojo);
+    assertThrows(AssertionError.class, () -> testClassMustEndWithRule.evaluate(aBadTestClassPojo));
   }
 
   private String getUniqueClassName(String prefix) {

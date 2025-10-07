@@ -21,22 +21,24 @@ package com.openpojo.random.service.impl;
 import com.openpojo.random.exception.RandomGeneratorException;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author oshoukry
  */
 public class RandomGeneratorAdapterTest {
 
-  @Test(expected = RandomGeneratorException.class)
+  @Test
   public void getTypesShouldThrowException() {
     final RandomGeneratorAdapter randomGeneratorAdapter = new RandomGeneratorAdapter(null, null, null);
-    randomGeneratorAdapter.getTypes();
+    assertThrows(RandomGeneratorException.class, () -> randomGeneratorAdapter.getTypes());
   }
 
 
-  @Test(expected = RandomGeneratorException.class)
+  @Test
   public void doGenerateOnNonRegisteredTypeShouldThrowException() {
     final RandomGeneratorAdapter randomGeneratorAdapter = new RandomGeneratorAdapter(null, null, null);
-    randomGeneratorAdapter.doGenerate(anyClass());
+      assertThrows(RandomGeneratorException.class, () -> randomGeneratorAdapter.doGenerate(anyClass()));
 
   }
 

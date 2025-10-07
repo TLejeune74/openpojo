@@ -20,6 +20,8 @@ package com.openpojo.issues.issue43;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import com.openpojo.reflection.java.packageloader.impl.URLToFileSystemAdapter;
@@ -33,10 +35,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class IssueTest {
 
   @Test
-  public void shouldEscapeSpaces() throws MalformedURLException {
+  public void shouldEscapeSpaces() throws MalformedURLException, URISyntaxException {
     String givenURL = "file:///apps/jboss/.jenkins/workspace/Mobil%20kontroll%20-%20Trunk%20-%20Deploy%20Utv%20" +
         "(mk-deploy-utv)/model-kund/target/test-classes/se/metria/system/mk/kund/model";
-    URL url = new URL(givenURL);
+    URL url = new URI(givenURL).toURL();
 
     File expectedFile = new File("/apps/jboss/.jenkins/workspace/Mobil kontroll - Trunk - Deploy Utv (mk-deploy-utv)" +
         "/model-kund/target/test-classes/se/metria/system/mk/kund/model");

@@ -20,10 +20,10 @@ package com.openpojo.validation.rule.impl;
 
 import com.openpojo.business.cache.BusinessKeyField;
 import com.openpojo.reflection.PojoClass;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
 
 import static com.openpojo.business.utils.BusinessPojoHelper.getBusinessKeyFields;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This rule ensures that PojoClass declares at least one required {@link com.openpojo.business.annotation.BusinessKey}.<br>
@@ -40,6 +40,6 @@ public class BusinessKeyMustExistRule implements Rule {
       }
     }
 
-    Affirm.fail(String.format("[%s] doesn't declare any 'required' BusinessKeys!!", pojoClass.getClazz()));
+    fail(String.format("[%s] doesn't declare any 'required' BusinessKeys!!", pojoClass.getClazz()));
   }
 }

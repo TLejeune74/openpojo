@@ -22,10 +22,12 @@ import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.impl.BusinessKeyMustExistRule;
 import com.openpojo.validation.test.impl.BusinessIdentityTester;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -35,10 +37,10 @@ public class PackageTest {
   @Test
   public final void testIsValid() {
     Package javaPackage = new Package(RandomFactory.getRandomValue(String.class));
-    Affirm.affirmFalse("Invalid package evaluated to as valid?!", javaPackage.isValid());
+    assertFalse( javaPackage.isValid(), "Invalid package evaluated to as valid?!");
 
     javaPackage = new Package(this.getClass().getPackage().getName());
-    Affirm.affirmTrue("Valid package evaluated to as invalid?!", javaPackage.isValid());
+    assertTrue(javaPackage.isValid(), "Valid package evaluated to as invalid?!");
   }
 
   @Test

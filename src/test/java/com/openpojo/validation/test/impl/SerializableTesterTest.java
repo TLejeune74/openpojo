@@ -23,6 +23,7 @@ import java.util.List;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
+import com.openpojo.utils.log.LogEvent;
 import com.openpojo.utils.log.SpyAppender;
 import com.openpojo.validation.CommonCode;
 import com.openpojo.validation.test.Tester;
@@ -33,15 +34,13 @@ import com.openpojo.validation.test.impl.sampleclasses.SerializableTest_Serializ
 import com.openpojo.validation.test.impl.sampleclasses.SerializationTest_SimpleSerializable;
 import com.openpojo.validation.test.impl.sampleclasses.SerializerTest_SerializableThatThrowsExceptionOnReadObject;
 import com.openpojo.validation.test.impl.sampleclasses.SerializerTest_SerializableThatThrowsExceptionOnWriteObject;
-import org.apache.log4j.spi.LoggingEvent;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Test.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 /**
  * @author oshoukry
@@ -52,9 +51,6 @@ public class SerializableTesterTest {
   private Class<? extends Tester> testerClass;
   private SerializableTester serializableTester;
 
-  @Rule
-  public ExpectedException expectedException = ExpectedException.none();
-
   @BeforeEach
   public void setUp() throws Exception {
     testerClass = SerializableTester.class;
@@ -64,7 +60,7 @@ public class SerializableTesterTest {
     spyAppender.startCaptureForLogger(testerClass);
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     spyAppender.stopCaptureForLogger(testerClass);
   }
@@ -74,11 +70,10 @@ public class SerializableTesterTest {
     final Class<?> nonSerializableClassClass = SerializableTest_NonSerializableClass.class;
     CommonCode.shouldPassTesterValidation(serializableTester, nonSerializableClassClass);
 
-    final List<LoggingEvent> eventsForLogger = spyAppender.getEventsForLogger(testerClass);
+    final List<LogEvent> eventsForLogger = spyAppender.getEventsForLogger(testerClass);
 
-    assertThat(eventsForLogger.size(), is(1));
-    assertThat(eventsForLogger.get(0).getMessage().toString(),
-        is("Class [" + nonSerializableClassClass + "] is not serializable, skipping validation"));
+    assertEquals(1, eventsForLogger.size());
+      assertEquals("Class [" + nonSerializableClassClass + "] is not serializable, skipping validation", eventsForLogger.getFirst().message().toString());
   }
 
   @Test
@@ -93,19 +88,15 @@ public class SerializableTesterTest {
 
   @Test
   public void shouldFailNonSerializableObject() {
-    Class clazz = SerializableTest_SerializableWithNonSerializableField.class;
-    PojoClass pojoClass = PojoClassFactory.getPojoClass(clazz);
+      Class clazz = SerializableTest_SerializableWithNonSerializableField.class;
+      PojoClass pojoClass = PojoClassFactory.getPojoClass(clazz);
 
-    expectedException.expect(AssertionError.class);
-    expectedException.expectMessage(
-        "Class ["
-            + clazz.getName()
-            + "] has non-serializable field type ["
-            + pojoClass.getPojoFields().get(0)
-            + "]"
-    );
-
-    serializableTester.run(pojoClass);
+      Throwable exception = assertThrows(AssertionError.class, () -> serializableTester.run(pojoClass));
+    assertEquals("Class ["
+                    + clazz.getName()
+                    + "] has non-serializable field type ["
+                    + pojoClass.getPojoFields().getFirst()
+                    + "]", exception.getMessage());
   }
 
   @Test
@@ -121,10 +112,9 @@ public class SerializableTesterTest {
     Class clazz = SerializerTest_SerializableThatThrowsExceptionOnWriteObject.class;
     PojoClass pojoClass = PojoClassFactory.getPojoClass(clazz);
 
-    expectedException.expect(AssertionError.class);
-    expectedException.expectMessage("Failed to run " + serializableTester.getClass().getName()
-        + " - Got exception [java.lang.RuntimeException: java.io.IOException: Can't write object]");
-    serializableTester.run(pojoClass);
+      Throwable exception = assertThrows(AssertionError.class, () -> serializableTester.run(pojoClass));
+    assertEquals("Failed to run " + serializableTester.getClass().getName()
+        + " - Got exception [java.lang.RuntimeException: java.io.IOException: Can't write object]", exception.getMessage());
   }
 
   @Test
@@ -132,21 +122,18 @@ public class SerializableTesterTest {
     Class clazz = SerializerTest_SerializableThatThrowsExceptionOnReadObject.class;
     PojoClass pojoClass = PojoClassFactory.getPojoClass(clazz);
 
-    expectedException.expect(AssertionError.class);
-    expectedException.expectMessage("Failed to run " + serializableTester.getClass().getName()
-        + " - Got exception [java.lang.RuntimeException: java.io.IOException: Can't read object]");
-    serializableTester.run(pojoClass);
+      Throwable exception = assertThrows(AssertionError.class, () -> serializableTester.run(pojoClass));
+      assertEquals("Failed to run " + serializableTester.getClass().getName()
+        + " - Got exception [java.lang.RuntimeException: java.io.IOException: Can't read object]", exception.getMessage());
   }
 
   @Test
   public void shouldFailSerializingSerializableChildOfSerializableParentWithNonSerializableField() {
     Class clazz = SerializableTest_SerializableChildForSerializableParentWithNonSerializableFieldClass.class;
     PojoClass pojoClass = PojoClassFactory.getPojoClass(clazz);
-    expectedException.expect(AssertionError.class);
-    expectedException.expectMessage("Class [" + clazz.getName() + "] has non-serializable field type ["
-        + SerializableTest_NonSerializableClass.class.getName() + "] which is inherited from a super class");
-
-    serializableTester.run(pojoClass);
+      Throwable exception = assertThrows(AssertionError.class, () -> serializableTester.run(pojoClass));
+      assertEquals("Class [" + clazz.getName() + "] has non-serializable field type ["
+        + SerializableTest_NonSerializableClass.class.getName() + "] which is inherited from a super class", exception.getMessage());
   }
 
 }

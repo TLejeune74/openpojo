@@ -33,7 +33,7 @@ public class IssueTest {
 
   @BeforeEach
   public void setup() {
-    Assume.assumeNotNull(ZONED_DATE_TIME_CLASS);
+    assertNotNull(ZONED_DATE_TIME_CLASS);
   }
 
   @Test

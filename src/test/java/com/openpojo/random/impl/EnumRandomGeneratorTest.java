@@ -21,8 +21,9 @@ package com.openpojo.random.impl;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.random.util.SomeEnum;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -31,8 +32,8 @@ public class EnumRandomGeneratorTest {
 
   @Test
   public void shouldDeclareRandomTypeAsEnum() {
-    Affirm.affirmEquals("New types added / removed?", 1, EnumRandomGenerator.getInstance().getTypes().size());
-    Affirm.affirmContains("Declared type must be Enum.class", Enum.class, EnumRandomGenerator.getInstance().getTypes());
+    assertEquals( 1, EnumRandomGenerator.getInstance().getTypes().size(), "New types added / removed?");
+    assertSame(Enum.class, EnumRandomGenerator.getInstance().getTypes(), "Declared type must be Enum.class");
   }
 
   @Test
@@ -41,16 +42,16 @@ public class EnumRandomGeneratorTest {
     RandomGenerator randomGenerator = EnumRandomGenerator.getInstance();
     Enum someEnum = (Enum) randomGenerator.doGenerate(Enum.class);
 
-    Affirm.affirmTrue("should never generate null", someEnum != null);
+    assertTrue(someEnum != null, "should never generate null");
 
     Enum anotherEnum = (Enum) randomGenerator.doGenerate(Enum.class);
 
     try {
-      Affirm.affirmFalse("Enum's should be different", someEnum.equals(anotherEnum));
+      assertFalse(someEnum.equals(anotherEnum), "Enum's should be different");
     } catch (AssertionError error) {
       // on occasion they may be the same - 1% chance, try one more time.
       anotherEnum = (Enum) randomGenerator.doGenerate(Enum.class);
-      Affirm.affirmFalse("Enum's should be different", someEnum.equals(anotherEnum));
+      assertFalse( someEnum.equals(anotherEnum), "Enum's should be different");
     }
   }
 
@@ -58,7 +59,7 @@ public class EnumRandomGeneratorTest {
   @SuppressWarnings("ConstantConditions")
   public void endToEndTest() {
     Enum someEnum = RandomFactory.getRandomValue(Enum.class);
-    Affirm.affirmNotNull("Should generate Enum", someEnum);
-    Affirm.affirmTrue("Should use SomeEnum when generating", someEnum.getClass() == SomeEnum.class);
+    assertNotNull(someEnum, "Should generate Enum");
+    assertTrue(someEnum.getClass() == SomeEnum.class, "Should use SomeEnum when generating");
   }
 }

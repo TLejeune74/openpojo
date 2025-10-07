@@ -24,15 +24,18 @@ import java.util.Collections;
 import com.openpojo.random.exception.RandomGeneratorException;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author oshoukry
  */
 public class HelperTest {
 
   @SuppressWarnings("unchecked")
-  @Test(expected = RandomGeneratorException.class)
+  @Test
   public void shouldThrowExceptionWithEmptyList() {
-    Helper.assertIsAssignableTo(Object.class, Collections.EMPTY_LIST);
+
+      assertThrows(RandomGeneratorException.class, () -> Helper.assertIsAssignableTo(Object.class, Collections.EMPTY_LIST));
   }
 
   @Test

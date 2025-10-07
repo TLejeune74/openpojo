@@ -30,37 +30,39 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author oshoukry
  */
 public class issue27Test {
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void shouldFailValidationWithIntegerFieldAndPrimitiveIntParameterSetter() {
     final PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassWithIntegerFieldAndPrimitiveIntParameterSetter.class);
     final Validator pojoValidator = ValidatorBuilder.create().with(new SetterMustExistRule()).build();
-    pojoValidator.validate(pojoClass);
+    assertThrows(AssertionError.class, () -> pojoValidator.validate(pojoClass));
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void shouldFailValidationWithPrimitiveIntFieldAndIntegerParameterSetter() {
     final PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassWithPrimitiveIntFieldAndIntegerParameterSetter.class);
     final Validator pojoValidator = ValidatorBuilder.create().with(new SetterMustExistRule()).build();
-    pojoValidator.validate(pojoClass);
+      assertThrows(AssertionError.class, () -> pojoValidator.validate(pojoClass));
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void shouldFailValidationWithIntegerFieldAndPrimitiveIntReturnTypeGetter() {
     final PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassWithIntegerFieldAndPrimitiveIntReturnTypeGetter.class);
     final Validator pojoValidator = ValidatorBuilder.create().with(new GetterMustExistRule()).build();
-    pojoValidator.validate(pojoClass);
+      assertThrows(AssertionError.class, () -> pojoValidator.validate(pojoClass));
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   public void shouldFailValidationWithPrimitiveIntFieldAndIntegerReturnTypeGetter() {
     final PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassWithPrimitiveIntFieldAndIntegerReturnTypeGetter.class);
     final Validator pojoValidator = ValidatorBuilder.create().with(new GetterMustExistRule()).build();
-    pojoValidator.validate(pojoClass);
+      assertThrows(AssertionError.class, () -> pojoValidator.validate(pojoClass));
   }
 
 }

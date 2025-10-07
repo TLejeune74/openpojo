@@ -27,10 +27,10 @@ import com.openpojo.reflection.java.bytecode.asm.SimpleClassLoader;
 import com.openpojo.utils.dummypackage.Persistable;
 import com.openpojo.utils.dummypackage.Person;
 import com.openpojo.utils.filter.LoggingPojoClassFilter;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.java.bytecode.asm.SubClassDefinition.GENERATED_CLASS_POSTFIX;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -45,9 +45,8 @@ public class PojoClassFactoryTest {
   @Test
   public void testGetPojoClass() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(this.getClass());
-    Affirm.affirmNotNull(String.format("PojoClassFactory failed to create PojoClass for [%s]", this.getClass()), pojoClass);
-    Affirm.affirmEquals(String.format("PojoClassFactory returned invalid meta-definition PojoClass for [%s]", this.getClass()),
-        this.getClass(), pojoClass.getClazz());
+    assertNotNull( pojoClass, String.format("PojoClassFactory failed to create PojoClass for [%s]", this.getClass()));
+    assertEquals(this.getClass(), pojoClass.getClazz(), String.format("PojoClassFactory returned invalid meta-definition PojoClass for [%s]", this.getClass()));
   }
 
   /**
@@ -56,12 +55,11 @@ public class PojoClassFactoryTest {
   @Test
   public void testGetPojoClasses() {
     List<PojoClass> pojoClasses = PojoClassFactory.getPojoClasses(DUMMY_PACKAGE, null);
-    Affirm.affirmNotNull(String.format("PojoClassFactory returned null list while getting list for package=[%s]",
-        DUMMY_PACKAGE), pojoClasses);
-    Affirm.affirmEquals(String.format("Classes added/removed from [%s]?", DUMMY_PACKAGE), 2, pojoClasses.size());
+    assertNotNull(pojoClasses, String.format("PojoClassFactory returned null list while getting list for package=[%s]",
+        DUMMY_PACKAGE));
+    assertEquals( 2, pojoClasses.size(), String.format("Classes added/removed from [%s]?", DUMMY_PACKAGE));
     for (Class<?> clazz : DUMMY_PACKAGE_CLASSES) {
-      Affirm.affirmTrue(String.format("Unexpected class=[%s] retrieved from package=[%s], ", clazz, DUMMY_PACKAGE),
-          pojoClasses.contains(PojoClassFactory.getPojoClass(clazz)));
+      assertTrue(pojoClasses.contains(PojoClassFactory.getPojoClass(clazz)), String.format("Unexpected class=[%s] retrieved from package=[%s], ", clazz, DUMMY_PACKAGE));
     }
   }
 
@@ -75,30 +73,30 @@ public class PojoClassFactoryTest {
     loggingPojoClassFilter.setReturnValue(false);
 
     List<PojoClass> pojoClasses = PojoClassFactory.getPojoClasses(DUMMY_PACKAGE, loggingPojoClassFilter);
-    Affirm.affirmNotNull(String.format(
+    assertNotNull(pojoClasses, String.format(
         "PojoClassFactory returned null list while getting list for package=[%s] using filter=[%s] in filter out all mode!!",
-        DUMMY_PACKAGE, loggingPojoClassFilter.getClass()), pojoClasses);
+        DUMMY_PACKAGE, loggingPojoClassFilter.getClass()));
 
-    Affirm.affirmEquals(String.format(
+    assertEquals(0, pojoClasses.size(), String.format(
         "PojoClassFactory returned non-empty list for package=[%s] using filter=[%s] in filter out all mode!!",
-        DUMMY_PACKAGE, loggingPojoClassFilter.getClass()), 0, pojoClasses.size());
+        DUMMY_PACKAGE, loggingPojoClassFilter.getClass()));
 
-    Affirm.affirmTrue(String.format(
-        "Too few number of times filter was triggered while in filter-out all mode!! Classes removed from package=[%s] " +
-            "found [%s]? expected at least 2 but was [%s]",
-        DUMMY_PACKAGE, loggingPojoClassFilter
-        .getPojoClassCallLogs(), loggingPojoClassFilter.getPojoClassCallLogs().size()), 2 <= loggingPojoClassFilter
-        .getPojoClassCallLogs().size());
+    assertTrue( 2 <= loggingPojoClassFilter
+        .getPojoClassCallLogs().size(), String.format(
+            "Too few number of times filter was triggered while in filter-out all mode!! Classes removed from package=[%s] " +
+                    "found [%s]? expected at least 2 but was [%s]",
+            DUMMY_PACKAGE, loggingPojoClassFilter
+                    .getPojoClassCallLogs(), loggingPojoClassFilter.getPojoClassCallLogs().size()));
 
     // Set Filter to allow all
     loggingPojoClassFilter.setReturnValue(true);
     pojoClasses = PojoClassFactory.getPojoClasses(DUMMY_PACKAGE, loggingPojoClassFilter);
-    Affirm.affirmNotNull(String.format(
+    assertNotNull(pojoClasses, String.format(
         "PojoClassFactory returned null for package=[%s] using filter=[%s] in allow all mode!!", DUMMY_PACKAGE,
-        loggingPojoClassFilter.getClass()), pojoClasses);
+        loggingPojoClassFilter.getClass()));
 
-    Affirm.affirmEquals(String.format("Wrong number of classes retrieved!! Classes added/removed from package=[%s]?",
-        DUMMY_PACKAGE), 2, pojoClasses.size());
+    assertEquals(2, pojoClasses.size(),String.format("Wrong number of classes retrieved!! Classes added/removed from package=[%s]?",
+        DUMMY_PACKAGE));
   }
 
   /**
@@ -107,7 +105,7 @@ public class PojoClassFactoryTest {
   @Test
   public void testGetPojoClassesRecursively() {
     List<PojoClass> pojoClasses = PojoClassFactory.getPojoClassesRecursively(DUMMY_PACKAGE, null);
-    Affirm.affirmEquals(pojoClasses.toString(), 4, pojoClasses.size());
+    assertEquals(4, pojoClasses.size(), pojoClasses.toString());
   }
 
   /**
@@ -116,7 +114,7 @@ public class PojoClassFactoryTest {
   @Test
   public void testEnumerateClassesByExtendingType() {
     List<PojoClass> pojoClasses = PojoClassFactory.enumerateClassesByExtendingType(DUMMY_PACKAGE, Persistable.class, null);
-    Affirm.affirmEquals(pojoClasses.toString(), 3, pojoClasses.size());
+    assertEquals(3, pojoClasses.size(), pojoClasses.toString());
   }
 
   @Test
@@ -128,14 +126,14 @@ public class PojoClassFactoryTest {
     final String classNameAsPath = className.replace(Java.PACKAGE_DELIMITER, Java.PATH_DELIMITER);
     final Class<?> clazz = simpleClassLoader.loadThisClass(AClassWithBadMethodDump.dump(classNameAsPath), className);
 
-    Affirm.affirmNotNull("Failed to generate class!", clazz);
+    assertNotNull(clazz, "Failed to generate class!");
 
     try {
       PojoClassFactory.getPojoClass(clazz);
-      Affirm.fail("Should have thrown RuntimeException");
+      fail("Should have thrown RuntimeException");
     } catch (VerifyError expected) {
       expected.printStackTrace();
-      Affirm.affirmEquals("Invalid Message in exception",
+      assertEquals("Invalid Message in exception",
           "(class: " + classNameAsPath + ", " +
               "method: badMethod signature: ()V) Wrong return type in function",
           expected.getMessage());

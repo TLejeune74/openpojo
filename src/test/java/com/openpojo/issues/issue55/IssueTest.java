@@ -22,8 +22,9 @@ import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -38,13 +39,13 @@ public class IssueTest {
       if (pojoMethod.getName().equals("values") && pojoMethod.getPojoParameters().size() > 0 && pojoMethod.isStatic())
         valuesMethodExists = true;
     }
-    Affirm.affirmTrue("values method must exist, Enum Class Changed?!", valuesMethodExists);
+    assertTrue(valuesMethodExists, "values method must exist, Enum Class Changed?!");
   }
 
   @Test
   public void shouldCallEnumValuesWithNoParameters() {
     SomeEnumWithValuesMethod randomEntry = RandomFactory.getRandomValue(SomeEnumWithValuesMethod.class);
-    Affirm.affirmTrue("Should have generated using proper values method", SomeEnumWithValuesMethod.VALUE1.equals(randomEntry)
-        || SomeEnumWithValuesMethod.VALUE2.equals(randomEntry));
+    assertTrue(SomeEnumWithValuesMethod.VALUE1.equals(randomEntry)
+        || SomeEnumWithValuesMethod.VALUE2.equals(randomEntry), "Should have generated using proper values method");
   }
 }

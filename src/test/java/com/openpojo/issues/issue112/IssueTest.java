@@ -24,12 +24,12 @@ import com.openpojo.log.impl.Log4JLogger;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
 import com.openpojo.reflection.impl.PojoClassFactory;
+import com.openpojo.utils.log.LogEvent;
 import com.openpojo.utils.log.SpyAppender;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.apache.logging.log4j.Level;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,7 +71,7 @@ public class IssueTest {
     assertEquals(1, appender.getEventsForLogger(GetterTester.class).size());
       assertEquals(1, appender.getEventsForLogger(SetterTester.class).size());
 
-    PojoField xmlGregorianCalendarPojoField = pojoClass.getPojoFields().get(0);
+    PojoField xmlGregorianCalendarPojoField = pojoClass.getPojoFields().getFirst();
     final String message = "Testing Field [" + xmlGregorianCalendarPojoField + "] with value [";
 
     validateLogMessages(appender, GetterTester.class, message);
@@ -79,8 +79,8 @@ public class IssueTest {
   }
 
   private void validateLogMessages(SpyAppender appender, Class<?> testerClassName, String message) {
-      assertTrue(appender.getEventsForLogger(testerClassName).get(0).getRenderedMessage().contains(message));
-      assertEquals(Level.DEBUG, appender.getEventsForLogger(testerClassName).get(0).getLevel());
-      assertEquals(testerClassName.getName(), appender.getEventsForLogger(testerClassName).get(0).getLoggerName());
+      assertTrue(appender.getEventsForLogger(testerClassName).getFirst().message().contains(message));
+      assertEquals(LogEvent.Priority.DEBUG, appender.getEventsForLogger(testerClassName).getFirst().priority());
+      assertEquals(testerClassName.getName(), appender.getEventsForLogger(testerClassName).getFirst().source());
   }
 }

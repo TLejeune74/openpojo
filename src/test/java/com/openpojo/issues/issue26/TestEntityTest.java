@@ -25,7 +25,6 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.impl.BusinessKeyMustExistRule;
 import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.NoNestedClassRule;
@@ -37,6 +36,8 @@ import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestEntityTest {
   private static final int EXPECTED_CLASS_COUNT = 2;
@@ -70,8 +71,7 @@ public class TestEntityTest {
 
   @Test
   public void ensureExpectedPojoCount() {
-    Affirm.affirmEquals(MessageFormatter.format("Classes added / removed? [{0}]", pojoClasses), EXPECTED_CLASS_COUNT,
-        pojoClasses.size());
+    assertEquals(EXPECTED_CLASS_COUNT, pojoClasses.size(), MessageFormatter.format("Classes added / removed? [{0}]", pojoClasses));
   }
 
   @Test

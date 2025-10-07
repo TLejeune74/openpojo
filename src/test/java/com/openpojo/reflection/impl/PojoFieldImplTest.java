@@ -35,9 +35,10 @@ import com.openpojo.reflection.impl.sample.classes.AClassWithSyntheticField;
 import com.openpojo.reflection.impl.sample.classes.AClassWithVariousAnnotatedFields;
 import com.openpojo.reflection.impl.sample.classes.ClassWithGenericTypes;
 import com.openpojo.reflection.impl.sample.classes.PojoFieldImplClass;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -62,13 +63,12 @@ public class PojoFieldImplTest {
   public void testSetAndGet() {
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (!pojoField.isFinal() && !pojoField.isPrimitive()) {
-        Affirm.affirmNull(String.format("Field=[%s] should have null default value", pojoField),
-            pojoField.get(pojoClassInstance));
+        assertNull(pojoField.get(pojoClassInstance), String.format("Field=[%s] should have null default value", pojoField));
         Object randomValue = RandomFactory.getRandomValue(pojoField.getType());
         pojoField.set(pojoClassInstance, randomValue);
-        Affirm.affirmEquals(String.format("PojoField.get() result=[%s] different from what was set=[%s] for " +
-            "PojoFieldImpl=[%s]", pojoField.get(pojoClassInstance), randomValue, pojoField), randomValue, pojoField.get
-            (pojoClassInstance));
+        assertEquals(randomValue, pojoField.get(pojoClassInstance),
+                String.format("PojoField.get() result=[%s] different from what was set=[%s] for " +
+                        "PojoFieldImpl=[%s]", pojoField.get(pojoClassInstance), randomValue, pojoField));
       }
     }
   }
@@ -79,14 +79,14 @@ public class PojoFieldImplTest {
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (pojoField.hasGetter()) {
         PojoMethod getter = pojoField.getGetter();
-        Affirm.affirmNotNull("Getter can't be retrieved", getter);
+        assertNotNull( getter, "Getter can't be retrieved");
         Object randomInstance = RandomFactory.getRandomValue(pojoField.getType());
         pojoField.set(pojoClassInstance, randomInstance);
-        Affirm.affirmSame("Expected same object in and out", randomInstance, getter.invoke(pojoClassInstance));
+        assertSame(randomInstance, getter.invoke(pojoClassInstance),"Expected same object in and out");
         found = true;
       }
     }
-    Affirm.affirmTrue("No getters were found!", found);
+    assertTrue(found, "No getters were found!");
   }
 
   @Test
@@ -95,14 +95,14 @@ public class PojoFieldImplTest {
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (pojoField.hasSetter()) {
         PojoMethod setter = pojoField.getSetter();
-        Affirm.affirmNotNull("Setter can't be retrieved", setter);
+        assertNotNull(setter, "Setter can't be retrieved");
         Object randomInstance = RandomFactory.getRandomValue(pojoField.getType());
         setter.invoke(pojoClassInstance, randomInstance);
-        Affirm.affirmSame("Expected same object in and out", randomInstance, pojoField.get(pojoClassInstance));
+        assertSame( randomInstance, pojoField.get(pojoClassInstance), "Expected same object in and out");
         found = true;
       }
     }
-    Affirm.affirmTrue("No Setters were found!", found);
+    assertTrue(found,"No Setters were found!");
   }
 
   private PojoField getPrivateStringField() {
@@ -111,68 +111,65 @@ public class PojoFieldImplTest {
         return pojoField;
       }
     }
-    Affirm.fail("Field with name 'privateString' removed from class" + pojoClass.getName());
+    fail("Field with name 'privateString' removed from class" + pojoClass.getName());
     return null;
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailSet() {
     PojoField pojoField = getPrivateStringField();
     assert pojoField != null;
-    pojoField.set(null, RandomFactory.getRandomValue(pojoField.getType()));
+      assertThrows(ReflectionException.class, () -> pojoField.set(null, RandomFactory.getRandomValue(pojoField.getType())));
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailGet() {
     PojoField pojoField = getPrivateStringField();
     assert pojoField != null;
-    pojoField.get(null);
+      assertThrows(ReflectionException.class, () -> pojoField.get(null));
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailSetter() {
     PojoField pojoField = getPrivateStringField();
     assert pojoField != null;
-    pojoField.invokeSetter(null, RandomFactory.getRandomValue(pojoField.getType()));
+      assertThrows(ReflectionException.class, () -> pojoField.invokeSetter(null, RandomFactory.getRandomValue(pojoField.getType())));
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailGetter() {
     PojoField pojoField = getPrivateStringField();
     assert pojoField != null;
-    pojoField.invokeGetter(null);
+      assertThrows(ReflectionException.class, () -> pojoField.invokeGetter(null));
   }
 
   @Test
   public void shouldGetParameterizedType() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassWithGenericTypes.class);
-    Affirm.affirmEquals("Fields added/removed?!", 4, pojoClass.getPojoFields().size());
+    assertEquals( 4, pojoClass.getPojoFields().size(),"Fields added/removed?!");
 
     int affirmChecks = 0;
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (pojoField.getName().equals("parameterizedChildren")) {
-        Affirm.affirmTrue("Not Generic?!", pojoField.isParameterized());
-        Affirm.affirmTrue("Wrong Parameterization!?", pojoField.getParameterTypes().contains(ClassWithGenericTypes.class));
+        assertTrue(pojoField.isParameterized(), "Not Generic?!");
+        assertTrue( pojoField.getParameterTypes().contains(ClassWithGenericTypes.class), "Wrong Parameterization!?");
         affirmChecks++;
       }
 
       if (pojoField.getName().equals("nonparameterizedList") || pojoField.getName().equals("nonParameterizedString")) {
-        Affirm.affirmFalse("Turned generic?!", pojoField.isParameterized());
-        Affirm.affirmEquals("Returned non-empty list for nonParameterized type!? [" + pojoField.getParameterTypes() + "]", 0,
-            pojoField.getParameterTypes().size());
+        assertFalse(pojoField.isParameterized(), "Turned generic?!");
+        assertEquals( 0, pojoField.getParameterTypes().size(), "Returned non-empty list for nonParameterized type!? [" + pojoField.getParameterTypes() + "]");
         affirmChecks++;
       }
 
       if (pojoField.getName().equals("parameterizedMap")) {
-        Affirm.affirmEquals("MultipTypeGeneric failed!!", 2, pojoField.getParameterTypes().size());
-        Affirm.affirmTrue(String.format("Type not found [%s]", String.class), pojoField.getParameterTypes().contains(String
-            .class));
-        Affirm.affirmTrue(String.format("Type not found [%s]", Integer.class), pojoField.getParameterTypes().contains(Integer
-            .class));
+        assertEquals( 2, pojoField.getParameterTypes().size(), "MultipTypeGeneric failed!!");
+        assertTrue(pojoField.getParameterTypes().contains(String.class), String.format("Type not found [%s]", String.class));
+        assertTrue(pojoField.getParameterTypes().contains(Integer.class), String.format("Type not found [%s]", Integer.class));
         affirmChecks++;
       }
     }
-    Affirm.affirmEquals("Fields added/removed/renamed? expected 4 checks!!", 4, affirmChecks);
+    assertEquals(4, affirmChecks, "Fields added/removed/renamed? expected 4 checks!!");
   }
 
   @Test
@@ -182,11 +179,11 @@ public class PojoFieldImplTest {
 
     for (PojoField pojoField : allFields) {
       if (pojoField.getName().equals("nonAnnotatedField")) {
-        Affirm.affirmNotNull("getAnnotations should not return null.", pojoField.getAnnotations());
+        assertNotNull( pojoField.getAnnotations(), "getAnnotations should not return null.");
         return;
       }
     }
-    Affirm.fail(String.format("nonAnnotatedField renamed? expected in [%s]", pojoClass));
+    fail(String.format("nonAnnotatedField renamed? expected in [%s]", pojoClass));
   }
 
   @Test
@@ -196,19 +193,18 @@ public class PojoFieldImplTest {
 
     for (PojoField pojoField : allFields) {
       if (pojoField.getName().equals("multipleAnnotationField")) {
-        Affirm.affirmEquals(String.format("Annotations added/removed from field=[%s]", pojoField), 2, pojoField.getAnnotations
-            ().size());
+        assertEquals( 2, pojoField.getAnnotations().size(), String.format("Annotations added/removed from field=[%s]", pojoField));
         List<Class<?>> expectedAnnotations = new LinkedList<Class<?>>();
         expectedAnnotations.add(SomeAnnotation.class);
         expectedAnnotations.add(BusinessKey.class);
         for (Annotation annotation : pojoField.getAnnotations()) {
-          Affirm.affirmTrue(String.format("Expected annotations [%s] not found, instead found [%s]", expectedAnnotations,
-              annotation.annotationType()), expectedAnnotations.contains(annotation.annotationType()));
+          assertTrue(expectedAnnotations.contains(annotation.annotationType()), String.format("Expected annotations [%s] not found, instead found [%s]", expectedAnnotations,
+                  annotation.annotationType()));
         }
         return;
       }
     }
-    Affirm.fail(String.format("multipleAnnotationField renamed? expected in [%s]", pojoClass));
+    fail(String.format("multipleAnnotationField renamed? expected in [%s]", pojoClass));
   }
 
   /**
@@ -218,8 +214,7 @@ public class PojoFieldImplTest {
   public void testIsPrimitive() {
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (pojoField.getName().startsWith("primitive")) {
-        Affirm.affirmTrue(String.format("isPrimitive() check on primitive field=[%s] returned false!!", pojoField), pojoField
-            .isPrimitive());
+        assertTrue(pojoField.isPrimitive(), String.format("isPrimitive() check on primitive field=[%s] returned false!!", pojoField));
       }
     }
   }
@@ -231,7 +226,7 @@ public class PojoFieldImplTest {
   public void testIsStatic() {
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (pojoField.getName().startsWith("static")) {
-        Affirm.affirmTrue(String.format("isStatic() check on field=[%s] returned false!!", pojoField), pojoField.isStatic());
+        assertTrue(pojoField.isStatic(), String.format("isStatic() check on field=[%s] returned false!!", pojoField));
       }
     }
   }
@@ -240,8 +235,7 @@ public class PojoFieldImplTest {
   public void testIsTransient() {
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (pojoField.getName().equals("transientString")) {
-        Affirm.affirmTrue(String.format("isTransient() check on field=[%s] returned false!!", pojoField), pojoField.isTransient
-            ());
+        assertTrue(pojoField.isTransient(), String.format("isTransient() check on field=[%s] returned false!!", pojoField));
       }
     }
 
@@ -251,7 +245,7 @@ public class PojoFieldImplTest {
   public void testIsVolatile() {
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (pojoField.getName().equals("volatileString")) {
-        Affirm.affirmTrue(String.format("isVolatile() check on field=[%s] returned false!!", pojoField), pojoField.isVolatile());
+        assertTrue( pojoField.isVolatile(), String.format("isVolatile() check on field=[%s] returned false!!", pojoField));
       }
     }
 
@@ -261,44 +255,44 @@ public class PojoFieldImplTest {
   public void testIsPrivate() {
     String prefix = "private";
     PojoField pojoField = getFieldStartingWith(prefix);
-    Affirm.affirmNotNull("Field not found [" + prefix + "]", pojoField);
-    Affirm.affirmTrue("isPrivate() check on field=[" + pojoField + "] returned false!!", pojoField.isPrivate());
-    Affirm.affirmFalse("isPublic() check on field=[" + pojoField + "] returned true!!", pojoField.isPublic());
-    Affirm.affirmFalse("isProtected() check on field=[" + pojoField + "] returned true!!", pojoField.isProtected());
-    Affirm.affirmFalse("isPackagePrivate() check on field=[" + pojoField + "] returned true!!", pojoField.isPackagePrivate());
+    assertNotNull(pojoField, "Field not found [" + prefix + "]");
+    assertTrue(pojoField.isPrivate(), "isPrivate() check on field=[" + pojoField + "] returned false!!");
+    assertFalse( pojoField.isPublic(), "isPublic() check on field=[" + pojoField + "] returned true!!");
+    assertFalse(pojoField.isProtected(), "isProtected() check on field=[" + pojoField + "] returned true!!");
+    assertFalse(pojoField.isPackagePrivate(), "isPackagePrivate() check on field=[" + pojoField + "] returned true!!");
   }
 
   @Test
   public void isPackagePrivate() {
     String prefix = "packagePrivate";
     PojoField pojoField = getFieldStartingWith(prefix);
-    Affirm.affirmNotNull("Field not found [" + prefix + "]", pojoField);
-    Affirm.affirmTrue("isPackagePrivate() check on field=[" + pojoField + "] returned false!!", pojoField.isPackagePrivate());
-    Affirm.affirmFalse("isPrivate() check on field=[" + pojoField + "] returned true!!", pojoField.isPrivate());
-    Affirm.affirmFalse("isPublic() check on field=[" + pojoField + "] returned true!!", pojoField.isPublic());
-    Affirm.affirmFalse("isProtected() check on field=[" + pojoField + "] returned true!!", pojoField.isProtected());
+    assertNotNull(pojoField, "Field not found [" + prefix + "]");
+    assertTrue(pojoField.isPackagePrivate(), "isPackagePrivate() check on field=[" + pojoField + "] returned false!!");
+    assertFalse( pojoField.isPrivate(), "isPrivate() check on field=[" + pojoField + "] returned true!!");
+    assertFalse( pojoField.isPublic(), "isPublic() check on field=[" + pojoField + "] returned true!!");
+    assertFalse(pojoField.isProtected(), "isProtected() check on field=[" + pojoField + "] returned true!!");
   }
 
   @Test
   public void testIsProtected() {
     String prefix = "protected";
     PojoField pojoField = getFieldStartingWith(prefix);
-    Affirm.affirmNotNull("Field not found [" + prefix + "]", pojoField);
-    Affirm.affirmTrue("isProtected() check on field=[" + pojoField + "] returned false!!", pojoField.isProtected());
-    Affirm.affirmFalse("isPrivate() check on field=[" + pojoField + "] returned true!!", pojoField.isPrivate());
-    Affirm.affirmFalse("isPackagePrivate() check on field=[" + pojoField + "] returned true!!", pojoField.isPackagePrivate());
-    Affirm.affirmFalse("isPublic() check on field=[" + pojoField + "] returned true!!", pojoField.isPublic());
+    assertNotNull( pojoField, "Field not found [" + prefix + "]");
+    assertTrue( pojoField.isProtected(), "isProtected() check on field=[" + pojoField + "] returned false!!");
+    assertFalse( pojoField.isPrivate(), "isPrivate() check on field=[" + pojoField + "] returned true!!");
+    assertFalse(pojoField.isPackagePrivate(), "isPackagePrivate() check on field=[" + pojoField + "] returned true!!");
+    assertFalse( pojoField.isPublic(), "isPublic() check on field=[" + pojoField + "] returned true!!");
   }
 
   @Test
   public void testIsPublic() {
     String prefix = "public";
     PojoField pojoField = getFieldStartingWith(prefix);
-    Affirm.affirmNotNull("Field not found [" + prefix + "]", pojoField);
-    Affirm.affirmTrue("isPublic() check on field=[" + pojoField + "] returned false!!", pojoField.isPublic());
-    Affirm.affirmFalse("isPrivate() check on field=[" + pojoField + "] returned true!!", pojoField.isPrivate());
-    Affirm.affirmFalse("isPackagePrivate() check on field=[" + pojoField + "] returned true!!", pojoField.isPackagePrivate());
-    Affirm.affirmFalse("isProtected() check on field=[" + pojoField + "] returned true!!", pojoField.isProtected());
+    assertNotNull(pojoField, "Field not found [" + prefix + "]");
+    assertTrue( pojoField.isPublic(), "isPublic() check on field=[" + pojoField + "] returned false!!");
+    assertFalse( pojoField.isPrivate(), "isPrivate() check on field=[" + pojoField + "] returned true!!");
+    assertFalse(pojoField.isPackagePrivate(), "isPackagePrivate() check on field=[" + pojoField + "] returned true!!");
+    assertFalse(pojoField.isProtected(), "isProtected() check on field=[" + pojoField + "] returned true!!");
   }
 
   private PojoField getFieldStartingWith(String prefix) {
@@ -311,18 +305,18 @@ public class PojoFieldImplTest {
   @Test
   public void testIsSynthetic() {
     PojoClass classWithSyntheticField = PojoClassFactory.getPojoClass(AClassWithSyntheticField.SyntheticFieldContainer.class);
-    Affirm.affirmEquals("Failed to find field in class[" + classWithSyntheticField + "]", 1, classWithSyntheticField
-        .getPojoFields().size());
+    assertEquals( 1, classWithSyntheticField
+        .getPojoFields().size(), "Failed to find field in class[" + classWithSyntheticField + "]");
     PojoField pojoField = classWithSyntheticField.getPojoFields().get(0);
-    Affirm.affirmTrue("Failed to check isSynthetic + [" + pojoField + "]", pojoField.isSynthetic());
+    assertTrue(pojoField.isSynthetic(), "Failed to check isSynthetic + [" + pojoField + "]");
   }
 
   @Test
   public void canGetEnclosingClass() {
     PojoClass pojoClassWithFields = PojoClassFactory.getPojoClass(AClassWithFields.class);
-    Affirm.affirmTrue("Class should have some fields", pojoClassWithFields.getPojoFields().size() > 0);
+      assertFalse(pojoClassWithFields.getPojoFields().isEmpty(), "Class should have some fields");
     for (PojoField field : pojoClassWithFields.getPojoFields()) {
-      Affirm.affirmEquals("Failed to get PojoClass from field ["+ field + "]", pojoClassWithFields, field.getDeclaringPojoClass());
+      assertEquals(pojoClassWithFields, field.getDeclaringPojoClass(), "Failed to get PojoClass from field ["+ field + "]");
     }
   }
 }

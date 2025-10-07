@@ -24,6 +24,9 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 public class TestClassMustBeProperlyNamedRuleTest {
 
@@ -31,10 +34,10 @@ public class TestClassMustBeProperlyNamedRuleTest {
   public void shouldThrowExceptionIfNoAnnotationsLoaded() {
     String noneExistentClass = this.getClass().getName() + "DoesNotExist";
 
-    thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("No annotations loaded, expected any of [" + noneExistentClass + "]");
-
-    new TestClassMustBeProperlyNamedRule(getEmptyList(), getEmptyList(), Arrays.asList(noneExistentClass));
+    Exception   exError = assertThrows(IllegalStateException.class, () -> {
+        new TestClassMustBeProperlyNamedRule(getEmptyList(), getEmptyList(), Arrays.asList(noneExistentClass));
+            });
+    assertEquals("No annotations loaded, expected any of [" + noneExistentClass + "]", exError.getMessage());
   }
 
   @Test

@@ -24,7 +24,6 @@ import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.construct.sampleclasses.*;
 import com.openpojo.reflection.exception.ReflectionException;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.impl.PojoClassFactory.getPojoClass;
@@ -40,10 +39,10 @@ public class InstanceFactoryTest {
   public void shouldCreateUsingDefaultConstructor() {
     final Class<?> clazz = ClassWithNoDeclaredConstructor.class;
     final Object obj1 = getInstance(clazz, (Object[]) null);
-    Affirm.affirmNotNull(obj1, "Should have created an object");
+    assertNotNull(obj1, "Should have created an object");
 
     final Object obj2 = getInstance(clazz, new Object[] {});
-    Affirm.affirmTrue(obj1 != obj2, "Should have created a different object");
+      assertNotSame(obj1, obj2, "Should have created a different object");
   }
 
   @Test
@@ -52,8 +51,8 @@ public class InstanceFactoryTest {
     final String stringParam = RandomFactory.getRandomValue(String.class);
     final ClassWithVariousDeclaredContructorsAndMethods obj1 =
         (ClassWithVariousDeclaredContructorsAndMethods) getInstance(clazz, stringParam);
-    Affirm.affirmNotNull(obj1, "Should have created using String constructor");
-    Affirm.affirmEquals(stringParam, obj1.singleStringConstructor, "Incorrect constructor used");
+    assertNotNull(obj1, "Should have created using String constructor");
+    assertEquals(stringParam, obj1.singleStringConstructor, "Incorrect constructor used");
   }
 
   @Test
@@ -63,17 +62,17 @@ public class InstanceFactoryTest {
     final ClassWithVariousDeclaredContructorsAndMethods obj =
         (ClassWithVariousDeclaredContructorsAndMethods) getInstance(clazz, stringParam, null);
 
-    Affirm.affirmNotNull(obj, "Should have created using two parameter constructor");
-    Affirm.affirmNull(obj.doubleIntegerConstructor, "Should have called using two parameter constructor");
-    Affirm.affirmEquals(stringParam, obj.doubleStringConstructor, "Should have called using two parameter constructor");
+    assertNotNull(obj, "Should have created using two parameter constructor");
+    assertNull(obj.doubleIntegerConstructor, "Should have called using two parameter constructor");
+    assertEquals(stringParam, obj.doubleStringConstructor, "Should have called using two parameter constructor");
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailtoCreateParametersMissmatch() {
     final Class<?> clazz = ClassWithVariousDeclaredContructorsAndMethods.class;
     final String stringParam = RandomFactory.getRandomValue(String.class);
-    getInstance(clazz, stringParam, stringParam);
-    Affirm.fail("Should've failed to create");
+    assertThrows(ReflectionException.class, () -> getInstance(clazz, stringParam, stringParam));
+    fail("Should've failed to create");
   }
 
   @Test
@@ -82,7 +81,7 @@ public class InstanceFactoryTest {
           final Class<?> clazz = ClassWithNoDeclaredConstructor.class;
           final String stringParam = RandomFactory.getRandomValue(String.class);
           getInstance(clazz, stringParam);
-          Affirm.fail("Should've failed to create");
+          fail("Should've failed to create");
       });
   }
 
@@ -96,7 +95,7 @@ public class InstanceFactoryTest {
     final PojoClass pojoClass = getPojoClass(ClassWithLessThanGreaterThanConstructors.class);
     final ClassWithLessThanGreaterThanConstructors instance =
         (ClassWithLessThanGreaterThanConstructors) InstanceFactory.getLeastCompleteInstance(pojoClass);
-    Affirm.affirmEquals(1, instance.getParameterCountUsedForConstruction(), "Should've used constructor with single Parameter");
+    assertEquals(1, instance.getParameterCountUsedForConstruction(), "Should've used constructor with single Parameter");
   }
 
   @Test
@@ -104,7 +103,7 @@ public class InstanceFactoryTest {
     final PojoClass pojoClass = getPojoClass(ClassWithLessThanGreaterThanConstructors.class);
     final ClassWithLessThanGreaterThanConstructors instance =
         (ClassWithLessThanGreaterThanConstructors) InstanceFactory.getMostCompleteInstance(pojoClass);
-    Affirm.affirmEquals(3, instance.getParameterCountUsedForConstruction(), "Should've used constructor with single Parameter");
+    assertEquals(3, instance.getParameterCountUsedForConstruction(), "Should've used constructor with single Parameter");
   }
 
   @Test
@@ -148,7 +147,7 @@ public class InstanceFactoryTest {
 
     List<AClassWithGenericConstructor.Child> children = aClassWithGenericConstructor.getMyChildren();
 
-    assertTrue(children.size() > 0);
+      assertFalse(children.isEmpty());
 
     for (AClassWithGenericConstructor.Child child : children) {
       assertNotNull(child);
@@ -189,9 +188,9 @@ public class InstanceFactoryTest {
     assertNotNull(instance);
 
     assertNotNull(instance.getMyV());
-    assertEquals(instance.getMyV().getClass(), Object.class);
+    assertEquals(Object.class, instance.getMyV().getClass());
     assertNotNull(instance.getMyK());
-    assertEquals(instance.getMyK().getClass(), Object.class);
+    assertEquals(Object.class, instance.getMyK().getClass());
 
     assertNotNull(instance.getMyT());
     assertTrue(CharSequence.class.isAssignableFrom(instance.getMyT().getClass()));

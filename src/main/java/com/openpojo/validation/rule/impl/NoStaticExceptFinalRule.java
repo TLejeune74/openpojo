@@ -20,8 +20,9 @@ package com.openpojo.validation.rule.impl;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This rule ensures that there are no static fields unless they are final.
@@ -36,7 +37,7 @@ public class NoStaticExceptFinalRule implements Rule {
   public void evaluate(final PojoClass pojoClass) {
     for (PojoField fieldEntry : pojoClass.getPojoFields()) {
       if (fieldEntry.isStatic() && !fieldEntry.isFinal() && !fieldEntry.isSynthetic()) {
-        Affirm.fail(String.format("Static fields=[%s] not marked final are not allowed", fieldEntry));
+        fail(String.format("Static fields=[%s] not marked final are not allowed", fieldEntry));
       }
     }
   }

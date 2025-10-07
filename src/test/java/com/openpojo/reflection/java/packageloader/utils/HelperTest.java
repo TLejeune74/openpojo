@@ -21,10 +21,9 @@ package com.openpojo.reflection.java.packageloader.utils;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.java.Java;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author oshoukry
@@ -36,7 +35,7 @@ public class HelperTest {
     String somePackage = "com.openpojo.parent";
     String subPackage = "com.openpojo.parent.subpath";
 
-    Assert.assertThat(Helper.getDirectSubPackageName(somePackage, subPackage), is(subPackage));
+    assertEquals(subPackage, Helper.getDirectSubPackageName(somePackage, subPackage));
   }
 
   @Test
@@ -44,7 +43,7 @@ public class HelperTest {
     String somePackage = "com.openpojo.parent";
     String subPackage = "com.openpojo.subpath";
 
-    Assert.assertThat(Helper.getDirectSubPackageName(somePackage, subPackage), is(nullValue()));
+    assertNull(Helper.getDirectSubPackageName(somePackage, subPackage));
   }
 
   @Test
@@ -53,7 +52,7 @@ public class HelperTest {
     String subPackage = "com.openpojo.parent.childpath";
     String grandChild = subPackage + ".grandChild";
 
-    Assert.assertThat(Helper.getDirectSubPackageName(somePackage, grandChild), is(subPackage));
+    assertEquals(subPackage, Helper.getDirectSubPackageName(somePackage, grandChild));
   }
 
   @Test
@@ -62,30 +61,30 @@ public class HelperTest {
     String subPackage = "com.openpojo.parentalso.childpath";
     String grandChild = subPackage + ".grandChild";
 
-    Assert.assertThat(Helper.getDirectSubPackageName(somePackage, grandChild), is(nullValue()));
+    assertNull(Helper.getDirectSubPackageName(somePackage, grandChild));
   }
 
   @Test
   public void returnsFalseWhenEntryIsNullAndIsClass() {
-    Assert.assertFalse("Should return false for isClass and null", Helper.isClass(null));
+    assertFalse(Helper.isClass(null), "Should return false for isClass and null");
   }
 
   @Test
   public void returnsFlaseIfNotEndsWithDotClass() {
     String someEntry = RandomFactory.getRandomValue(String.class);
-    Assert.assertFalse("Should not return true for entry not ending with .class [" + someEntry + "]", Helper.isClass(someEntry));
+    assertFalse(Helper.isClass(someEntry), "Should not return true for entry not ending with .class [" + someEntry + "]");
   }
 
   @Test
   public void whenEndsWithDotClassIsClassIsTrue() {
     String someEntry = RandomFactory.getRandomValue(String.class) + Java.CLASS_EXTENSION;
-    Assert.assertTrue("Should return true for entry ending with .class [" + someEntry + "]", Helper.isClass(someEntry));
+    assertTrue(Helper.isClass(someEntry), "Should return true for entry ending with .class [" + someEntry + "]");
   }
 
   @Test
   public void whenClassEndsWithDotClassAndGetFQClassName_ReturnsValidClassName() {
     String someEntry = RandomFactory.getRandomValue(String.class);
-    Assert.assertEquals(someEntry, Helper.getFQClassName(someEntry + Java.CLASS_EXTENSION));
+    assertEquals(someEntry, Helper.getFQClassName(someEntry + Java.CLASS_EXTENSION));
   }
 
   @Test
@@ -93,7 +92,7 @@ public class HelperTest {
     char slash = Java.PATH_DELIMITER;
     String someEntry = "com" + slash + "package" + slash + "className" + Java.CLASS_EXTENSION;
     String expected = "com.package.className";
-    Assert.assertEquals(expected, Helper.getFQClassName(someEntry));
+    assertEquals(expected, Helper.getFQClassName(someEntry));
 
   }
 }

@@ -20,8 +20,9 @@ package com.openpojo.validation.rule.impl;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This rule ensures that equals and hashCode must either both be present or absent.
@@ -38,15 +39,15 @@ public class EqualsAndHashCodeMatchRule implements Rule {
     boolean hasHashCode = hasHashCode(pojoClass);
 
     if (hasEquals && !hasHashCode)
-      Affirm.fail("equals implemented but hashcode isn't in Pojo [" + pojoClass + "]");
+      fail("equals implemented but hashcode isn't in Pojo [" + pojoClass + "]");
 
     if (!hasEquals && hasHashCode)
-      Affirm.fail("hashCode implemented but equals isn't in Pojo [" + pojoClass + "]");
+      fail("hashCode implemented but equals isn't in Pojo [" + pojoClass + "]");
   }
 
   private boolean hasHashCode(PojoClass pojoClass) {
     for (PojoMethod method : pojoClass.getPojoMethods())
-      if (method.getName().equals("hashCode") && method.getPojoParameters().size() == 0)
+      if (method.getName().equals("hashCode") && method.getPojoParameters().isEmpty())
         return true;
     return false;
   }

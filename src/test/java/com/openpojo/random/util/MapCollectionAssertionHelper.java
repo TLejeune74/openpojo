@@ -24,8 +24,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.SynchronousQueue;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -82,7 +81,7 @@ public class MapCollectionAssertionHelper {
     if (isAMap(input)) {
 
       Map inputMap = (Map) input;
-      assertTrue(inputMap.size() > 0, "Type [" + type + " cannot be assigned to input [" + input.getClass() + "]");
+        assertFalse(inputMap.isEmpty());
       validateMapKeysAndValuesAreCorrectTypes(queue, getAnEntry(inputMap));
     }
   }

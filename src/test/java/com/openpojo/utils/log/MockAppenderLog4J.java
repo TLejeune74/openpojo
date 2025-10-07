@@ -1,109 +1,77 @@
 /*
  * Copyright (c) 2010-2018 Osman Shoukry
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied.
- *
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Apache License, Version 2.0
  */
-
 package com.openpojo.utils.log;
 
 import java.util.List;
 
 import com.openpojo.utils.log.LogEvent.Priority;
+
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.appender.AbstractAppender;      // Base appender Log4j2
+import org.apache.logging.log4j.core.config.Property;
 
 /**
- * @author oshoukry
+ * Version Log4j 2 de l’appender de test.
+ * - Convertit le niveau Log4j 2 en com.openpojo.utils.log.LogEvent.Priority
+ * - Enregistre les événements via EventLogger
  */
-public class MockAppenderLog4J extends WriterAppender implements MockAppender {
+public class MockAppenderLog4J extends AbstractAppender implements MockAppender {
 
-  private Priority extractPriority(final LoggingEvent event) {
-    if (event.getLevel().equals(Level.TRACE)) {
-      return Priority.TRACE;
+    public MockAppenderLog4J() {
+        // name = "MockAppenderLog4J", pas de Filter, pas de Layout, ignoreExceptions = true
+        super("MockAppenderLog4J", null, null, true, Property.EMPTY_ARRAY);
     }
-    if (event.getLevel().equals(Level.DEBUG)) {
-      return Priority.DEBUG;
+
+    private Priority extractPriority(final Level level) {
+        if (level == Level.TRACE) return Priority.TRACE;
+        if (level == Level.DEBUG) return Priority.DEBUG;
+        if (level == Level.INFO)  return Priority.INFO;
+        if (level == Level.WARN)  return Priority.WARN;
+        if (level == Level.ERROR) return Priority.ERROR;
+        if (level == Level.FATAL) return Priority.FATAL;
+        throw new IllegalArgumentException("Unknown Logged Level " + level);
     }
-    if (event.getLevel().equals(Level.INFO)) {
-      return Priority.INFO;
+
+    public void append(final LogEvent event) {
+        final String loggerName = event.source();
+        final String message = event.message();
+
+        // Attention au FQCN : évite le conflit avec org.apache.logging.log4j.core.LogEvent
+        com.openpojo.utils.log.LogEvent le =
+                new com.openpojo.utils.log.LogEvent(loggerName, event.priority(), message);
+
+        EventLogger.registerEvent(this.getClass(), le);
     }
-    if (event.getLevel().equals(Level.WARN)) {
-      return Priority.WARN;
+
+    /**
+     * Assert: nombre d’événements par source ET priorité.
+     */
+    public synchronized Integer getCountBySourceByPriority(final String source, final Priority priority) {
+        return EventLogger.getCountByAppenderBySourceByPriority(this.getClass(), source, priority);
     }
-    if (event.getLevel().equals(Level.ERROR)) {
-      return Priority.ERROR;
+
+    /**
+     * Assert: nombre d’événements par source (toutes priorités confondues).
+     */
+    public synchronized Integer getCountBySource(final String source) {
+        return EventLogger.getCountBySource(this.getClass(), source);
     }
-    if (event.getLevel().equals(Level.FATAL)) {
-      return Priority.FATAL;
+
+    /**
+     * Récupérer les événements par source et priorité.
+     */
+    public synchronized List<LogEvent> getLoggedEventsBySourceByPriority(final String source, final Priority priority) {
+        return EventLogger.getLoggedEventsByAppenderBySourceByPriority(this.getClass(), source, priority);
     }
-    throw new IllegalArgumentException("Unknown Logged Level" + event.getLevel());
-  }
 
-  @Override
-  public final boolean requiresLayout() {
-    return false;
-  }
+    public void resetAppender() {
+        EventLogger.resetEvents(this.getClass());
+    }
 
-  @Override
-  public final boolean getImmediateFlush() {
-    return true;
-  }
+    @Override
+    public void append(org.apache.logging.log4j.core.LogEvent event) {
 
-  @Override
-  public final synchronized void append(final LoggingEvent event) {
-    LogEvent le = new LogEvent(event.getLoggerName(), extractPriority(event), event.getRenderedMessage());
-    EventLogger.registerEvent(this.getClass(), le);
-  }
-
-  /**
-   * This call is used for asserting on testing to see if you got the right counts for each priority.
-   *
-   * @param source
-   *     The source of the logs
-   * @param priority
-   *     The priority at which they were sent in as.
-   * @return The total count on recieved events.
-   */
-  public synchronized Integer getCountBySourceByPriority(final String source, final Priority priority) {
-    return EventLogger.getCountByAppenderBySourceByPriority(this.getClass(), source, priority);
-  }
-
-  /**
-   * This call is used for asserting on testing to see if you got the right counts regardless of categories.
-   *
-   * @param source
-   *     The source of the logs
-   * @return The total count on recieved events.
-   */
-  public synchronized Integer getCountBySource(final String source) {
-    return EventLogger.getCountBySource(this.getClass(), source);
-  }
-
-  /**
-   * Get all logged events by priority for a particular source.
-   *
-   * @param source
-   *     The source of the logs.
-   * @param priority
-   *     The priority at which they were sent in as.
-   * @return List of logged events.
-   */
-  public synchronized List<LogEvent> getLoggedEventsBySourceByPriority(final String source, final Priority priority) {
-    return EventLogger.getLoggedEventsByAppenderBySourceByPriority(this.getClass(), source, priority);
-  }
-
-  public void resetAppender() {
-    EventLogger.resetEvents(this.getClass());
-  }
+    }
 }

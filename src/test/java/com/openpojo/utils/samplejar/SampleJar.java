@@ -19,9 +19,7 @@
 package com.openpojo.utils.samplejar;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.net.*;
 
 /**
  * @author oshoukry
@@ -40,8 +38,8 @@ public class SampleJar {
 
   public static URL getJarURL() {
     try {
-      return new URL(getJarURLPath());
-    } catch (IOException e) {
+      return new URI(getJarURLPath()).toURL();
+    } catch (IOException | URISyntaxException e) {
       throw new RuntimeException(e);
     }
   }
@@ -77,8 +75,8 @@ public class SampleJar {
 
   private URLClassLoader getClassLoader() {
     try {
-      return URLClassLoader.newInstance(new URL[] { new URL(jarUrlPath) });
-    } catch (MalformedURLException e) {
+      return URLClassLoader.newInstance(new URL[] { new URI(jarUrlPath).toURL() });
+    } catch (MalformedURLException | URISyntaxException e) {
       throw new RuntimeException(e);
     }
   }

@@ -24,8 +24,9 @@ import java.lang.reflect.Proxy;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoClassFilter;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -37,20 +38,17 @@ public class FilterNonConcreteTest extends IdentitiesAreEqual {
     PojoClassFilter pojoClassFilter = new FilterNonConcrete();
     PojoClass stubPojoClass = PojoStubFactory.getStubPojoClass(false);
 
-    Affirm.affirmTrue(String.format("Filter[%s] was supposed to filter OUT non concrete class", pojoClassFilter), stubPojoClass
-        .isConcrete() == pojoClassFilter.include(stubPojoClass));
+    assertTrue(stubPojoClass.isConcrete() == pojoClassFilter.include(stubPojoClass), String.format("Filter[%s] was supposed to filter OUT non concrete class", pojoClassFilter));
 
     stubPojoClass = PojoStubFactory.getStubPojoClass(true);
-    Affirm.affirmTrue(String.format("Filter[%s] was supposed to filter IN concrete class", pojoClassFilter),
-        stubPojoClass.isConcrete() == pojoClassFilter.include(stubPojoClass));
+    assertTrue(stubPojoClass.isConcrete() == pojoClassFilter.include(stubPojoClass), String.format("Filter[%s] was supposed to filter IN concrete class", pojoClassFilter));
 
     final StubPojoClassFilter stubPojoClassFilter = new StubPojoClassFilter();
     pojoClassFilter = new FilterChain(new FilterNonConcrete(), stubPojoClassFilter);
 
     stubPojoClass = PojoStubFactory.getStubPojoClass(true);
     pojoClassFilter.include(stubPojoClass);
-    Affirm.affirmTrue(String.format("Filter [%s] didn't invoke next in filter chain", pojoClassFilter), stubPojoClassFilter
-        .includeCalled);
+    assertTrue( stubPojoClassFilter.includeCalled, String.format("Filter [%s] didn't invoke next in filter chain", pojoClassFilter));
   }
 
   private static class StubPojoClassFilter implements PojoClassFilter {

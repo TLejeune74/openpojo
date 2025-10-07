@@ -20,9 +20,10 @@ package com.openpojo.validation.rule.impl;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.utils.ValidationHelper;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This rule ensures that all Fields have a getter associated with them.
@@ -35,7 +36,7 @@ public class GetterMustExistRule implements Rule {
   public void evaluate(final PojoClass pojoClass) {
     for (PojoField fieldEntry : pojoClass.getPojoFields()) {
       if (!ValidationHelper.isStaticFinal(fieldEntry) && !fieldEntry.hasGetter() && !fieldEntry.isSynthetic()) {
-        Affirm.fail(String.format("[%s] is missing a getter", fieldEntry));
+        fail(String.format("[%s] is missing a getter", fieldEntry));
       }
     }
   }

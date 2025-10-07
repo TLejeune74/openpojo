@@ -21,7 +21,8 @@ package com.openpojo.validation.affirm;
 import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -37,9 +38,8 @@ public class JUnitAssertAffirmationTest extends AbstractAffirmationTest {
 
   @Test
   public void shouldTestToString() {
-    Assert.assertTrue(String.format("[%s] signature changed? expected=[%s]!!",
-        JUnitAssertAffirmation.class.getName(), "com.openpojo.validation.affirm.JUnitAssertAffirmation [@xxxxxx: ]"),
-        jUnitAssertAffirmation.toString().startsWith("com.openpojo.validation.affirm.JUnitAssertAffirmation [@")
-            && jUnitAssertAffirmation.toString().endsWith(":" + " ]"));
+    assertTrue(jUnitAssertAffirmation.toString().startsWith("com.openpojo.validation.affirm.JUnitAssertAffirmation [@")
+            && jUnitAssertAffirmation.toString().endsWith(":" + " ]"), String.format("[%s] signature changed? expected=[%s]!!",
+                    JUnitAssertAffirmation.class.getName(), "com.openpojo.validation.affirm.JUnitAssertAffirmation [@xxxxxx: ]"));
   }
 }

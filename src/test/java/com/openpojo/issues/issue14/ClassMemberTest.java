@@ -24,11 +24,12 @@ import com.openpojo.reflection.PojoField;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -51,19 +52,19 @@ public class ClassMemberTest {
   @Test
   public void ensureSampleClassDefinitionIsCorrect() {
     String fieldName = "someMemberClass";
-    Affirm.affirmEquals(String.format("Fields added/removed to [%s]?", pojoClass), 1, pojoClass.getPojoFields().size());
+    assertEquals( 1, pojoClass.getPojoFields().size(), String.format("Fields added/removed to [%s]?", pojoClass));
 
     boolean validated = false;
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (pojoField.getName().equals(fieldName)) {
-        Affirm.affirmEquals("Field type changed?", Class.class.getName(), pojoField.getType().getName());
-        Affirm.affirmTrue(String.format("Getter/Setter removed from field[%s]",
-            pojoField), pojoField.hasGetter() && pojoField.hasSetter());
+        assertEquals("Field type changed?", Class.class.getName(), pojoField.getType().getName());
+        assertTrue( pojoField.hasGetter() && pojoField.hasSetter(), String.format("Getter/Setter removed from field[%s]",
+                pojoField));
         validated = true;
       }
     }
     if (!validated) {
-      Affirm.fail(String.format("[%s] field not found on PojoClass [%s]", fieldName, pojoClass));
+      fail(String.format("[%s] field not found on PojoClass [%s]", fieldName, pojoClass));
     }
   }
 

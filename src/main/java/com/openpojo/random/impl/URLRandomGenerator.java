@@ -19,6 +19,8 @@
 package com.openpojo.random.impl;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,8 +55,8 @@ public class URLRandomGenerator implements RandomGenerator {
   public Object doGenerate(Class<?> type) {
     String entry = urlPrefix + RandomFactory.getRandomValue(UUID.class) + "/";
     try {
-      return new URL(entry);
-    } catch (MalformedURLException me) {
+      return new URI(entry).toURL();
+    } catch (MalformedURLException | URISyntaxException me) {
       throw RandomGeneratorException.getInstance("Failed to create random URL (Invalid urlPrefix set?): " + entry, me);
     }
   }

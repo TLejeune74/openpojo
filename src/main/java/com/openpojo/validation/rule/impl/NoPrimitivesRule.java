@@ -20,9 +20,10 @@ package com.openpojo.validation.rule.impl;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.utils.ValidationHelper;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This Rule ensures that you aren't using any primitive type fields.
@@ -35,7 +36,7 @@ public class NoPrimitivesRule implements Rule {
   public void evaluate(final PojoClass pojoClass) {
     for (PojoField fieldEntry : pojoClass.getPojoFields()) {
       if (fieldEntry.isPrimitive() && !ValidationHelper.isStaticFinal(fieldEntry)) {
-        Affirm.fail(String.format(
+        fail(String.format(
             "Primitive fields (byte, short, int, long, float, double, boolean, char) not allowed [%s]", fieldEntry));
       }
     }

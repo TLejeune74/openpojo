@@ -27,13 +27,14 @@ import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.reflection.utils.ObjectToString;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -63,13 +64,12 @@ public class IssueTest {
     for (int i = 0; i < 100 ; i++) {
       AClassWithPrimitiveArrays primitiveArrays = RandomFactory.getRandomValue(AClassWithPrimitiveArrays.class);
       for (PojoField field : pojoClass.getPojoFields()) {
-        Affirm.affirmTrue("Expected field to be array but wasn't [" + field + "]", field.isArray());
+        assertTrue( field.isArray(), "Expected field to be array but wasn't [" + field + "]");
         Object contents = field.get(primitiveArrays);
-        Affirm.affirmTrue("Expected field to not be null but was [" + field + "]", contents != null);
-        Affirm.affirmTrue("Expected array to not be empty [" + field + "]", Array.getLength(contents) > 0);
+        assertTrue(contents != null, "Expected field to not be null but was [" + field + "]");
+        assertTrue( Array.getLength(contents) > 0, "Expected array to not be empty [" + field + "]");
         String expected = field.getName() + "=" + ObjectToString.toString(contents);
-        Affirm.affirmTrue("Expected [" + expected + "] to be included in [" + pojoClass.toString(primitiveArrays) + "]",
-            pojoClass.toString(primitiveArrays).contains(expected));
+        assertTrue(pojoClass.toString(primitiveArrays).contains(expected), "Expected [" + expected + "] to be included in [" + pojoClass.toString(primitiveArrays) + "]");
       }
     }
   }

@@ -24,12 +24,13 @@ import com.openpojo.reflection.PojoField;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -40,7 +41,7 @@ public class IssueTest {
   public void testBooleanVariations() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassWithBooleanFields.class);
 
-    Affirm.affirmEquals("Fields must be 4", 4, pojoClass.getPojoFields().size());
+    assertEquals( 4, pojoClass.getPojoFields().size(), "Fields must be 4");
 
     int countOfbooleans = 0;
     int countOfBooleans = 0;
@@ -54,8 +55,7 @@ public class IssueTest {
       }
     }
 
-    Affirm.affirmEquals("2 boolean fields must exist", 2, countOfbooleans);
-    Affirm.affirmEquals("2 Boolean fields must exist", 2, countOfBooleans);
+    assertEquals( 2, countOfbooleans, "2 boolean fields must exist");
 
     Validator pojoValidator = ValidatorBuilder.create()
         .with(new GetterMustExistRule())

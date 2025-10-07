@@ -20,8 +20,9 @@ package com.openpojo.reflection.java.type;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -31,23 +32,23 @@ public class PrimitivesTest {
   @Test
   public void shouldHavePrivateConstructor() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(Primitives.class);
-    Affirm.affirmEquals("Should only have one constructor", 1, pojoClass.getPojoConstructors().size());
-    Affirm.affirmTrue("Constructor must be private", pojoClass.getPojoConstructors().get(0).isPrivate());
+    assertEquals( 1, pojoClass.getPojoConstructors().size(), "Should only have one constructor");
+    assertTrue( pojoClass.getPojoConstructors().getFirst().isPrivate(), "Constructor must be private");
   }
 
   @Test
   public void shouldReturnSameInstanceWhenGetInstance() {
     Primitives first = Primitives.getInstance();
     Primitives second = Primitives.getInstance();
-    Affirm.affirmNotNull("Should return an instance", first);
-    Affirm.affirmNotNull("Should return an instance", second);
-    Affirm.affirmTrue("Should have been the exact same instance", first == second);
+    assertNotNull( first, "Should return an instance");
+    assertNotNull(second, "Should return an instance");
+    assertTrue( first == second, "Should have been the exact same instance");
   }
 
   @Test
   public void shouldReturnNullNotPrimitive() {
     Class<?> anyClass = Object.class;
-    Affirm.affirmEquals("Should have been the same class", anyClass, Primitives.getInstance().autoBox(anyClass));
+    assertEquals( anyClass, Primitives.getInstance().autoBox(anyClass), "Should have been the same class");
   }
 
   @Test
@@ -66,6 +67,6 @@ public class PrimitivesTest {
 
   private void checkPrimitiveCorrectlyWrapped(Class<?> primitive, Class<?> expected) {
     Primitives instance = Primitives.getInstance();
-    Affirm.affirmEquals("Should wrap primitive", expected, instance.autoBox(primitive));
+    assertEquals(expected, instance.autoBox(primitive), "Should wrap primitive");
   }
 }

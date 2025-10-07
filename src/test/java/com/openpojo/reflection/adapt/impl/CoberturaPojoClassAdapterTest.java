@@ -21,8 +21,9 @@ package com.openpojo.reflection.adapt.impl;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.adapt.impl.sampleclasses.CoberturaInstrumentedClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -34,17 +35,17 @@ public class CoberturaPojoClassAdapterTest {
 
   @Test
   public void ensureCoberturaInstrumentedClassNotChanged() {
-    Affirm.affirmEquals("Fields added/removed?", 4, coberturaInstrumentedPojoClass.getPojoFields().size());
-    Affirm.affirmEquals("Methods added/removed?", 4, coberturaInstrumentedPojoClass.getPojoMethods().size());
+    assertEquals(4, coberturaInstrumentedPojoClass.getPojoFields().size(), "Fields added/removed?");
+    assertEquals(4, coberturaInstrumentedPojoClass.getPojoMethods().size(), "Methods added/removed?");
   }
 
   @Test
   public void shouldSkipFieldsStartingWith__cobertura_() {
-    Affirm.affirmEquals("Cobertura fields not filtered?", 2, coberturaCleanedPojoClass.getPojoFields().size());
+    assertEquals(2, coberturaCleanedPojoClass.getPojoFields().size(), "Cobertura fields not filtered?");
   }
 
   @Test
   public void shouldSkipMethodsStartingWith__covertura_() {
-    Affirm.affirmEquals("Cobertura methods not filtered?", 3, coberturaCleanedPojoClass.getPojoMethods().size());
+    assertEquals( 3, coberturaCleanedPojoClass.getPojoMethods().size(), "Cobertura methods not filtered?");
   }
 }

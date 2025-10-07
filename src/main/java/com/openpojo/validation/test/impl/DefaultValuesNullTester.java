@@ -21,9 +21,10 @@ package com.openpojo.validation.test.impl;
 import com.openpojo.business.annotation.BusinessKey;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
-import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.utils.ValidationHelper;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * This Rule ensures that all Fields are initialized to null.<br>
@@ -38,7 +39,7 @@ public class DefaultValuesNullTester implements Tester {
 
     for (final PojoField fieldEntry : pojoClass.getPojoFields()) {
       if (!fieldEntry.isPrimitive() && !fieldEntry.isFinal() && fieldEntry.getAnnotation(BusinessKey.class) == null) {
-        Affirm.affirmNull(fieldEntry.get(classInstance), String.format("Expected null value for for field=[%s]", fieldEntry));
+        assertNull(fieldEntry.get(classInstance), String.format("Expected null value for for field=[%s]", fieldEntry));
       }
     }
   }

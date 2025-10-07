@@ -18,10 +18,9 @@
 
 package com.openpojo.random.util;
 
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
 
-import static com.openpojo.validation.affirm.Affirm.affirmEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -44,13 +43,13 @@ public class ComparableDelayedTest {
     ComparableDelayedStub secondInstance = new ComparableDelayedStub();
 
     secondInstance.hashCode = firstInstance.hashCode() - 1;
-    affirmEquals( 1, firstInstance.compareTo(secondInstance), "CompareTo should return 1");
+    assertEquals( 1, firstInstance.compareTo(secondInstance), "CompareTo should return 1");
 
     secondInstance.hashCode = firstInstance.hashCode() + 1;
-    affirmEquals("CompareTo should return -1", -1, firstInstance.compareTo(secondInstance));
+    assertEquals( -1, firstInstance.compareTo(secondInstance), "CompareTo should return -1");
 
     secondInstance.hashCode = firstInstance.hashCode();
-    affirmEquals("CompareTo should return 0", 0, firstInstance.compareTo(secondInstance));
+    assertEquals( 0, firstInstance.compareTo(secondInstance),"CompareTo should return 0");
   }
 
   private class ComparableDelayedStub extends ComparableDelayed {

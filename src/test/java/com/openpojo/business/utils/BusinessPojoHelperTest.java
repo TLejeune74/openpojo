@@ -28,10 +28,10 @@ import com.openpojo.reflection.PojoField;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import com.openpojo.validation.affirm.Affirm;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -43,11 +43,11 @@ public class BusinessPojoHelperTest {
     PojoClass businessPojoHelper = PojoClassFactory.getPojoClass(BusinessPojoHelper.class);
 
     List<PojoMethod> pojoConstructors = businessPojoHelper.getPojoConstructors();
-    Affirm.affirmEquals("Should have only one constructor", 1, pojoConstructors.size());
-    Affirm.affirmTrue("Constructor must be private", pojoConstructors.get(0).isPrivate());
+    assertEquals( 1, pojoConstructors.size(), "Should have only one constructor");
+    assertTrue(pojoConstructors.getFirst().isPrivate(), "Constructor must be private");
 
     try {
-      businessPojoHelper.getPojoConstructors().get(0).invoke(null, (Object[]) null);
+      businessPojoHelper.getPojoConstructors().getFirst().invoke(null, (Object[]) null);
     } catch (ReflectionException re) {
       throw re.getCause().getCause();
     }
