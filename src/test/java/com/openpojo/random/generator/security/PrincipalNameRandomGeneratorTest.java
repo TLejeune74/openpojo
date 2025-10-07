@@ -28,11 +28,10 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.reflection.java.load.ClassUtil;
 import com.openpojo.registry.ServiceRegistrar;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author oshoukry
@@ -63,9 +62,9 @@ public class PrincipalNameRandomGeneratorTest extends AbstractGeneratorTest {
     try {
       randomGeneratorService.registerRandomGenerator(exceptionThrowingRandomGenerator);
       getRandomGenerator().doGenerate(null);
-      Assert.fail("Expected exception not thrown");
+      fail("Expected exception not thrown");
     } catch (Exception e) {
-      assertThat(e.getMessage(), equalTo("Failed to generate sun.security.krb5.PrincipalName instance."));
+      assertEquals(e.getMessage(), "Failed to generate sun.security.krb5.PrincipalName instance.");
     } finally {
       randomGeneratorService.registerRandomGenerator(stringRandomGenerator);
     }

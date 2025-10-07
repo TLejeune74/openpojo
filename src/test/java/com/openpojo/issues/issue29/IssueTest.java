@@ -28,8 +28,9 @@ import com.openpojo.reflection.adapt.PojoClassAdapter;
 import com.openpojo.reflection.adapt.impl.JacocoPojoClassAdapter;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author oshoukry
@@ -50,10 +51,10 @@ public class IssueTest {
   @Test
   public void shouldHideJacocoFieldAndMethod() throws NoSuchFieldException, NoSuchMethodException {
     Field field = this.getClass().getDeclaredField(JACOCO_FIELD_NAME);
-    Assert.assertNotNull("Should not be null", field);
+    assertNotNull(field, "Should not be null");
 
     Method method = this.getClass().getDeclaredMethod(JACOCO_METHOD_NAME);
-    Assert.assertNotNull("Should not be null", method);
+    assertNotNull(method, "Should not be null");
 
     PojoClassAdapter jacocoPojoClassAdapter = JacocoPojoClassAdapter.getInstance();
     PojoClass cleansedPojoClass = jacocoPojoClassAdapter.adapt(PojoClassFactory.getPojoClass(this.getClass()));
@@ -70,9 +71,9 @@ public class IssueTest {
       }
     }
 
-    Assert.assertNotNull(this.getClass().getDeclaredField("JACOCO_FIELD_NAME"));
-    Assert.assertNotNull(this.getClass().getDeclaredField("JACOCO_METHOD_NAME"));
-    Assert.assertNotNull(this.getClass().getDeclaredMethod("shouldHideJacocoFieldAndMethod"));
+    assertNotNull(this.getClass().getDeclaredField("JACOCO_FIELD_NAME"));
+    assertNotNull(this.getClass().getDeclaredField("JACOCO_METHOD_NAME"));
+    assertNotNull(this.getClass().getDeclaredMethod("shouldHideJacocoFieldAndMethod"));
 
   }
 }

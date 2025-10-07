@@ -25,7 +25,7 @@ import com.openpojo.reflection.PojoClassFilter;
 import com.openpojo.reflection.filters.sampleclasses.SampleEnum;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

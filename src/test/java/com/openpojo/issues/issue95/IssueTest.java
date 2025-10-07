@@ -19,7 +19,7 @@
 package com.openpojo.issues.issue95;
 
 import com.openpojo.reflection.utils.AttributeHelper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.random.RandomFactory.getRandomValue;
 import static com.openpojo.reflection.java.load.ClassUtil.loadClass;

@@ -24,10 +24,9 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.reflection.java.Java;
 import com.openpojo.reflection.java.load.ClassUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 
 public class IssueTest {
 

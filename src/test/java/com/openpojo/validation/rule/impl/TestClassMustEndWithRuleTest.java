@@ -26,9 +26,10 @@ import com.openpojo.reflection.java.bytecode.asm.ASMService;
 import com.openpojo.reflection.java.bytecode.asm.DefaultSubClassDefinition;
 import com.openpojo.validation.rule.impl.sampleclasses.AClassThatIsNotATestButEndsWithTest;
 import com.openpojo.validation.rule.impl.sampleclasses.ATestNGClassEndsWithTest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -37,7 +38,7 @@ public class TestClassMustEndWithRuleTest {
 
   private TestClassMustBeProperlyNamedRule testClassMustEndWithRule;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     testClassMustEndWithRule = new TestClassMustBeProperlyNamedRule();
   }
@@ -83,7 +84,7 @@ public class TestClassMustEndWithRuleTest {
   @Test
   public void aClassThatEndWithTestMayNotBeATest() {
     Class<?> aTestClassThatEndsWithTest = AClassThatIsNotATestButEndsWithTest.class;
-    Assert.assertTrue("Should end with Test (was the class refactored?)", aTestClassThatEndsWithTest.getName().endsWith("Test"));
+    assertTrue(aTestClassThatEndsWithTest.getName().endsWith("Test"), "Should end with Test (was the class refactored?)");
     testClassMustEndWithRule.evaluate(PojoClassFactory.getPojoClass(aTestClassThatEndsWithTest));
   }
 
@@ -96,7 +97,7 @@ public class TestClassMustEndWithRuleTest {
   @Test
   public void aTestNGClassThatEndsWithTestShouldPass() {
     Class<?> aTestClassThatEndsWithTest = ATestNGClassEndsWithTest.class;
-    Assert.assertTrue("Should end with Test (was the class refactored?)", aTestClassThatEndsWithTest.getName().endsWith("Test"));
+    assertTrue(aTestClassThatEndsWithTest.getName().endsWith("Test"), "Should end with Test (was the class refactored?)");
     testClassMustEndWithRule.evaluate(PojoClassFactory.getPojoClass(aTestClassThatEndsWithTest));
   }
 

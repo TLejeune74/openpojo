@@ -26,8 +26,8 @@ import com.openpojo.log.LoggerFactory;
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.random.service.RandomGeneratorService;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ServiceRegistrarTest {
 
@@ -133,7 +133,7 @@ public class ServiceRegistrarTest {
   private Set<Class<?>> expectedDefaultTypes;
   private RandomGeneratorService randomGeneratorService;
 
-  @Before
+  @BeforeEach
   public void setup() {
     expectedDefaultTypes = new HashSet<Class<?>>();
 

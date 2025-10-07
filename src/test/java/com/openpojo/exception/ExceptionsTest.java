@@ -25,8 +25,8 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -36,7 +36,7 @@ public class ExceptionsTest {
   private List<PojoClass> pojoExceptionClasses;
   private static final int EXPECTED_EXCEPTION_COUNT = 5;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     pojoExceptionClasses = PojoClassFactory.enumerateClassesByExtendingType("com.openpojo", Throwable.class, null);
   }

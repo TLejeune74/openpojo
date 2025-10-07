@@ -20,7 +20,7 @@ package com.openpojo.issues.issue36;
 
 import com.openpojo.log.Logger;
 import com.openpojo.log.LoggerFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class IssueTest {
   private static final Logger LOG = LoggerFactory.getLogger(IssueTest.class);

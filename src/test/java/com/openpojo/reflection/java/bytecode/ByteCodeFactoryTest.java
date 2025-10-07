@@ -29,51 +29,52 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.construct.InstanceFactory.getInstance;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
  */
 public class ByteCodeFactoryTest {
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldNotBeAbleToCreateInstance() {
-    ByteCodeFactory byteCodeFactory = (ByteCodeFactory) getInstance(getPojoClass(ByteCodeFactory.class));
+    assertThrows(ReflectionException.class, () ->getInstance(getPojoClass(ByteCodeFactory.class)));
   }
 
   @Test
   public void givenNullShouldReturnNull() {
-    Assert.assertNull(getSubClass((Class<?>) null));
+    assertNull(getSubClass((Class<?>) null));
   }
 
   @Test
   public void givenAnInterfaceShouldReturnNull() {
-    Assert.assertNull(getSubClass(AnInterface.class));
+    assertNull(getSubClass(AnInterface.class));
   }
 
   @Test
   public void givenAnEnumShouldReturnNull() {
-    Assert.assertNull(getSubClass(AnEnum.class));
+    assertNull(getSubClass(AnEnum.class));
   }
 
   @Test
   public void givenPrimitiveShouldReturnNull() {
-    Assert.assertNull(getSubClass(int.class));
-    Assert.assertNull(getSubClass(char.class));
-    Assert.assertNull(getSubClass(float.class));
-    Assert.assertNull(getSubClass(long.class));
-    Assert.assertNull(getSubClass(short.class));
-    Assert.assertNull(getSubClass(byte.class));
-    Assert.assertNull(getSubClass(boolean.class));
-    Assert.assertNull(getSubClass(double.class));
+    assertNull(getSubClass(int.class));
+    assertNull(getSubClass(char.class));
+    assertNull(getSubClass(float.class));
+    assertNull(getSubClass(long.class));
+    assertNull(getSubClass(short.class));
+    assertNull(getSubClass(byte.class));
+    assertNull(getSubClass(boolean.class));
+    assertNull(getSubClass(double.class));
   }
 
   @Test
   public void givenAnArrayShouldReturnNull() {
-    Assert.assertNull(getSubClass(int[].class));
+    assertNull(getSubClass(int[].class));
   }
 
   @Test
@@ -86,13 +87,13 @@ public class ByteCodeFactoryTest {
 
   @Test
   public void givenAFinalClassShouldReturnNull() {
-    Assert.assertNull(getSubClass(AFinalClass.class));
+    assertNull(getSubClass(AFinalClass.class));
   }
 
   @Test
   public void givenAnAbstractClassWithAnAbstractMethodShouldReturnAnInstance() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(AnAbstractClassWithOneAbstraceMethod.class);
-    Assert.assertEquals("Should have 1 constructor and 1 abstract method", 2, pojoClass.getPojoMethods().size());
+    assertEquals(2, pojoClass.getPojoMethods().size(), "Should have 1 constructor and 1 abstract method");
 
     Class<?> subclass = getSubClass(pojoClass.getClazz());
     assertNotNull(subclass);
@@ -126,7 +127,7 @@ public class ByteCodeFactoryTest {
     Class<?> subClass2 = getSubClass(clazz);
     assertIsSubclass(clazz, subClass2);
 
-    Assert.assertEquals("Should generate the same subclass", subClass1, subClass2);
+    assertEquals(subClass1, subClass2, "Should generate the same subclass");
   }
 
   @Test
@@ -134,7 +135,7 @@ public class ByteCodeFactoryTest {
     Class<?> clazz = AnAbstractClassWithProtectedMethodBeforeConstructor.class;
     Class<?> subClass1 = getSubClass(clazz);
 
-    Assert.assertNotNull(getInstance(PojoClassFactory.getPojoClass(subClass1)));
+    assertNotNull(getInstance(PojoClassFactory.getPojoClass(subClass1)));
   }
 
   @Test
@@ -153,17 +154,17 @@ public class ByteCodeFactoryTest {
 
   private void assertIsConcreteAndConstructable(Class<?> subClass) {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(subClass);
-    Assert.assertTrue("Should be a concrete class", pojoClass.isConcrete());
+    assertTrue(pojoClass.isConcrete(), "Should be a concrete class");
     Object instance = RandomFactory.getRandomValue(subClass);
     assertNotNull(instance);
   }
 
   private void assertIsSubclass(Class<?> expected, Class<?> subClass) {
-    Assert.assertEquals("Should have returned a sub-class", expected, subClass.getSuperclass());
+    assertEquals(expected, subClass.getSuperclass(), "Should have returned a sub-class");
   }
 
   private void assertNotNull(Object instance) {
-    Assert.assertNotNull("Should have returned an instance", instance);
+      Assertions.assertNotNull(instance, "Should have returned an instance");
   }
 
   private Class<?> getSubClass(Class<?> clazz) {

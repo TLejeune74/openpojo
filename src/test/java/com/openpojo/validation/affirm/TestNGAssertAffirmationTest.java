@@ -20,8 +20,9 @@ package com.openpojo.validation.affirm;
 
 import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -39,9 +40,8 @@ public class TestNGAssertAffirmationTest extends AbstractAffirmationTest {
   @Test
   public void shouldTestToString() {
     // com.openpojo.validation.affirm.TestNGAssertAffirmation [@1c93d6bc: ]
-    Assert.assertTrue(String.format("[%s] signature changed? expected=[%s]!!", testNGAssertAffirmation.toString(),
-        "com.openpojo.validation.affirm.TestNGAssertAffirmation [@xxxxxx: ]"),
-        testNGAssertAffirmation.toString().startsWith("com.openpojo.validation.affirm.TestNGAssertAffirmation [@")
-            && testNGAssertAffirmation.toString().endsWith(": ]"));
+    assertTrue(testNGAssertAffirmation.toString().startsWith("com.openpojo.validation.affirm.TestNGAssertAffirmation [@")
+            && testNGAssertAffirmation.toString().endsWith(": ]"), String.format("[%s] signature changed? expected=[%s]!!", testNGAssertAffirmation.toString(),
+                    "com.openpojo.validation.affirm.TestNGAssertAffirmation [@xxxxxx: ]"));
   }
 }

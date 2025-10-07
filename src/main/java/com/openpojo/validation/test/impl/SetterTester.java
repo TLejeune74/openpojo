@@ -50,8 +50,8 @@ public class SetterTester implements Tester {
 
         fieldEntry.invokeSetter(classInstance, value);
 
-        Affirm.affirmEquals("Setter test failed, non equal value for field=[" + fieldEntry + "]", value,
-            fieldEntry.get(classInstance));
+        Affirm.affirmEquals(value,
+            fieldEntry.get(classInstance), "Setter test failed, non equal value for field=[" + fieldEntry + "]");
 
         SameInstanceIdentityHandlerStub.unregisterIdentityHandlerStubForValue(value);
       } else {

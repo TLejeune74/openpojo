@@ -18,36 +18,31 @@
 
 package com.openpojo.validation.utils;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.validation.utils.ToStringHelper.safeToString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
  */
 public class ToStringHelperTest {
 
-  @Rule
-  public ExpectedException expectedEx = ExpectedException.none();
 
   @Test
   public void shouldReturnNullWhenNull() {
-    assertThat(safeToString(null), is("null"));
+    assertEquals("null", safeToString(null));
   }
 
   @Test
   public void shouldReturnToStringWhenToStringCalled() {
     Object object = new Object();
-    assertThat(safeToString(object), is(object.toString()));
+      assertEquals(object.toString(), safeToString(object));
   }
 
   @Test
   public void shouldReturnErrorMessageWhenToStringThrowsErrors() {
-    assertThat(safeToString(this), is("Error calling toString: 'java.lang.RuntimeException: " + anyRandomMessage() + "'"));
+      assertEquals("Error calling toString: 'java.lang.RuntimeException: " + anyRandomMessage() + "'", safeToString(this));
   }
 
   @Override

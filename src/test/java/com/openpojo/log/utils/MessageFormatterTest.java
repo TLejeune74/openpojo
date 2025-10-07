@@ -28,8 +28,9 @@ import java.util.Random;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -117,14 +118,14 @@ public class MessageFormatterTest {
   @Test
   public final void testUsingCurlyBrackets() {
     for (final UsingCurlyBracketsTestData entry : getUsingCurlyBracketsTestData()) {
-      Assert.assertEquals(entry.expected, MessageFormatter.usingCurlyBrackets(entry.message, entry.fields));
+      assertEquals(entry.expected, MessageFormatter.usingCurlyBrackets(entry.message, entry.fields));
     }
   }
 
   @Test
   public final void testFlattenArrayToString() {
     for (final FlattenArrayToStringTestData entry : getFlattenArrayToStringTestData()) {
-      Assert.assertEquals(entry.expected, Arrays.toString(MessageFormatter.formatArgsToStrings(entry.array)));
+      assertEquals(entry.expected, Arrays.toString(MessageFormatter.formatArgsToStrings(entry.array)));
     }
 
   }
@@ -136,10 +137,10 @@ public class MessageFormatterTest {
   @Test
   public final void testBoundaryConditionsOnGenerateCurlyBracketTokens() {
 
-    Assert.assertEquals("", MessageFormatter.generateCurlyBracketTokens(Integer.MIN_VALUE));
-    Assert.assertEquals("", MessageFormatter.generateCurlyBracketTokens(-1));
-    Assert.assertEquals("", MessageFormatter.generateCurlyBracketTokens(0));
-    Assert.assertEquals(GENERATE_CURLY_BRACKET_TOKEN_PREFIX + TOKEN_COUNTER_START + GENERATE_CURLY_BRACKET_TOKEN_POSTFIX,
+    assertEquals("", MessageFormatter.generateCurlyBracketTokens(Integer.MIN_VALUE));
+    assertEquals("", MessageFormatter.generateCurlyBracketTokens(-1));
+    assertEquals("", MessageFormatter.generateCurlyBracketTokens(0));
+    assertEquals(GENERATE_CURLY_BRACKET_TOKEN_PREFIX + TOKEN_COUNTER_START + GENERATE_CURLY_BRACKET_TOKEN_POSTFIX,
         MessageFormatter.generateCurlyBracketTokens(1));
   }
 
@@ -149,7 +150,7 @@ public class MessageFormatterTest {
     final Object array = Array.newInstance(boolean.class, 2);
     Array.set(array, 0, false);
     Array.set(array, 1, true);
-    Assert.assertEquals(expected, MessageFormatter.format(array));
+    assertEquals(expected, MessageFormatter.format(array));
   }
 
   @Test
@@ -158,21 +159,21 @@ public class MessageFormatterTest {
     final Object array = Array.newInstance(Integer.class, 3);
     Array.set(array, 0, 3);
     Array.set(array, 2, 14);
-    Assert.assertEquals(expected, MessageFormatter.format(array));
+    assertEquals(expected, MessageFormatter.format(array));
   }
 
   @Test
   public final void testActualArraySentWithSizeZero() {
     final String expected = "[]";
     final Object array = Array.newInstance(Integer.class, 0);
-    Assert.assertEquals(expected, MessageFormatter.format(array));
+    assertEquals(expected, MessageFormatter.format(array));
   }
 
   @Test
   public void formatArrayOfArrays() {
     final String expected = "[[1, 2]]";
     int[][] arrayOfArray = { { 1, 2 } };
-    Assert.assertEquals(expected, MessageFormatter.format(arrayOfArray));
+    assertEquals(expected, MessageFormatter.format(arrayOfArray));
   }
 
   private static final int MAX_NUMBER_OF_RANDOM_TOKENS = 10;
@@ -185,7 +186,7 @@ public class MessageFormatterTest {
     for (int counter = 0; counter < randomNumberOfTokensBetween0And10; counter++) {
       assertString += GENERATE_CURLY_BRACKET_TOKEN_PREFIX + counter + GENERATE_CURLY_BRACKET_TOKEN_POSTFIX;
     }
-    Assert.assertEquals(assertString, MessageFormatter.generateCurlyBracketTokens(randomNumberOfTokensBetween0And10));
+    assertEquals(assertString, MessageFormatter.generateCurlyBracketTokens(randomNumberOfTokensBetween0And10));
 
   }
 

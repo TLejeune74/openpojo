@@ -25,7 +25,7 @@ import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.rule.impl.sampleclasses.SetterDoesExistClass;
 import com.openpojo.validation.rule.impl.sampleclasses.SetterDoesntExistClass;
 import com.openpojo.validation.utils.AClassWithSyntheticFieldDumper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.java.bytecode.asm.SubClassDefinition.GENERATED_CLASS_POSTFIX;
 

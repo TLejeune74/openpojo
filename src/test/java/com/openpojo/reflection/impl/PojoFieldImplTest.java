@@ -36,8 +36,8 @@ import com.openpojo.reflection.impl.sample.classes.AClassWithVariousAnnotatedFie
 import com.openpojo.reflection.impl.sample.classes.ClassWithGenericTypes;
 import com.openpojo.reflection.impl.sample.classes.PojoFieldImplClass;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -49,7 +49,7 @@ public class PojoFieldImplTest {
   /**
    * @throws java.lang.Exception
    */
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     pojoClassInstance = InstanceFactory.getInstance(pojoClass);
   }

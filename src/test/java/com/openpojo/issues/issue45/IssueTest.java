@@ -35,11 +35,11 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -50,7 +50,7 @@ public class IssueTest {
   private PojoClass aParameterizedClass;
   private Validator pojoValidator;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     aClassWithGenericCollectionPojo = PojoClassFactory.getPojoClass(AClassWithGenericCollection.class);
     aParameterizedClass = PojoClassFactory.getPojoClass(AParameterizedClass.class);
@@ -66,18 +66,18 @@ public class IssueTest {
   @Test
   @SuppressWarnings("AssertEqualsBetweenInconvertibleTypes")
   public void ensureAClassWithGenericCollectionPojo_HasNotBeenModified() {
-    Assert.assertThat("Fields added / removed to sample class?", aClassWithGenericCollectionPojo.getPojoFields().size(), is(1));
+    assertEquals(1, aClassWithGenericCollectionPojo.getPojoFields().size(), "Fields added / removed to sample class?");
     PojoField pojoField = aClassWithGenericCollectionPojo.getPojoFields().get(0);
-    Assert.assertEquals(List.class, pojoField.getType());
-    Assert.assertThat("Field should have only one parameter", pojoField.getParameterTypes().size(), is(1));
-    Assert.assertEquals(SomeGeneric.class, pojoField.getParameterTypes().get(0));
+    assertEquals(List.class, pojoField.getType());
+      assertEquals(1, pojoField.getParameterTypes().size(), "Field should have only one parameter");
+    assertEquals(SomeGeneric.class, pojoField.getParameterTypes().get(0));
   }
 
   @Test
   public void ensureAParameterizedClass_HasNotBeenModified() {
-    Assert.assertThat(aParameterizedClass.getPojoFields().size(), is(1));
-    Assert.assertThat(aParameterizedClass.getClazz().getTypeParameters().length, is(1));
-    Assert.assertTrue(TypeVariable.class.isAssignableFrom(aParameterizedClass.getClazz().getTypeParameters()[0].getClass()));
+      assertEquals(1, aParameterizedClass.getPojoFields().size());
+      assertEquals(1, aParameterizedClass.getClazz().getTypeParameters().length);
+    assertTrue(TypeVariable.class.isAssignableFrom(aParameterizedClass.getClazz().getTypeParameters()[0].getClass()));
   }
 
   @Test

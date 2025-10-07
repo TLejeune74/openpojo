@@ -33,15 +33,15 @@ import com.openpojo.reflection.filters.FilterNestedClasses;
 import com.openpojo.reflection.filters.FilterNonConcrete;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class CollectionAndMapPackageRandomGeneratorsTest {
   private static final List<PojoClass> collectionRandomGenerators = new LinkedList<PojoClass>();
   private static final String[] packages = new String[] { "com.openpojo.random.collection", "com.openpojo.random.map" };
   private static final int EXPECTED_COUNT = 54;
 
-  @BeforeClass
+  @BeforeAll
   public static void setup() {
     for (final String pkg : packages) {
       collectionRandomGenerators.addAll(PojoClassFactory.getPojoClassesRecursively(pkg,

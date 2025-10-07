@@ -18,8 +18,11 @@
 
 package com.openpojo.reflection.java.bytecode.asm;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author oshoukry
@@ -29,8 +32,8 @@ public class ASMNotLoadedExceptionTest {
   @Test
   @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
   public void shouldReturnRightMessage() {
-    Assert.assertNull(ASMNotLoadedException.getInstance().getCause());
+    assertNull(ASMNotLoadedException.getInstance().getCause());
     String message = ASMNotLoadedException.getInstance().getMessage();
-    Assert.assertEquals("ASM v5.0+ library required, please see http://asm.ow2.org/", message);
+    assertEquals("ASM v5.0+ library required, please see http://asm.ow2.org/", message);
   }
 }

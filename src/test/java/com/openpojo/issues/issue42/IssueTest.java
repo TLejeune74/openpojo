@@ -29,7 +29,7 @@ import com.openpojo.validation.affirm.Affirmation;
 import com.openpojo.validation.affirm.AffirmationFactory;
 import com.openpojo.validation.affirm.JUnitAssertAffirmation;
 import com.openpojo.validation.test.impl.GetterTester;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

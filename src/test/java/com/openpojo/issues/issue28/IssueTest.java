@@ -27,8 +27,8 @@ import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.rule.impl.NoFieldShadowingRule;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -36,7 +36,7 @@ import org.junit.Test;
 public class IssueTest {
   private Validator pojoValidator;
 
-  @Before
+  @BeforeEach
   public void setup() {
     pojoValidator = ValidatorBuilder.create().with(new NoFieldShadowingRule()).build();
   }

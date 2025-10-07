@@ -26,9 +26,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -48,7 +48,7 @@ public class JavaClassPathClassLoaderTest {
 
   private static final String JAVA_VERSION = System.getProperty("java.version");
 
-  @Before
+  @BeforeEach
   public void setup() {
     javaClassPathClassLoader = JavaClassPathClassLoader.getInstance();
     if (JAVA_VERSION.startsWith("1.8")) {

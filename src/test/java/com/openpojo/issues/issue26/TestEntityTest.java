@@ -35,8 +35,8 @@ import com.openpojo.validation.rule.impl.NoStaticExceptFinalRule;
 import com.openpojo.validation.test.impl.BusinessIdentityTester;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class TestEntityTest {
   private static final int EXPECTED_CLASS_COUNT = 2;
@@ -46,7 +46,7 @@ public class TestEntityTest {
   private List<PojoClass> pojoClasses;
   private Validator pojoValidator;
 
-  @Before
+  @BeforeEach
   public void setup() {
     pojoClasses = PojoClassFactory.getPojoClasses(POJO_PACKAGE);
 

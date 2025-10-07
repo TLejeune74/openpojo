@@ -20,11 +20,10 @@ package com.openpojo.reflection.java.version;
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.java.version.VersionParser.getVersionParts;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -33,12 +32,12 @@ public class VersionParserTest {
 
   @Test
   public void shouldReturnEmptyListForVersionNull() {
-    assertThat(getVersionParts(null).size(), is(0));
+    assertEquals(0, getVersionParts(null).size());
   }
 
   @Test
   public void shouldReturnEmptyListForVersionPartsWhenString() {
-    assertThat(getVersionParts("SomeString").size(), is(0));
+      assertEquals(0, getVersionParts("SomeString").size());
   }
 
   @Test
@@ -46,8 +45,8 @@ public class VersionParserTest {
     Integer major = 5;
 
     final List<Integer> versionParts = getVersionParts("" + major);
-    assertThat(versionParts.size(), is(1));
-    assertThat(versionParts.get(0), is(major));
+      assertEquals(1, versionParts.size());
+      assertEquals(major, versionParts.get(0));
   }
 
   @Test
@@ -57,9 +56,9 @@ public class VersionParserTest {
 
     final List<Integer> versionParts = getVersionParts("" + major + "." + minor);
 
-    assertThat(versionParts.size(), is(2));
-    assertThat(versionParts.get(0), is(major));
-    assertThat(versionParts.get(1), is(minor));
+      assertEquals(2,versionParts.size());
+      assertEquals(major,versionParts.get(0));
+      assertEquals(minor,versionParts.get(1));
   }
 
   @Test
@@ -68,9 +67,9 @@ public class VersionParserTest {
     Integer minor = 5;
 
     final List<Integer> versionParts = getVersionParts("" + major + "." + minor + "-BETA");
-    assertThat(versionParts.size(), is(2));
-    assertThat(versionParts.get(0), is(major));
-    assertThat(versionParts.get(1), is(minor));
+      assertEquals(2,versionParts.size());
+      assertEquals(major, versionParts.get(0));
+      assertEquals(minor, versionParts.get(1));
   }
 
   @Test
@@ -79,8 +78,8 @@ public class VersionParserTest {
     Integer minor = 3;
 
     final List<Integer> versionParts = getVersionParts("" + major + ".BETA." + minor);
-    assertThat(versionParts.size(), is(2));
-    assertThat(versionParts.get(0), is(major));
-    assertThat(versionParts.get(1), is(minor));
+      assertEquals(2, versionParts.size());
+      assertEquals(major, versionParts.get(0));
+      assertEquals(minor, versionParts.get(1));
   }
 }

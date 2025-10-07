@@ -19,25 +19,27 @@
 package com.openpojo.random.impl;
 
 import com.openpojo.random.RandomGenerator;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ObjectRandomGeneratorTest {
   private RandomGenerator objectRandomGenerator;
   private final Class<?> objectClass = Object.class;
   private static final int EXPECTED_COUNT = 1;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     objectRandomGenerator = ObjectRandomGenerator.getInstance();
   }
 
   @Test
   public void testGetInstance() {
-    Assert.assertNotNull("Null object returned for ObjectRandomGenerator.getInstance()", objectRandomGenerator);
-    Assert.assertTrue(String.format("Incorrect type returned=[%s] for requested type=[%s]", objectRandomGenerator.getClass(),
-        ObjectRandomGenerator.class), objectRandomGenerator instanceof ObjectRandomGenerator);
+    assertNotNull(objectRandomGenerator, "Null object returned for ObjectRandomGenerator.getInstance()");
+    assertTrue(objectRandomGenerator instanceof ObjectRandomGenerator, String.format("Incorrect type returned=[%s] for requested type=[%s]", objectRandomGenerator.getClass(),
+            ObjectRandomGenerator.class));
 
   }
 

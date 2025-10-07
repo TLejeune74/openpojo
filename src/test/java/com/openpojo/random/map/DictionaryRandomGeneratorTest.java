@@ -29,8 +29,10 @@ import com.openpojo.random.RandomFactory;
 import com.openpojo.random.map.support.SimpleType1;
 import com.openpojo.random.map.support.SimpleType2;
 import com.openpojo.reflection.Parameterizable;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author oshoukry
@@ -39,21 +41,21 @@ public class DictionaryRandomGeneratorTest {
 
   @Test
   public void canGenerateDictionary() {
-    Assert.assertNotNull("Should not be null", RandomFactory.getRandomValue(Dictionary.class));
+    assertNotNull(RandomFactory.getRandomValue(Dictionary.class), "Should not be null");
   }
 
   @Test
   public void dictionaryCreatedIsHashtable() {
     Object object = RandomFactory.getRandomValue(Dictionary.class);
-    Assert.assertNotNull(object);
-    Assert.assertEquals("Should be HashTable instance", Hashtable.class, object.getClass());
+    assertNotNull(object);
+    assertEquals(Hashtable.class, object.getClass(), "Should be HashTable instance");
   }
 
   @Test
   public void shouldNotBeEmpty() {
     Hashtable hashtable = (Hashtable) RandomFactory.getRandomValue(Dictionary.class);
-    Assert.assertNotNull(hashtable);
-    Assert.assertTrue("Should not be empty", hashtable.size() > 0);
+    assertNotNull(hashtable);
+    assertTrue(hashtable.size() > 0, "Should not be empty");
   }
 
   @Test
@@ -74,14 +76,14 @@ public class DictionaryRandomGeneratorTest {
         return parameterTypes;
       }
     });
-    Assert.assertNotNull("Should not be null", hashtable);
-    Assert.assertTrue("Should not be empty", !hashtable.isEmpty());
+    assertNotNull(hashtable, "Should not be null");
+    assertTrue(!hashtable.isEmpty(), "Should not be empty");
     for (Map.Entry<?, ?> entry : hashtable.entrySet()) {
-      Assert.assertNotNull("Should not be null entry", entry);
-      Assert.assertNotNull("Should not be null entry.getKey()", entry.getKey());
-      Assert.assertEquals("Should be of type SimpleType1.class", SimpleType1.class, entry.getKey().getClass());
-      Assert.assertNotNull("Should not be null entry.getValue()", entry.getValue());
-      Assert.assertEquals("Should be of type SimpleType2.class", SimpleType2.class, entry.getValue().getClass());
+      assertNotNull(entry, "Should not be null entry");
+      assertNotNull(entry.getKey(), "Should not be null entry.getKey()");
+      assertEquals(SimpleType1.class, entry.getKey().getClass(), "Should be of type SimpleType1.class");
+      assertNotNull( entry.getValue(), "Should not be null entry.getValue()");
+      assertEquals(SimpleType2.class, entry.getValue().getClass(), "Should be of type SimpleType2.class");
     }
   }
 }

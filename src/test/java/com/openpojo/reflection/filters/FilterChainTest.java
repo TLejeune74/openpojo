@@ -20,8 +20,9 @@ package com.openpojo.reflection.filters;
 
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoClassFilter;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -31,35 +32,37 @@ public class FilterChainTest extends IdentitiesAreEqual {
   @Test
   public void newFilterChain_hasNoFilters() {
     FilterChain filter = new FilterChain();
-    Assert.assertEquals(0, filter.size());
+    assertEquals(0, filter.size());
   }
 
   @Test
   public void filterChain_shouldIgonreNullFilterArray() {
     FilterChain filter = new FilterChain((PojoClassFilter[]) null);
-    Assert.assertEquals(0, filter.size());
+    assertEquals(0, filter.size());
   }
 
   @Test
   public void oneOneFilterAdded_FilterChainHasOneFilter() {
     PojoClassFilter dummyFilter = new DummyPojoClassFilter();
     FilterChain filter = new FilterChain(dummyFilter);
-    Assert.assertEquals(1, filter.size());
-    Assert.assertTrue(filter.getPojoClassFilters().contains(dummyFilter));
+    assertEquals(1, filter.size());
+    assertTrue(filter.getPojoClassFilters().contains(dummyFilter));
   }
 
   @Test
   public void addingArrayWithNullFilters_ignored() {
     PojoClassFilter dummyFilter = new DummyPojoClassFilter();
     FilterChain filter = new FilterChain(dummyFilter, null);
-    Assert.assertEquals(1, filter.size());
-    Assert.assertTrue(filter.getPojoClassFilters().contains(dummyFilter));
+    assertEquals(1, filter.size());
+    assertTrue(filter.getPojoClassFilters().contains(dummyFilter));
   }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void retrivedFilterCollectionIsUnmodifiable() {
-    FilterChain filter = new FilterChain();
-    filter.getPojoClassFilters().add(new DummyPojoClassFilter());
+    assertThrows(UnsupportedOperationException.class, () -> {
+        FilterChain filter = new FilterChain();
+        filter.getPojoClassFilters().add(new DummyPojoClassFilter());
+    });
   }
 
   @Test

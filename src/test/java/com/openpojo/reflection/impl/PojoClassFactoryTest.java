@@ -28,7 +28,7 @@ import com.openpojo.utils.dummypackage.Persistable;
 import com.openpojo.utils.dummypackage.Person;
 import com.openpojo.utils.filter.LoggingPojoClassFilter;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.java.bytecode.asm.SubClassDefinition.GENERATED_CLASS_POSTFIX;
 

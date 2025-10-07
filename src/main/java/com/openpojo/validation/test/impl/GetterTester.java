@@ -51,7 +51,7 @@ public class GetterTester implements Tester {
 
         LoggerFactory.getLogger(this.getClass()).debug("Testing Field [{0}] with value [{1}]", fieldEntry, safeToString(value));
 
-        Affirm.affirmEquals("Getter returned non equal value for field=[" + fieldEntry + "]", value, fieldEntry.invokeGetter(classInstance));
+        Affirm.affirmEquals(value, fieldEntry.invokeGetter(classInstance), "Getter returned non equal value for field=[" + fieldEntry + "]");
         SameInstanceIdentityHandlerStub.unregisterIdentityHandlerStubForValue(value);
       } else {
         LoggerFactory.getLogger(this.getClass()).debug("Field [{0}] has no getter skipping", fieldEntry);

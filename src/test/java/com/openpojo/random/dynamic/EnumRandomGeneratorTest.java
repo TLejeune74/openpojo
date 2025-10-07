@@ -19,7 +19,7 @@
 package com.openpojo.random.dynamic;
 
 import com.openpojo.random.exception.RandomGeneratorException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

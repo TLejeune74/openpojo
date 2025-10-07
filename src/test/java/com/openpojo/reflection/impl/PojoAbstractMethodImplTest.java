@@ -22,8 +22,9 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.sample.classes.AnAbstractClassEmpty;
 import com.openpojo.reflection.impl.sample.classes.AnAbstractClassWithOneAbstractMethod;
-import org.junit.Test;
-import org.testng.Assert;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -34,11 +35,11 @@ public class PojoAbstractMethodImplTest {
   public void shouldFindNoAbstractMethods() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(AnAbstractClassEmpty.class);
     for (PojoMethod pojoMethod : pojoClass.getPojoMethods()) {
-      Assert.assertTrue(pojoMethod.isConstructor());
-      Assert.assertFalse(pojoMethod.isAbstract());
+      assertTrue(pojoMethod.isConstructor());
+      assertFalse(pojoMethod.isAbstract());
     }
 
-    Assert.assertEquals(1, pojoClass.getPojoMethods().size());
+    assertEquals(1, pojoClass.getPojoMethods().size());
   }
 
   @Test
@@ -46,9 +47,9 @@ public class PojoAbstractMethodImplTest {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(AnAbstractClassWithOneAbstractMethod.class);
     for (PojoMethod pojoMethod : pojoClass.getPojoMethods()) {
       if (!pojoMethod.isConstructor())
-        Assert.assertTrue(pojoMethod.isAbstract());
+        assertTrue(pojoMethod.isAbstract());
     }
 
-    Assert.assertEquals(1 + 1 /* constructor */, pojoClass.getPojoMethods().size());
+    assertEquals(1 + 1 /* constructor */, pojoClass.getPojoMethods().size());
   }
 }

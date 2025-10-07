@@ -28,13 +28,13 @@ import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.test.impl.sampleclasses.AClassWithFieldThatThrowsExceptionWhenToString;
-import org.apache.log4j.spi.LoggingEvent;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.slf4j.event.LoggingEvent;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  * @author oshoukry
@@ -45,7 +45,7 @@ public abstract class LoggingTesterTest {
   private Validator validator;
   private Tester tester;
 
-  @Before
+  @BeforeEach
   public void setup() {
     spyAppender = new SpyAppender();
     tester = getTester();
@@ -64,10 +64,10 @@ public abstract class LoggingTesterTest {
     validator.validate(PojoClassFactory.getPojoClass(sampleClass));
 
     final List<LoggingEvent> eventsForLogger = spyAppender.getEventsForLogger(tester.getClass());
-    assertThat(eventsForLogger.size(), is(1));
+    assertEquals(1, eventsForLogger.size());
 
     String expectedLog = getExpectedLogMessage();
-    assertThat(eventsForLogger.get(0).getMessage().toString(), is(expectedLog));
+      assertEquals(expectedLog, eventsForLogger.get(0).getMessage().toString());
   }
 
   private String getExpectedLogMessage() {
@@ -82,7 +82,7 @@ public abstract class LoggingTesterTest {
     return pojoClass.getPojoFields().get(0);
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     spyAppender.stopCaptureForLogger(tester.getClass());
   }

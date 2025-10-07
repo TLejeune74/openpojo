@@ -31,10 +31,11 @@ import com.openpojo.random.sampleclasses.hierarchy.ClassImplementingSomeInterfac
 import com.openpojo.random.sampleclasses.hierarchy.SomeInterface;
 import com.openpojo.random.sampleclasses.hierarchy.SomeInterfaceRandomGenerator;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author oshoukry
@@ -60,8 +61,7 @@ public class RandomFactoryTest {
 
     });
 
-    Assert.assertEquals("RandomGenerator registration failed", randomString,
-        RandomFactory.getRandomValue(RegisteredDummy.class).getValue());
+    assertEquals(randomString, RandomFactory.getRandomValue(RegisteredDummy.class).getValue(), "RandomGenerator registration failed");
   }
 
   /**
@@ -70,8 +70,8 @@ public class RandomFactoryTest {
   @Test
   public void testRandomLoop() {
     RandomFactory.addRandomGenerator(new RandomEmployee());
-    Assert.assertNotNull(RandomFactory.getRandomValue(Employee.class));
-    Assert.assertNotNull(RandomFactory.getRandomValue(Employee.class));
+    assertNotNull(RandomFactory.getRandomValue(Employee.class));
+    assertNotNull(RandomFactory.getRandomValue(Employee.class));
   }
 
   @Test
@@ -83,7 +83,7 @@ public class RandomFactoryTest {
   public void shouldGenerateAbstract() {
     com.openpojo.random.sampleclasses.AnAbstractClass anAbstractClass =
         RandomFactory.getRandomValue(com.openpojo.random.sampleclasses.AnAbstractClass.class);
-    Assert.assertNotNull(anAbstractClass);
+    assertNotNull(anAbstractClass);
   }
 
   @Test
@@ -121,7 +121,7 @@ public class RandomFactoryTest {
   @Test
   public void shouldPopulateFieldsWithBusinessKeys() {
     AClassWithBusinessKey classWithBusinessKey = RandomFactory.getRandomValue(AClassWithBusinessKey.class);
-    Assert.assertThat(classWithBusinessKey.getSomeKey(), notNullValue());
+    assertNotNull(classWithBusinessKey.getSomeKey());
   }
 
 

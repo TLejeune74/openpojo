@@ -24,10 +24,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.SynchronousQueue;
 
-import org.junit.Assert;
-
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -84,7 +82,7 @@ public class MapCollectionAssertionHelper {
     if (isAMap(input)) {
 
       Map inputMap = (Map) input;
-      Assert.assertThat(inputMap.size(), is(greaterThan(0)));
+      assertTrue(inputMap.size() > 0, "Type [" + type + " cannot be assigned to input [" + input.getClass() + "]");
       validateMapKeysAndValuesAreCorrectTypes(queue, getAnEntry(inputMap));
     }
   }
@@ -109,8 +107,8 @@ public class MapCollectionAssertionHelper {
   private static void ensureThatAllKeysAndValuesAreSameClassType(Map<?, ?> inputMap) {
     Map.Entry referenceEntry = (Map.Entry) inputMap.entrySet().toArray()[0];
     for (Map.Entry entry : inputMap.entrySet()) {
-      Assert.assertEquals(entry.getKey().getClass(), referenceEntry.getKey().getClass());
-      Assert.assertEquals(entry.getValue().getClass(), referenceEntry.getValue().getClass());
+      assertEquals(entry.getKey().getClass(), referenceEntry.getKey().getClass());
+      assertEquals(entry.getValue().getClass(), referenceEntry.getValue().getClass());
       ensureBagHasTheSameClassType(entry.getKey());
       ensureBagHasTheSameClassType(entry.getValue());
     }
@@ -121,7 +119,7 @@ public class MapCollectionAssertionHelper {
       return;
     Object referenceEntry = collection.iterator().next();
     for (Object entry : collection) {
-      Assert.assertEquals(referenceEntry.getClass(), entry.getClass());
+      assertEquals(referenceEntry.getClass(), entry.getClass());
       ensureBagHasTheSameClassType(entry);
     }
   }
@@ -144,7 +142,6 @@ public class MapCollectionAssertionHelper {
   }
 
   private static void assertTypeIsAssignable(Object input, Class<?> type) {
-    Assert.assertTrue("Type [" + type + " cannot be assigned to input [" + input.getClass() + "]", type.isAssignableFrom(input
-        .getClass()));
+    assertTrue(type.isAssignableFrom(input.getClass()), "Type [" + type + " cannot be assigned to input [" + input.getClass() + "]");
   }
 }

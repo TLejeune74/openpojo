@@ -26,8 +26,9 @@ import com.openpojo.random.map.support.ComparableType1;
 import com.openpojo.random.map.support.ComparableType2;
 import com.openpojo.random.map.util.BaseMapRandomGeneratorTest;
 import com.openpojo.reflection.java.load.ClassUtil;
-import org.junit.Assume;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * @author oshoukry
@@ -35,9 +36,9 @@ import org.junit.Before;
 public class NavigableMapRandomGeneratorTest extends BaseMapRandomGeneratorTest {
   private static final String NAVIGABLEMAP_CLASS_NAME = "java.util.NavigableMap";
 
-  @Before
+  @BeforeEach
   public void requirement() {
-    Assume.assumeTrue(NAVIGABLEMAP_CLASS_NAME + " is not loaded, skipping test", ClassUtil.isClassLoaded(NAVIGABLEMAP_CLASS_NAME));
+    assumeTrue(ClassUtil.isClassLoaded(NAVIGABLEMAP_CLASS_NAME), NAVIGABLEMAP_CLASS_NAME + " is not loaded, skipping test");
   }
 
   protected ParameterizableRandomGenerator getInstance() {

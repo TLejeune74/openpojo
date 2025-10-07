@@ -30,9 +30,10 @@ import com.openpojo.reflection.impl.sample.annotation.AnotherAnnotation;
 import com.openpojo.reflection.impl.sample.annotation.SomeAnnotation;
 import com.openpojo.registry.ServiceRegistrar;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -46,7 +47,7 @@ public class PojoPackageImplTest {
 
   private PojoPackage pojoPackage;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     packageName = this.getClass().getPackage().getName() + ".sample.classes";
     expectedToString = "PojoPackageImpl [packageName=" + packageName + "]";
@@ -147,6 +148,6 @@ public class PojoPackageImplTest {
 
   @Test
   public void testtoString() {
-    Assert.assertEquals("toString format changed?!", expectedToString, pojoPackage.toString());
+    assertEquals(expectedToString, pojoPackage.toString(), "toString format changed?!");
   }
 }

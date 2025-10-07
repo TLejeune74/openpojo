@@ -38,7 +38,7 @@ public class DefaultValuesNullTester implements Tester {
 
     for (final PojoField fieldEntry : pojoClass.getPojoFields()) {
       if (!fieldEntry.isPrimitive() && !fieldEntry.isFinal() && fieldEntry.getAnnotation(BusinessKey.class) == null) {
-        Affirm.affirmNull(String.format("Expected null value for for field=[%s]", fieldEntry), fieldEntry.get(classInstance));
+        Affirm.affirmNull(fieldEntry.get(classInstance), String.format("Expected null value for for field=[%s]", fieldEntry));
       }
     }
   }

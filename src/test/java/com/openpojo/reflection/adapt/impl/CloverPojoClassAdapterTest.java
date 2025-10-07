@@ -30,10 +30,10 @@ import com.openpojo.reflection.coverage.service.impl.DefaultPojoCoverageFilterSe
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.registry.ServiceRegistrar;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -46,12 +46,12 @@ public class CloverPojoClassAdapterTest {
   private static PojoCoverageFilterService cloverPojoCoverageFilterService = PojoCoverageFilterServiceFactory
       .createPojoCoverageFilterServiceWith(Clover3.getInstance());
 
-  @BeforeClass
+  @BeforeAll
   public static void initialSetup() {
     originalPojoCoverageFilterService = ServiceRegistrar.getInstance().getPojoCoverageFilterService();
   }
 
-  @Before
+  @BeforeEach
   public void setup() {
     PojoCoverageFilterService allButClover3PojoCoverageFilterService = new DefaultPojoCoverageFilterService();
 
@@ -64,7 +64,7 @@ public class CloverPojoClassAdapterTest {
     cloverCleanedPojoClass = CloverPojoClassAdapter.getInstance().adapt(cloverInstrumentedPojoClass);
   }
 
-  @AfterClass
+  @AfterAll
   public static void reInstateInitialSetup() {
     ServiceRegistrar.getInstance().setPojoCoverageFilterService(originalPojoCoverageFilterService);
   }

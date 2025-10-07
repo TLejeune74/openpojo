@@ -25,27 +25,30 @@ import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Test;
-import org.testng.Assert;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
  */
 public class CacheStorageFactoryTest {
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void shouldThrowExeptionIfConstructed() throws Throwable {
-    PojoClass cacheStorageFactoryPojo = PojoClassFactory.getPojoClass(CacheStorageFactory.class);
+      assertThrows(UnsupportedOperationException.class, ()-> {
+          PojoClass cacheStorageFactoryPojo = PojoClassFactory.getPojoClass(CacheStorageFactory.class);
 
-    List<PojoMethod> pojoConstructors = cacheStorageFactoryPojo.getPojoConstructors();
-    Affirm.affirmEquals("Should have only one constructor", 1, pojoConstructors.size());
-    Affirm.affirmTrue("Constructor must be private", pojoConstructors.get(0).isPrivate());
+          List<PojoMethod> pojoConstructors = cacheStorageFactoryPojo.getPojoConstructors();
+          Affirm.affirmEquals( 1, pojoConstructors.size(), "Should have only one constructor");
+          Affirm.affirmTrue( pojoConstructors.get(0).isPrivate(), "Constructor must be private");
 
-    try {
-      pojoConstructors.get(0).invoke(null, (Object[]) null);
-    } catch (ReflectionException re) {
-      throw re.getCause().getCause();
-    }
+          try {
+              pojoConstructors.get(0).invoke(null, (Object[]) null);
+          } catch (ReflectionException re) {
+              throw re.getCause().getCause();
+          }
+      });
 
   }
 
@@ -55,9 +58,9 @@ public class CacheStorageFactoryTest {
     String expectedKey = "SomeKey";
     String expectedValue = "SomeValue";
     keyValuePairCache.add(expectedKey, expectedValue);
-    Assert.assertEquals(expectedValue, keyValuePairCache.get(expectedKey));
+    assertEquals(expectedValue, keyValuePairCache.get(expectedKey));
     System.gc();
-    Assert.assertNull(keyValuePairCache.get(expectedKey));
+    assertNull(keyValuePairCache.get(expectedKey));
   }
 
   @Test
@@ -66,8 +69,8 @@ public class CacheStorageFactoryTest {
     String expectedKey = "SomeKey";
     String expectedValue = "SomeValue";
     keyValuePairCache.add(expectedKey, expectedValue);
-    Assert.assertEquals(expectedValue, keyValuePairCache.get(expectedKey));
+    assertEquals(expectedValue, keyValuePairCache.get(expectedKey));
     System.gc();
-    Assert.assertEquals(expectedValue, keyValuePairCache.get(expectedKey));
+    assertEquals(expectedValue, keyValuePairCache.get(expectedKey));
   }
 }

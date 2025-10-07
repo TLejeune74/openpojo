@@ -29,15 +29,15 @@ import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class RandomInstanceFromInterfaceRandomGeneratorTest {
 
   RandomInstanceFromInterfaceRandomGenerator proxyGenerator;
   ASimpleInterface aSimpleInterface;
 
-  @Before
+  @BeforeEach
   public void setup() {
     proxyGenerator = RandomInstanceFromInterfaceRandomGenerator.getInstance();
     aSimpleInterface = proxyGenerator.doGenerate(ASimpleInterface.class);

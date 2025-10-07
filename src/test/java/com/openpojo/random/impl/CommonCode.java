@@ -20,7 +20,9 @@ package com.openpojo.random.impl;
 
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -58,9 +60,7 @@ public class CommonCode {
   }
 
   public static void testGetType(final RandomGenerator randomGenerator, final Class<?> type, final int expectedCount) {
-    Assert.assertEquals(String.format("[%s] added/removed Types?", randomGenerator), expectedCount,
-        randomGenerator.getTypes().size());
-    Assert.assertTrue(String.format("[%s] doesn't report responsibility for [%s]?!!", randomGenerator.getClass(), type),
-        randomGenerator.getTypes().contains(type));
+    assertEquals(expectedCount, randomGenerator.getTypes().size(), String.format("[%s] added/removed Types?", randomGenerator));
+    assertTrue(randomGenerator.getTypes().contains(type), String.format("[%s] doesn't report responsibility for [%s]?!!", randomGenerator.getClass(), type));
   }
 }

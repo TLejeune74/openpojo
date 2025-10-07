@@ -25,7 +25,7 @@ import java.util.Map;
 
 import com.openpojo.business.BusinessIdentity;
 import com.openpojo.business.annotation.BusinessKey;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class PerformanceTest {

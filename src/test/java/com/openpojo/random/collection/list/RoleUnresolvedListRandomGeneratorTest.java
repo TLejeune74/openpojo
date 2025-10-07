@@ -30,8 +30,9 @@ import com.openpojo.random.util.SomeRoleUnresolved;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -50,47 +51,45 @@ public class RoleUnresolvedListRandomGeneratorTest {
       if (!constructor.isSynthetic())
         constructors.add(constructor);
     }
-    Assert.assertEquals("Should only have one constructor [" + randomGeneratorPojo.getPojoConstructors() + "]",
-        1,
-        constructors.size());
+    assertEquals(1, constructors.size(), "Should only have one constructor [" + randomGeneratorPojo.getPojoConstructors() + "]");
 
     PojoMethod constructor = constructors.get(0);
 
-    Assert.assertTrue(constructor.isPrivate());
+    assertTrue(constructor.isPrivate());
   }
 
   @Test
   public void shouldBeAbleToCreate() {
-    Assert.assertEquals(RoleUnresolvedListRandomGenerator.class, randomGenerator.getClass());
+    assertEquals(RoleUnresolvedListRandomGenerator.class, randomGenerator.getClass());
   }
 
   @Test
   public void shouldOnlyReturnCollectionClassFromGetTypes() {
     Collection<Class<?>> types = randomGenerator.getTypes();
-    Assert.assertNotNull("Should not be null", types);
-    Assert.assertEquals("Should only have one type", 1, types.size());
-    Assert.assertEquals("Should only be " + expectedTypeClass.getName(), expectedTypeClass, types.iterator().next());
+    assertNotNull(types, "Should not be null");
+    assertEquals(1, types.size(), "Should only have one type");
+    assertEquals(expectedTypeClass, types.iterator().next(), "Should only be " + expectedTypeClass.getName());
   }
 
   @Test
   public void generatedTypeShouldBeAssignableToDeclaredType() {
     Class<?> declaredType = randomGenerator.getTypes().iterator().next();
     Object generatedInstance = randomGenerator.doGenerate(declaredType);
-    Assert.assertTrue("[" + declaredType.getName() + " is not assignable to " + generatedInstance.getClass().getName() +
-        "]", declaredType.isAssignableFrom(generatedInstance.getClass()));
+    assertTrue(declaredType.isAssignableFrom(generatedInstance.getClass()), "[" + declaredType.getName() + " is not assignable to " + generatedInstance.getClass().getName() +
+            "]");
   }
 
-  @Test(expected = RandomGeneratorException.class)
+  @Test
   public void shouldThrowExceptionForDoGenerateForOtherThanCollectionClass() {
-    randomGenerator.doGenerate(ALeafChildClass.class);
+    assertThrows(RandomGeneratorException.class, () -> randomGenerator.doGenerate(ALeafChildClass.class));
   }
 
   @Test
   public void shouldGenerateCorrectTypeCollectionForRequestedCollection() {
     Collection someObject = randomGenerator.doGenerate(expectedTypeClass);
-    Assert.assertNotNull("Should not be null", someObject);
-    Assert.assertEquals("Should be a " + expectedTypeClass.getName(), expectedTypeClass, someObject.getClass());
-    Assert.assertTrue("Should not be Empty", someObject.size() > 0);
+    assertNotNull(someObject, "Should not be null");
+    assertEquals(expectedTypeClass, someObject.getClass(), "Should be a " + expectedTypeClass.getName());
+    assertTrue(someObject.size() > 0, "Should not be Empty");
   }
 
   @Test
@@ -100,12 +99,12 @@ public class RoleUnresolvedListRandomGeneratorTest {
   }
 
   protected void assertCollectionHasExpectedTypes(Collection<?> generatedCollection, Class<?> type) {
-    Assert.assertNotNull("Should not be null", generatedCollection);
-    Assert.assertEquals(expectedTypeClass, generatedCollection.getClass());
-    Assert.assertTrue("Should not be empty", generatedCollection.size() > 0);
+    assertNotNull(generatedCollection, "Should not be null");
+    assertEquals(expectedTypeClass, generatedCollection.getClass());
+    assertTrue(generatedCollection.size() > 0, "Should not be empty");
     for (Object entry : generatedCollection) {
-      Assert.assertNotNull("Should not be null", entry);
-      Assert.assertEquals("Entry should be " + type.getName(), type, entry.getClass());
+      assertNotNull(entry, "Should not be null");
+      assertEquals(type, entry.getClass(), "Entry should be " + type.getName());
     }
   }
 

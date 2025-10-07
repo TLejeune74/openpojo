@@ -36,16 +36,16 @@ import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.DefaultValuesNullTester;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class BeanTest {
 
   private List<PojoClass> pojoClasses;
   private Validator pojoValidator;
 
-  @Before
+  @BeforeEach
   public void setup() {
     LogHelper.initializeLoggers();
     PojoClassFilter pojoClassFilter = new FilterChain(new FilterEnum(), new FilterPackageInfo());
@@ -68,7 +68,7 @@ public class BeanTest {
     pojoValidator = validatorBuilder.build();
   }
 
-  @After
+  @AfterEach
   public void restoreLogging() {
     LogHelper.resetLoggers();
   }

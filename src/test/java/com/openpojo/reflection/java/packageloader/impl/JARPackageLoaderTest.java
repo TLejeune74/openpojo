@@ -28,8 +28,8 @@ import java.util.Set;
 import com.openpojo.log.utils.MessageFormatter;
 import com.openpojo.reflection.java.Java;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -97,7 +97,7 @@ public class JARPackageLoaderTest {
         "org.apache.log4j.TTCCLayout",
         "org.apache.log4j.WriterAppender" };
 
-  @Before
+  @BeforeEach
   public void setUp() {
   }
 

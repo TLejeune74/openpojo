@@ -37,8 +37,9 @@ import com.openpojo.validation.test.impl.BusinessIdentityTester;
 import com.openpojo.validation.test.impl.DefaultValuesNullTester;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -65,7 +66,7 @@ public class IdentityFactoryRaceConditionTest {
       } catch (InterruptedException ignored) {
       }
 
-    Assert.assertEquals("Some threads failed to complete successfully", numberOfThreads, tpe.getCompletedSuccessfully());
+    assertEquals(numberOfThreads, tpe.getCompletedSuccessfully(), "Some threads failed to complete successfully");
   }
 
   private ReportingThreadExecutionPool getReportingThreadExecutionPool(int numberOfThreads) {

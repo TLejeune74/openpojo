@@ -26,8 +26,8 @@ import com.openpojo.utils.log.LogHelper;
 import com.openpojo.utils.log.MockAppender;
 import com.openpojo.utils.log.MockAppenderLog4J;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -39,7 +39,7 @@ public class SL4JLoggerTest extends AbstractLoggerBase {
   /**
    * This method does the test setup, currently initializes the loggers.
    */
-  @Before
+  @BeforeEach
   public final void setUp() {
     LoggerFactory.setActiveLogger(SLF4JLogger.class);
   }

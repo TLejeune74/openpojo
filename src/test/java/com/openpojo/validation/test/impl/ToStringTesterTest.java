@@ -22,7 +22,7 @@ import com.openpojo.validation.CommonCode;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.test.impl.sampleclasses.ToStringTester_DispatchingToBusinessIdentity;
 import com.openpojo.validation.test.impl.sampleclasses.ToStringTester_NotDispatchingToBusinessIdentity;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

@@ -24,8 +24,9 @@ import java.util.List;
 import com.openpojo.business.exception.BusinessException;
 import com.openpojo.business.identity.IdentityFactory;
 import com.openpojo.business.identity.IdentityHandler;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author oshoukry
@@ -56,6 +57,6 @@ public class IdentityFactoryTest {
         IdentityFactory.registerIdentityHandler(identityHandlers.get(i));
       }
     }
-    Assert.fail("BusinessException should have been thrown");
+    fail("BusinessException should have been thrown");
   }
 }

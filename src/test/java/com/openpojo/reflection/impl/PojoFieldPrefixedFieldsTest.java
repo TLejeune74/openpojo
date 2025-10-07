@@ -30,15 +30,17 @@ import com.openpojo.reflection.utils.AttributeHelper;
 import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.rule.impl.GetterMustExistRule;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class PojoFieldPrefixedFieldsTest {
 
-  @Before
-  @After
+  @BeforeEach
+  @AfterEach
   public void cleanup() {
     PojoCache.clear();
     AttributeHelper.clearRegistry();
@@ -63,11 +65,13 @@ public class PojoFieldPrefixedFieldsTest {
     }
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailAttributeName() throws NoSuchFieldException {
-    AttributeHelper.registerFieldPrefix("mName");
-    Field mNameField = AClassWithFieldsPrefixed.class.getDeclaredField("mName");
-    AttributeHelper.getAttributeName(mNameField);
+    assertThrows(ReflectionException.class, () -> {
+        AttributeHelper.registerFieldPrefix("mName");
+        Field mNameField = AClassWithFieldsPrefixed.class.getDeclaredField("mName");
+        AttributeHelper.getAttributeName(mNameField);
+    });
   }
 
   @Test
@@ -88,7 +92,7 @@ public class PojoFieldPrefixedFieldsTest {
       unregisterdSuccessfully = true;
     }
     if (!unregisterdSuccessfully)
-      Assert.fail("unregistering failed?!");
+      fail("unregistering failed?!");
   }
 
   @Test

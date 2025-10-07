@@ -28,8 +28,10 @@ import com.openpojo.validation.rule.impl.sampleclasses.AClassImplementingEqualsA
 import com.openpojo.validation.rule.impl.sampleclasses.AClassImplementingEqualsOnly;
 import com.openpojo.validation.rule.impl.sampleclasses.AClassImplementingHashcodeOnly;
 import com.openpojo.validation.rule.impl.sampleclasses.AClassNotImplementingHashcodeOrEquals;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author oshoukry
@@ -41,8 +43,7 @@ public class EqualsAndHashCodeMatchRuleTest {
   public void mustImplementRule() {
     PojoClass equalsAndHashcodeMatchRule = PojoClassFactory.getPojoClass(EqualsAndHashCodeMatchRule.class);
     List<PojoClass> interfaces = equalsAndHashcodeMatchRule.getInterfaces();
-    Assert.assertTrue("Expected interface=[Rule] to be implemented, but was not", interfaces.contains(PojoClassFactory
-        .getPojoClass(Rule.class)));
+    assertTrue(interfaces.contains(PojoClassFactory.getPojoClass(Rule.class)), "Expected interface=[Rule] to be implemented, but was not");
   }
 
   @Test
@@ -51,8 +52,8 @@ public class EqualsAndHashCodeMatchRuleTest {
     List<PojoMethod> methods = aClassNotImplementingHashCodeOrEquals.getPojoMethods();
 
 
-    Assert.assertEquals(1, methods.size());
-    Assert.assertTrue(methods.get(0).isConstructor());
+    assertEquals(1, methods.size());
+    assertTrue(methods.get(0).isConstructor());
 
     rule.evaluate(aClassNotImplementingHashCodeOrEquals);
   }
@@ -62,7 +63,7 @@ public class EqualsAndHashCodeMatchRuleTest {
     PojoClass aClassImplementingEqualsOnly = PojoClassFactory.getPojoClass(AClassImplementingEqualsOnly.class);
     List<PojoMethod> methods = aClassImplementingEqualsOnly.getPojoMethods();
 
-    Assert.assertEquals(2, methods.size());
+    assertEquals(2, methods.size());
     boolean constructorFound = false;
     boolean equalsFound = false;
 
@@ -75,15 +76,14 @@ public class EqualsAndHashCodeMatchRuleTest {
         equalsFound = true;
     }
 
-    Assert.assertTrue("Constructor not found", constructorFound);
-    Assert.assertTrue("Equals not found", equalsFound);
+    assertTrue(constructorFound, "Constructor not found");
+    assertTrue(equalsFound, "Equals not found");
 
     try {
       rule.evaluate(aClassImplementingEqualsOnly);
-      Assert.fail("Should have failed validation but did not");
+      fail("Should have failed validation but did not");
     } catch (AssertionError ae) {
-      Assert.assertEquals("equals implemented but hashcode isn't in Pojo [" + aClassImplementingEqualsOnly + "]", ae.getMessage
-          ());
+      assertEquals(ae.getMessage(), "equals implemented but hashcode isn't in Pojo [" + aClassImplementingEqualsOnly + "]");
     }
   }
 
@@ -92,7 +92,7 @@ public class EqualsAndHashCodeMatchRuleTest {
     PojoClass aClassImplementingHashcodeOnly = PojoClassFactory.getPojoClass(AClassImplementingHashcodeOnly.class);
     List<PojoMethod> methods = aClassImplementingHashcodeOnly.getPojoMethods();
 
-    Assert.assertEquals(2, methods.size());
+    assertEquals(2, methods.size());
     boolean constructorFound = false;
     boolean hashCode = false;
     for (PojoMethod method : methods) {
@@ -104,15 +104,14 @@ public class EqualsAndHashCodeMatchRuleTest {
         hashCode = true;
     }
 
-    Assert.assertTrue("Constructor not found", constructorFound);
-    Assert.assertTrue("hashCode not found", hashCode);
+    assertTrue(constructorFound, "Constructor not found");
+    assertTrue(hashCode, "hashCode not found");
 
     try {
       rule.evaluate(aClassImplementingHashcodeOnly);
-      Assert.fail("Should have failed validation but did not");
+      fail("Should have failed validation but did not");
     } catch (AssertionError ae) {
-      Assert.assertEquals("hashCode implemented but equals isn't in Pojo [" + aClassImplementingHashcodeOnly + "]",
-          ae.getMessage());
+      assertEquals(ae.getMessage(), "hashCode implemented but equals isn't in Pojo [" + aClassImplementingHashcodeOnly + "]");
     }
   }
 
@@ -121,7 +120,7 @@ public class EqualsAndHashCodeMatchRuleTest {
     PojoClass aClassImplementingEqualsAndHashcode = PojoClassFactory.getPojoClass(AClassImplementingEqualsAndHashCode.class);
     List<PojoMethod> methods = aClassImplementingEqualsAndHashcode.getPojoMethods();
 
-    Assert.assertEquals(3, methods.size());
+    assertEquals(3, methods.size());
 
     boolean constructorFound = false;
     boolean equalsFound = false;
@@ -140,9 +139,9 @@ public class EqualsAndHashCodeMatchRuleTest {
         equalsFound = true;
     }
 
-    Assert.assertTrue("Constructor not found", constructorFound);
-    Assert.assertTrue("Equals not found", equalsFound);
-    Assert.assertTrue("hashCode not found", hashCodeFound);
+    assertTrue(constructorFound, "Constructor not found");
+    assertTrue(equalsFound, "Equals not found");
+    assertTrue(hashCodeFound, "hashCode not found");
 
     rule.evaluate(aClassImplementingEqualsAndHashcode);
   }

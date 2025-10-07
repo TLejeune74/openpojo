@@ -26,14 +26,14 @@ import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.java.packageloader.impl.URLToFileSystemAdapter;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Test.assertEquals;
+import static org.junit.jupiter.api.Test.assertThat;
+import static org.junit.jupiter.api.Test.fail;
 
 /**
  * @author oshoukry
@@ -41,7 +41,7 @@ import static org.junit.Assert.fail;
 public class FileSystemReaderTest {
   private File file;
 
-  @Before
+  @BeforeEach
   public void setup() {
     file = new File(System.getProperty("user.dir")
         + File.separator + ".tmp.testing.folder." + RandomFactory.getRandomValue(String.class));

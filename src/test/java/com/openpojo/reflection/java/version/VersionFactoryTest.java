@@ -20,18 +20,12 @@ package com.openpojo.reflection.java.version;
 
 import com.openpojo.reflection.java.bytecode.asm.ASMDetector;
 import com.openpojo.reflection.java.load.ClassUtil;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.random.RandomFactory.getRandomValue;
 import static com.openpojo.reflection.java.version.VersionFactory.getImplementationVersion;
 import static com.openpojo.reflection.java.version.VersionFactory.getVersion;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -41,64 +35,64 @@ public class VersionFactoryTest {
   @Test
   public void canCreate() {
     final Version version = anyVersion();
-    assertThat(version, Matchers.notNullValue());
+    assertNotNull(version);
   }
 
   @Test
   public void versionInterfaceImplementsComparable() {
-    assertThat(anyVersion(), instanceOf(Comparable.class));
+    assertSame(Comparable.class, anyVersion());
   }
 
   @Test
   public void compareTwoEmptyVersionsAsEqual() {
     Version left = getVersion("");
     Version right = getVersion("");
-    assertThat(left.compareTo(right), is(0));
+    assertEquals(0, left.compareTo(right));
   }
 
   @Test
   public void v4ShouldBeLessThanV5() {
     Version left = getVersion("4");
     Version right = getVersion("5");
-    assertThat(left.compareTo(right), is(-1));
-    assertThat(right.compareTo(left), is(1));
+      assertEquals(-1, left.compareTo(right));
+      assertEquals(1, right.compareTo(left));
   }
 
   @Test
   public void v4_2ShouldBeLessThan4_3() {
     Version left = getVersion("4.2");
     Version right = getVersion("4.3");
-    assertThat(left.compareTo(right), is(-1));
-    assertThat(right.compareTo(left), is(1));
+      assertEquals(-1, left.compareTo(right));
+      assertEquals(1, right.compareTo(left));
   }
 
   @Test
   public void v4_2_1ShouldBeLessThan4_2_1_1() {
     Version left = getVersion("4.2.1");
     Version right = getVersion("4.2.1.1");
-    assertThat(left.compareTo(right), is(-1));
-    assertThat(right.compareTo(left), is(1));
+      assertEquals(-1, left.compareTo(right));
+      assertEquals(1, right.compareTo(left));
   }
 
   @Test
   public void sameLengthAndMatchingVersionsShouldBe0() {
     Version left = getVersion("4.2.1.1");
     Version right = getVersion("4.2.1.1");
-    assertThat(left.compareTo(right), is(0));
-    assertThat(right.compareTo(left), is(0));
+      assertEquals(0, left.compareTo(right));
+      assertEquals(0, right.compareTo(left));
   }
 
   @Test
   public void getVersionReturnsOriginalString() {
     final String expectedVersion = "4.2.1.1-SNAPSHOT";
     Version someVersion = getVersion(expectedVersion);
-    assertThat(someVersion.getVersion(), is(expectedVersion));
+      assertEquals(expectedVersion, someVersion.getVersion());
   }
 
   @Test
   public void shouldGetEmptyStringForOpenPojoClasses() {
     final Version version = getImplementationVersion(this.getClass());
-    assertThat(version.getVersion(), nullValue());
+    assertNotNull(version.getVersion());
   }
 
   @Test
@@ -110,8 +104,8 @@ public class VersionFactoryTest {
   @Test
   public void shouldGetEmptyVersionOfClassIsNull() {
     Version version = getImplementationVersion(null);
-    assertThat(version, notNullValue());
-    assertThat(version.getVersion(), nullValue());
+    assertNotNull(version);
+    assertNull(version.getVersion());
   }
 
   private Version anyVersion() {

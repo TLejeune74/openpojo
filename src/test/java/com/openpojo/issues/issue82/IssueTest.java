@@ -20,10 +20,10 @@ package com.openpojo.issues.issue82;
 
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.java.load.ClassUtil;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author oshoukry
@@ -31,14 +31,14 @@ import org.junit.Test;
 public class IssueTest {
   private static final Class<?> ZONED_DATE_TIME_CLASS = ClassUtil.loadClass("java.time.ZonedDateTime");
 
-  @Before
+  @BeforeEach
   public void setup() {
     Assume.assumeNotNull(ZONED_DATE_TIME_CLASS);
   }
 
   @Test
   public void canGenerateRandomZonedDateTime() {
-    Assert.assertNotNull(RandomFactory.getRandomValue(ZONED_DATE_TIME_CLASS));
+    assertNotNull(RandomFactory.getRandomValue(ZONED_DATE_TIME_CLASS));
   }
 
 }

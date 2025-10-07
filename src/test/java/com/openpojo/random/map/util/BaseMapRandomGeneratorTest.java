@@ -37,8 +37,7 @@ import com.openpojo.reflection.Parameterizable;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -76,27 +75,27 @@ public abstract class BaseMapRandomGeneratorTest {
       if (!constructor.isSynthetic())
         constructors.add(constructor);
     }
-    Assert.assertEquals("Should only have one constructor [" + mapRandomGeneratorPojo.getPojoConstructors() + "]", 1,
+    assertEquals("Should only have one constructor [" + mapRandomGeneratorPojo.getPojoConstructors() + "]", 1,
         constructors.size());
 
     PojoMethod constructor = constructors.get(0);
 
-    Assert.assertTrue(constructor.isPrivate());
+    assertTrue(constructor.isPrivate());
   }
 
   @Test
   public void shouldBeAbleToCreate() {
     final RandomGenerator instance = getInstance();
-    Assert.assertNotNull(instance);
-    Assert.assertEquals(getGeneratorClass(), instance.getClass());
+    assertNotNull(instance);
+    assertEquals(getGeneratorClass(), instance.getClass());
   }
 
   @Test
   public void shouldOnlyReturnMapClassFromGetTypes() {
     Collection<Class<?>> types = getInstance().getTypes();
-    Assert.assertNotNull("Should not be null", types);
-    Assert.assertEquals("Should only have one type", 1, types.size());
-    Assert.assertEquals("Should only be " + getExpectedTypeClass().getName(), getExpectedTypeClass(), types.iterator().next());
+    assertNotNull("Should not be null", types);
+    assertEquals("Should only have one type", 1, types.size());
+    assertEquals("Should only be " + getExpectedTypeClass().getName(), getExpectedTypeClass(), types.iterator().next());
   }
 
   @Test

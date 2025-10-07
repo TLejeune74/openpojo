@@ -19,8 +19,10 @@
 package com.openpojo.reflection.coverage.impl;
 
 import com.openpojo.reflection.filters.FilterCloverClasses;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author oshoukry
@@ -29,21 +31,21 @@ public class Clover3Test {
 
   @Test
   public void shouldHaveNoAdapters() {
-    Assert.assertNull(Clover3.getInstance().getPojoClassAdapter());
+    assertNull(Clover3.getInstance().getPojoClassAdapter());
   }
 
   @Test
   public void shouldHaveFilterCloverClasses() {
-    Assert.assertEquals(FilterCloverClasses.class, Clover3.getInstance().getPojoClassFilter().getClass());
+    assertEquals(FilterCloverClasses.class, Clover3.getInstance().getPojoClassFilter().getClass());
   }
 
   @Test
   public void nameIsClover3() {
-    Assert.assertEquals("Clover 3", Clover3.getInstance().getName());
+    assertEquals(Clover3.getInstance().getName(), "Clover 3");
   }
 
   @Test
   public void coverageClassNameIs__com_cenqua_cloverTestNameSniffer() {
-    Assert.assertEquals("com_cenqua_clover.TestNameSniffer", Clover3.getInstance().getCoverageClassName());
+    assertEquals("com_cenqua_clover.TestNameSniffer", Clover3.getInstance().getCoverageClassName());
   }
 }

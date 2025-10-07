@@ -23,8 +23,9 @@ import java.util.List;
 import com.openpojo.business.annotation.BusinessKey;
 import com.openpojo.business.cache.BusinessKeyField;
 import com.openpojo.business.utils.BusinessPojoHelper;
-import org.junit.Test;
-import org.testng.Assert;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -34,11 +35,11 @@ public class DefaultBusinessKeyFieldTest {
   @Test
   public void shouldFormatToString() {
     List<BusinessKeyField> businessKeyFieldList = BusinessPojoHelper.getBusinessKeyFields(AClassWithBusinessKeys.class);
-    Assert.assertEquals(1, businessKeyFieldList.size());
+    assertEquals(1, businessKeyFieldList.size());
     String expectedToString = "DefaultBusinessKeyField [isRequired=true, isComposite=false, isCaseSensitive=true, " +
         "pojoField=PojoFieldImpl [field=private java.lang.String com.openpojo.business.cache.impl" +
         ".DefaultBusinessKeyFieldTest$AClassWithBusinessKeys.name, fieldGetter=null, fieldSetter=null]]";
-    Assert.assertEquals(expectedToString, businessKeyFieldList.get(0).toString());
+    assertEquals(expectedToString, businessKeyFieldList.get(0).toString());
   }
 
   private static class AClassWithBusinessKeys {

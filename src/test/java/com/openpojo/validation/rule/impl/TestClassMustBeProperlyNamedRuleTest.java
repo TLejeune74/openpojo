@@ -22,17 +22,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.junit.Assert.assertThat;
 
 public class TestClassMustBeProperlyNamedRuleTest {
-
-  @Rule
-  public ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void shouldThrowExceptionIfNoAnnotationsLoaded() {
@@ -46,7 +39,7 @@ public class TestClassMustBeProperlyNamedRuleTest {
 
   @Test
   public void assertDefaultAnnotation() {
-    String[] expectedList = { "org.testng.annotations.Test", "org.junit.Test", "org.junit.jupiter.api.Test" };
+    String[] expectedList = { "org.testng.annotations.Test", "org.junit.jupiter.api.Test", "org.junit.jupiter.api.Test" };
     assertThat(Arrays.asList(TestClassMustBeProperlyNamedRule.DEFAULT_ANNOTATIONS),
         containsInAnyOrder(expectedList));
   }

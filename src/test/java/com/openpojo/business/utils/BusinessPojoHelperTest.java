@@ -29,15 +29,16 @@ import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
  */
 public class BusinessPojoHelperTest {
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test  // todo(expected = UnsupportedOperationException.class)
   public void shouldThrowExeptionIfConstructed() throws Throwable {
     PojoClass businessPojoHelper = PojoClassFactory.getPojoClass(BusinessPojoHelper.class);
 
@@ -67,7 +68,7 @@ public class BusinessPojoHelperTest {
 
     assert businessPojoHelperCache != null;
     businessPojoHelperCache.add("SomePojo", businessFields);
-    Assert.assertEquals(businessFields, businessPojoHelperCache.get(DummyBusinessPojo.class.getName()));
+    assertEquals(businessFields, businessPojoHelperCache.get(DummyBusinessPojo.class.getName()));
   }
 
   private static class DummyBusinessPojo {

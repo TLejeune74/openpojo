@@ -21,7 +21,7 @@ package com.openpojo.validation.rule.impl;
 import com.openpojo.validation.CommonCode;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.rule.impl.sampleclasses.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

@@ -21,8 +21,8 @@ package com.openpojo.random.impl;
 import java.sql.Timestamp;
 
 import com.openpojo.random.RandomGenerator;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -32,7 +32,7 @@ public class TimestampRandomGeneratorTest {
   Class<?> timestampClass = Timestamp.class;
   private static final int EXPECTED_TYPES = 1;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     timestampRandomGenerator = TimestampRandomGenerator.getInstance();
   }

@@ -27,8 +27,8 @@ import java.util.List;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -36,7 +36,7 @@ import org.junit.Test;
 public class DefaultRandomGeneratorServiceTest {
   private DefaultRandomGeneratorService defaultRandomGeneratorService;
 
-  @Before
+  @BeforeEach
   public void setup() {
     defaultRandomGeneratorService = new DefaultRandomGeneratorService();
   }

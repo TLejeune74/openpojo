@@ -22,7 +22,8 @@ import com.openpojo.business.BusinessIdentity;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.java.load.ClassUtil;
 
-import static org.testng.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author oshoukry
@@ -37,36 +38,36 @@ public class TestNGAssertAffirmation extends AbstractAffirmation implements Affi
   }
 
   public void fail(final String message) {
-    org.testng.Assert.fail(message);
+    fail(message);
   }
 
-  public void affirmTrue(final String message, final boolean condition) {
+  public void affirmTrue(final boolean condition, final String message) {
     assertTrue(condition, message);
   }
 
-  public void affirmFalse(final String message, final boolean condition) {
+  public void affirmFalse(final boolean condition, final String message) {
     assertFalse(condition, message);
   }
 
-  public void affirmNotNull(final String message, final Object object) {
+  public void affirmNotNull(final Object object, final String message) {
     assertNotNull(object, message);
   }
 
-  public void affirmNull(final String message, final Object object) {
+  public void affirmNull(final Object object, final String message) {
     assertNull(object, message);
   }
 
-  public void affirmEquals(final String message, final Object expected, final Object actual) {
+  public void affirmEquals(final Object expected, final Object actual, final String message) {
     if (objectPointersAreTheSame(expected, actual))
       return;
 
     if (isArray(expected))
-      affirmArrayEquals(message, expected, actual);
+      affirmArrayEquals(expected, actual, message);
     else
       assertEquals(actual, expected, message);
   }
 
-  public void affirmSame(String message, Object first, Object second) {
+  public void affirmSame(Object first, Object second, String message) {
     assertSame(first, second, message);
   }
 

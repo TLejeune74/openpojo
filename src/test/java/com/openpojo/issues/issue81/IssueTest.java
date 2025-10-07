@@ -23,8 +23,9 @@ import java.util.List;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.utils.samplejar.SampleJar;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -38,7 +39,7 @@ public class IssueTest {
     final Package aPackage = org.testng.Assert.class.getPackage();
     final String packageName = aPackage.getName();
     List<PojoClass> pojoClasses = PojoClassFactory.getPojoClassesRecursively(packageName, null);
-    Assert.assertTrue("Should have found some classes", pojoClasses.size() > 0);
+    assertTrue(pojoClasses.size() > 0, "Should have found some classes");
   }
 
   /**
@@ -47,23 +48,22 @@ public class IssueTest {
   @Test
   public void shouldReturnNullIfFieldTypeIsMissing() throws Exception {
     Class<?> clazz = SampleJar.getURLClassLoader().loadClass("com.failtoload.AClassWithFieldMissing");
-    Assert.assertNotNull("expected class not found", clazz);
-    Assert.assertNull("Should have failed to load", PojoClassFactory.getPojoClass(clazz));
+    assertNotNull(clazz, "expected class not found");
+    assertNull(PojoClassFactory.getPojoClass(clazz), "Should have failed to load");
   }
 
   @Test
   public void shouldReturnNullIfMethodReturnIsMissing() throws Exception {
     Class<?> clazz = SampleJar.getURLClassLoader().loadClass("com.failtoload.AClassWithMethodReturningMissing");
-    Assert.assertNotNull("expected class not found", clazz);
-    Assert.assertNull("Should have failed to load", PojoClassFactory.getPojoClass(clazz));
+    assertNotNull(clazz, "expected class not found");
+    assertNull(PojoClassFactory.getPojoClass(clazz), "Should have failed to load");
   }
 
   @Test
   public void shouldReturnNullIfMethodParameterIsMissing() throws Exception {
     Class<?> clazz = SampleJar.getURLClassLoader().loadClass("com.failtoload.AClassWithMethodParameterMissing");
-    Assert.assertNotNull("expected class not found", clazz);
-    Assert.assertNull("Should have failed to load", PojoClassFactory.getPojoClass(clazz));
-
+    assertNotNull(clazz, "expected class not found");
+    assertNull(PojoClassFactory.getPojoClass(clazz), "Should have failed to load");
   }
 }
 

@@ -25,8 +25,9 @@ import com.openpojo.business.annotation.BusinessKey;
 import com.openpojo.business.exception.BusinessException;
 import com.openpojo.business.sampleclasses.JavaClassWithArray;
 import com.openpojo.utils.dummypackage.Person;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BusinessIdentityTest {
 
@@ -91,14 +92,14 @@ public class BusinessIdentityTest {
   public void testIncompleteObject() {
     try {
       BusinessIdentity.areEqual(new Person(null, "MiddleName", null), new Person(null, "MiddleName", null));
-      Assert.fail("Expected Exception due to required BusinessKeys not fullfilled");
+      fail("Expected Exception due to required BusinessKeys not fullfilled");
     } catch (final BusinessException be) {
       // expected
     }
 
     try {
       BusinessIdentity.areEqual(new Person(null, null, "LastName"), new Person(null, null, "LastName"));
-      Assert.fail("Expected Exception due to composite BusinessKeys not fullfilled");
+      fail("Expected Exception due to composite BusinessKeys not fullfilled");
     } catch (final BusinessException be) {
       // expected
     }
@@ -106,14 +107,14 @@ public class BusinessIdentityTest {
     try {
       //noinspection RedundantStringConstructorCall
       BusinessIdentity.areEqual(new String("First"), new String("First"));
-      Assert.fail("Expected Exception due to no BusinessKeys defined");
+      fail("Expected Exception due to no BusinessKeys defined");
     } catch (final BusinessException be) {
       // expected
     }
 
     try {
       BusinessIdentity.getHashCode(null);
-      Assert.fail("Expected Exception due to null object");
+      fail("Expected Exception due to null object");
     } catch (final BusinessException be) {
       // expected
     }
@@ -122,16 +123,14 @@ public class BusinessIdentityTest {
   @Test
   public void testAreEqual() {
     for (final PersonEqualityPairTestData testData : getEqualityTestData()) {
-      Assert.assertEquals(String.format("Equality test failed for left=[%s], right=[%s]", testData.left, testData.right),
-          testData.expectedEqualityResult, BusinessIdentity.areEqual(testData.left, testData.right));
+      assertEquals(testData.expectedEqualityResult, BusinessIdentity.areEqual(testData.left, testData.right), String.format("Equality test failed for left=[%s], right=[%s]", testData.left, testData.right));
     }
   }
 
   @Test
   public void testGetHashCode() {
     for (final HashCodeTestData hashCodeTestData : getHashCodeTestData()) {
-      Assert.assertEquals(String.format("HashCode test failed for Data=[%s]", hashCodeTestData),
-          hashCodeTestData.expectedHashCode, BusinessIdentity.getHashCode(hashCodeTestData));
+      assertEquals(hashCodeTestData.expectedHashCode, BusinessIdentity.getHashCode(hashCodeTestData), String.format("HashCode test failed for Data=[%s]", hashCodeTestData));
     }
 
   }
@@ -140,9 +139,8 @@ public class BusinessIdentityTest {
   public void testToString() {
     final ToStringTestData toStringTestData = new ToStringTestData();
     final String toString = BusinessIdentity.toString(toStringTestData);
-    Assert.assertTrue(String.format("BusinessIdentity.toString() failed!! recieved[%s]", toString),
-        toString.startsWith("com.openpojo.business.BusinessIdentityTest$ToStringTestData [@")
-            && toString.endsWith(": instance_name=Instance Name, static_name=Static Name, STATIC_FINAL_NAME=Static Final Name]"));
+    assertTrue(toString.startsWith("com.openpojo.business.BusinessIdentityTest$ToStringTestData [@")
+            && toString.endsWith(": instance_name=Instance Name, static_name=Static Name, STATIC_FINAL_NAME=Static Final Name]"), String.format("BusinessIdentity.toString() failed!! recieved[%s]", toString));
   }
 
   @Test
@@ -154,7 +152,7 @@ public class BusinessIdentityTest {
     expected += Integer.toHexString(System.identityHashCode(javaClassWithArray));
     expected += ": data=[[One], [One, Two], [One, Two, Three]]";
     expected += "]";
-    Assert.assertEquals(expected, toStringOutput);
+    assertEquals(expected, toStringOutput);
   }
 
   @Test
@@ -165,12 +163,12 @@ public class BusinessIdentityTest {
     expected += Integer.toHexString(System.identityHashCode(javaClassWithArray));
     expected += ": data=null";
     expected += "]";
-    Assert.assertEquals(expected, toStringOutput);
+    assertEquals(expected, toStringOutput);
   }
 
   @Test
   public void whenNullObject_Then_toString_returnNull() {
-    Assert.assertEquals("null", BusinessIdentity.toString(null));
+    assertEquals("null", BusinessIdentity.toString(null));
   }
 
   private static class PersonEqualityPairTestData {

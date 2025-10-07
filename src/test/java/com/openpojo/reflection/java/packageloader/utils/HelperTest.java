@@ -20,8 +20,8 @@ package com.openpojo.reflection.java.packageloader.utils;
 
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.java.Java;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;

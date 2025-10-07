@@ -24,8 +24,9 @@ import com.openpojo.random.ParameterizableRandomGenerator;
 import com.openpojo.random.collection.support.SimpleType;
 import com.openpojo.random.collection.util.BaseCollectionRandomGeneratorTest;
 import com.openpojo.reflection.java.load.ClassUtil;
-import org.junit.Assume;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * @author oshoukry
@@ -33,9 +34,9 @@ import org.junit.Before;
 public class ConcurrentLinkedDequeRandomGeneratorTest extends BaseCollectionRandomGeneratorTest {
   private static final String EXPECTED_TYPE_CLASS_NAME = "java.util.concurrent.ConcurrentLinkedDeque";
 
-  @Before
+  @BeforeEach
   public void requirement() {
-    Assume.assumeTrue(EXPECTED_TYPE_CLASS_NAME + " is not loaded, skipping test", ClassUtil.isClassLoaded(EXPECTED_TYPE_CLASS_NAME));
+    assumeTrue(ClassUtil.isClassLoaded(EXPECTED_TYPE_CLASS_NAME), EXPECTED_TYPE_CLASS_NAME + " is not loaded, skipping test");
   }
 
   @Override

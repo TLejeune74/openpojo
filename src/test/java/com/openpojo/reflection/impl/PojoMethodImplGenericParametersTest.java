@@ -31,7 +31,7 @@ import com.openpojo.reflection.impl.sample.classes.AClassWithGenericParameterCon
 import com.openpojo.reflection.impl.sample.classes.AClassWithGenericParameterMethod;
 import com.openpojo.reflection.impl.sample.classes.AClassWithNestedClass;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

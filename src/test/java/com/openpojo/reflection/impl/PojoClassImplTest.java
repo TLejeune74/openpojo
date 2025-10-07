@@ -37,8 +37,10 @@ import com.openpojo.reflection.impl.sample.classes.*;
 import com.openpojo.reflection.impl.sample.classes.AClassWithNestedClass.NestedClass;
 import com.openpojo.reflection.java.Java;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
  * TODO: This test class needs to be re-worked, to focus on just the PojoClassImpl not across services, i.e.
@@ -104,7 +106,7 @@ public class PojoClassImplTest {
         constructor = constructorEntry;
     }
 
-    Assert.assertNotNull(constructor);
+    assertNotNull(constructor);
     Affirm.affirmTrue("Failed to find synthetic constructor", constructor.isSynthetic());
     Affirm.affirmEquals("Synthetic Constructor should have just one parameter", 1, constructor.getParameterTypes().length);
 
@@ -181,10 +183,10 @@ public class PojoClassImplTest {
     }
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailToCreateInstanceOnInterface() {
     final PojoClass pojoClass = getPojoClassImplForClass(AnInterfaceClass.class);
-    InstanceFactory.getInstance(pojoClass);
+    assertThrows(ReflectionException.class, () -> {InstanceFactory.getInstance(pojoClass);});
   }
 
   @Test
@@ -193,22 +195,22 @@ public class PojoClassImplTest {
     Affirm.affirmNotNull("Should have created instance", InstanceFactory.getInstance(pojoClass));
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailToFindAppropriateConstructor() {
     final PojoClass pojoClass = getPojoClassImplForClass(MultiplePublicAndPrivateWithManyParamsConstructor.class);
-    InstanceFactory.getInstance(pojoClass, (new Object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }));
+      assertThrows(ReflectionException.class, () -> InstanceFactory.getInstance(pojoClass, (new Object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 })));
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailToConstructBasedOnExcpetionalConstructorWithNoParam() {
     final PojoClass pojoClass = getPojoClassImplForClass(AClassWithExceptionalConstructors.class);
-    InstanceFactory.getInstance(pojoClass);
+      assertThrows(ReflectionException.class, () -> InstanceFactory.getInstance(pojoClass));
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldFailToConstructBasedOnExcpetionalConstructorWithParam() {
     final PojoClass pojoClass = getPojoClassImplForClass(AClassWithExceptionalConstructors.class);
-    InstanceFactory.getInstance(pojoClass, ("OneStringParam"));
+    assertThrows(ReflectionException.class, () -> InstanceFactory.getInstance(pojoClass, "OneStringParam"));
   }
 
   @Test

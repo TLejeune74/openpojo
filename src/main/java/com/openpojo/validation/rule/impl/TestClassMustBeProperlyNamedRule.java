@@ -46,7 +46,7 @@ public class TestClassMustBeProperlyNamedRule implements Rule {
 
   public static final String[] DEFAULT_PREFIX_TOKENS = { "Test" };
   public static final String[] DEFAULT_SUFFIX_TOKENS = { "Test", "TestCase" };
-  public static final String[] DEFAULT_ANNOTATIONS = { "org.testng.annotations.Test", "org.junit.Test",
+  public static final String[] DEFAULT_ANNOTATIONS = { "org.testng.annotations.Test", "org.junit.jupiter.api.Test",
       "org.junit.jupiter.api.Test" };
 
   private final Collection<String> prefixes;

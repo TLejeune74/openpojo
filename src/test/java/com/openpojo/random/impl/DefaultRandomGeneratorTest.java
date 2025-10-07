@@ -20,7 +20,7 @@ package com.openpojo.random.impl;
 
 import com.openpojo.random.exception.RandomGeneratorException;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

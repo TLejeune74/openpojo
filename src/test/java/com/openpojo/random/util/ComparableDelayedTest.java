@@ -19,8 +19,10 @@
 package com.openpojo.random.util;
 
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static com.openpojo.validation.affirm.Affirm.affirmEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -31,8 +33,8 @@ public class ComparableDelayedTest {
   public void delayShouldBeBetweenMinus3And1() {
     for (int count = 0; count < 100; count++) {
       long delay = new ComparableDelayed().getDelay(null);
-      Assert.assertTrue("Should be under 2", 2 > delay);
-      Assert.assertTrue("Should be over -3", -4 < delay);
+      assertTrue(2 > delay, "Should be under 2");
+      assertTrue(-4 < delay, "Should be over -3");
     }
   }
 
@@ -42,13 +44,13 @@ public class ComparableDelayedTest {
     ComparableDelayedStub secondInstance = new ComparableDelayedStub();
 
     secondInstance.hashCode = firstInstance.hashCode() - 1;
-    Affirm.affirmEquals("CompareTo should return 1", 1, firstInstance.compareTo(secondInstance));
+    affirmEquals( 1, firstInstance.compareTo(secondInstance), "CompareTo should return 1");
 
     secondInstance.hashCode = firstInstance.hashCode() + 1;
-    Affirm.affirmEquals("CompareTo should return -1", -1, firstInstance.compareTo(secondInstance));
+    affirmEquals("CompareTo should return -1", -1, firstInstance.compareTo(secondInstance));
 
     secondInstance.hashCode = firstInstance.hashCode();
-    Affirm.affirmEquals("CompareTo should return 0", 0, firstInstance.compareTo(secondInstance));
+    affirmEquals("CompareTo should return 0", 0, firstInstance.compareTo(secondInstance));
   }
 
   private class ComparableDelayedStub extends ComparableDelayed {

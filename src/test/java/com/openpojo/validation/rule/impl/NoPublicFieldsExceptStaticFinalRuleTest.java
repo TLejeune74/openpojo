@@ -24,7 +24,7 @@ import com.openpojo.validation.rule.impl.sampleclasses.NoPublicFieldsExceptStati
 import com.openpojo.validation.rule.impl.sampleclasses.NoPublicFieldsExceptStaticFinalDoesntClass;
 import com.openpojo.validation.rule.impl.sampleclasses.NoPublicFieldsExceptStaticFinalDoesntPublicFinalClass;
 import com.openpojo.validation.rule.impl.sampleclasses.NoPublicFieldsExceptStaticFinalDoesntPublicStaticClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

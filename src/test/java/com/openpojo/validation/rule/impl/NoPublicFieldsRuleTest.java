@@ -22,7 +22,7 @@ import com.openpojo.validation.CommonCode;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.rule.impl.sampleclasses.NoPublicFieldsDoesClass;
 import com.openpojo.validation.rule.impl.sampleclasses.NoPublicFieldsDoesntClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

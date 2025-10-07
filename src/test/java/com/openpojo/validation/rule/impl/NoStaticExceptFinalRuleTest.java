@@ -26,7 +26,7 @@ import com.openpojo.validation.rule.impl.sampleclasses.NoStaticExceptFinalDoesCl
 import com.openpojo.validation.rule.impl.sampleclasses.NoStaticExceptFinalDoesntClass;
 import com.openpojo.validation.utils.AClassWithSyntheticFieldDumper;
 import com.openpojo.validation.utils.AClassWithSyntheticStaticFieldDumper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.java.bytecode.asm.SubClassDefinition.GENERATED_CLASS_POSTFIX;
 

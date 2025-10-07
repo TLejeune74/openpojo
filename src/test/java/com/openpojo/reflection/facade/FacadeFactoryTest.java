@@ -26,7 +26,7 @@ import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.facade.sampleclasses.FirstClass;
 import com.openpojo.reflection.facade.sampleclasses.SecondClass;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FacadeFactoryTest {
   Class<?> firstClass = FirstClass.class;

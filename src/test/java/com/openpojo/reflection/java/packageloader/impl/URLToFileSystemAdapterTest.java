@@ -23,9 +23,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.openpojo.reflection.exception.ReflectionException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author oshoukry
@@ -36,7 +37,7 @@ public class URLToFileSystemAdapterTest {
   private String rootPrefix = "/";
   private boolean isWindows = false;
 
-  @Before
+  @BeforeEach
   public void setup() {
     String os = System.getProperty("os.name");
     if (os.toLowerCase().contains("windows")) {
@@ -46,19 +47,15 @@ public class URLToFileSystemAdapterTest {
     }
   }
 
-  @Test(expected = ReflectionException.class)
   public void whenNullURLShouldThrowException() {
-    new URLToFileSystemAdapter(null);
+      assertThrows(ReflectionException.class, new URLToFileSystemAdapter(null));
   }
 
   @Test
   public void invalidURLShouldThrowException() throws MalformedURLException {
     URLToFileSystemAdapter urlToFileSystemAdapter = new URLToFileSystemAdapter(new URL("file://Not A Parse-able URI"));
-    try {
-      urlToFileSystemAdapter.getAsURI();
-      Assert.fail("Invalid URL should've failed to transfer to URI");
-    } catch (ReflectionException ignored) {
-    }
+    assertThrows(ReflectionException.class, urlToFileSystemAdapter.getAsURI());
+    // fail("Invalid URL should've failed to transfer to URI");
   }
 
   @Test

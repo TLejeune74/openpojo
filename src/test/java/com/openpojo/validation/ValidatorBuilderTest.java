@@ -25,8 +25,8 @@ import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.exception.ValidationException;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.test.Tester;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

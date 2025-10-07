@@ -27,11 +27,11 @@ import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * @author oshoukry
@@ -40,10 +40,10 @@ public class IssueTest {
   private Class<?> classWithCredentialsDumperClass;
   private Class<?> credentialsClass;
 
-  @Before
+  @BeforeEach
   public void setup() throws Exception {
     credentialsClass = ClassUtil.loadClass("sun.security.krb5.Credentials");
-    Assume.assumeTrue(credentialsClass != null);
+    assumeTrue(credentialsClass != null);
     classWithCredentialsDumperClass = getClassWithCredentialsDumperClass();
   }
 
@@ -64,7 +64,7 @@ public class IssueTest {
   @Test
   public void canGenerateCredentials() {
     Object credentials = RandomFactory.getRandomValue(credentialsClass);
-    Assert.assertThat(credentials, CoreMatchers.notNullValue());
+    assertNotNull(credentials);
   }
 
 }

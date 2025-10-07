@@ -32,8 +32,8 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -41,7 +41,7 @@ import org.junit.Test;
 public class IssueTest {
   private PojoClass pojoClass;
 
-  @Before
+  @BeforeEach
   public void setup() {
     pojoClass = PojoClassFactory.getPojoClass(AClassWithPrimitiveArrays.class);
   }

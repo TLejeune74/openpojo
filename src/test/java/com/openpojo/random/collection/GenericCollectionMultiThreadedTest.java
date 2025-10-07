@@ -38,9 +38,11 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author oshoukry
@@ -49,7 +51,7 @@ public class GenericCollectionMultiThreadedTest {
   private int ttl_jobs;
   private int per_thread;
 
-  @Before
+  @BeforeEach
   public void setup() {
     String javaVersion = System.getProperty("java.version");
     if (javaVersion.startsWith("1.5")) {
@@ -67,7 +69,7 @@ public class GenericCollectionMultiThreadedTest {
     pojoClasses.add(PojoClassFactory.getPojoClass(AClassWithGenericCollection.class));
     pojoClasses.add(PojoClassFactory.getPojoClass(AClassWithExhaustiveCollection.class));
 
-    Assert.assertEquals(2, pojoClasses.size());
+    assertEquals(2, pojoClasses.size());
 
     RejectedExecutionHandlerImpl rejectionHandler = new RejectedExecutionHandlerImpl();
 
@@ -89,10 +91,10 @@ public class GenericCollectionMultiThreadedTest {
       } catch (InterruptedException ignored) {
       }
 
-    Assert.assertEquals(ttl_jobs, executorPool.getCompletedTaskCount());
-    Assert.assertEquals(0, rejectionHandler.getCount());
+    assertEquals(ttl_jobs, executorPool.getCompletedTaskCount());
+    assertEquals(0, rejectionHandler.getCount());
     for (Future f : tasksStatus) {
-      Assert.assertNull(f.get());
+      assertNull(f.get());
     }
   }
 

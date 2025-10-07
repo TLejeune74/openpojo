@@ -23,7 +23,9 @@ import java.lang.reflect.Type;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
 import com.openpojo.validation.rule.Rule;
-import org.junit.Assert;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -60,14 +62,14 @@ class AllPimitivesAsArraysDeclaredRule implements Rule {
           foundBooleans = true;
       }
     }
-    Assert.assertTrue("byte array not found", foundBytes);
-    Assert.assertTrue("char array not found", foundChars);
-    Assert.assertTrue("short array not found", foundShorts);
-    Assert.assertTrue("int array not found", foundInts);
-    Assert.assertTrue("long array not found", foundLongs);
-    Assert.assertTrue("float array not found", foundFloats);
-    Assert.assertTrue("double array not found", foundDoubles);
-    Assert.assertTrue("boolean array not found", foundBooleans);
-    Assert.assertEquals("No other fields allowed, only primitive arrays", 8, pojoClass.getPojoFields().size());
+    assertTrue(foundBytes, "byte array not found");
+    assertTrue(foundChars, "char array not found");
+    assertTrue(foundShorts, "short array not found");
+    assertTrue(foundInts, "int array not found");
+    assertTrue(foundLongs, "long array not found");
+    assertTrue(foundFloats, "float array not found");
+    assertTrue(foundDoubles, "double array not found");
+    assertTrue(foundBooleans, "boolean array not found");
+    assertEquals(8, pojoClass.getPojoFields().size(), "No other fields allowed, only primitive arrays");
   }
 }

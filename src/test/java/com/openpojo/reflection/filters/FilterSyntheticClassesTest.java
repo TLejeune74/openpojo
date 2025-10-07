@@ -23,8 +23,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import com.openpojo.reflection.PojoClass;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -34,18 +35,18 @@ public class FilterSyntheticClassesTest {
   @Test
   public void shouldIncludeNonSyntheticPojos() {
     PojoClass notSynthetic = PojoStubFactory.getStubPojoClass(false);
-    Assert.assertTrue(new FilterSyntheticClasses().include(notSynthetic));
+    assertTrue(new FilterSyntheticClasses().include(notSynthetic));
   }
 
   @Test
   public void shouldExcludeSyntheticPojos() {
     PojoClass notSynthetic = PojoStubFactory.getStubPojoClass(true);
-    Assert.assertFalse(new FilterSyntheticClasses().include(notSynthetic));
+    assertFalse(new FilterSyntheticClasses().include(notSynthetic));
   }
 
   @Test
   public void twoInstancesShouldbeEqual() {
-    Assert.assertEquals(new FilterSyntheticClasses(), new FilterSyntheticClasses());
+    assertEquals(new FilterSyntheticClasses(), new FilterSyntheticClasses());
   }
 
   @Test
@@ -53,7 +54,7 @@ public class FilterSyntheticClassesTest {
     FilterSyntheticClasses instanceOne = new FilterSyntheticClasses();
     FilterSyntheticClasses instanceTwo = new FilterSyntheticClasses();
 
-    Assert.assertEquals(instanceOne.hashCode(), instanceTwo.hashCode());
+    assertEquals(instanceOne.hashCode(), instanceTwo.hashCode());
   }
 
   private static class PojoStubFactory {

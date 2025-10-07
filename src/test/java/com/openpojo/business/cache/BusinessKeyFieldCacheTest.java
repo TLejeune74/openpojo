@@ -22,9 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author oshoukry
@@ -32,14 +33,14 @@ import org.junit.Test;
 public class BusinessKeyFieldCacheTest {
   private BusinessKeyFieldCache cache;
 
-  @Before
+  @BeforeEach
   public void setup() {
     cache = new BusinessKeyFieldCache();
   }
 
   @Test
   public void whenCacheEmptyNullIsReturned() {
-    Assert.assertNull(cache.get("SomePojo"));
+    assertNull(cache.get("SomePojo"));
   }
 
   @Test

@@ -19,8 +19,10 @@
 package com.openpojo.reflection.coverage.impl;
 
 import com.openpojo.reflection.adapt.impl.JacocoPojoClassAdapter;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author oshoukry
@@ -29,21 +31,21 @@ public class JacocoTest {
 
   @Test
   public void shouldHaveJacocoPojoClassAdapter() {
-    Assert.assertEquals(JacocoPojoClassAdapter.class, Jacoco.getInstance().getPojoClassAdapter().getClass());
+    assertEquals(JacocoPojoClassAdapter.class, Jacoco.getInstance().getPojoClassAdapter().getClass());
   }
 
   @Test
   public void shouldHaveNoClassFilter() {
-    Assert.assertNull(Jacoco.getInstance().getPojoClassFilter());
+    assertNull(Jacoco.getInstance().getPojoClassFilter());
   }
 
   @Test
   public void nameIsJacoco() {
-    Assert.assertEquals("Jacoco", Jacoco.getInstance().getName());
+    assertEquals("Jacoco", Jacoco.getInstance().getName());
   }
 
   @Test
   public void coverageClassNameIs__orgDOTjacocoDOTagentDOTrtDOTIAgent() {
-    Assert.assertEquals("org.jacoco.agent.rt.IAgent", Jacoco.getInstance().getCoverageClassName());
+    assertEquals("org.jacoco.agent.rt.IAgent", Jacoco.getInstance().getCoverageClassName());
   }
 }

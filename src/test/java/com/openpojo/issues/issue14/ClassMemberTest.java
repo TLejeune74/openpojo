@@ -27,8 +27,8 @@ import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -37,7 +37,7 @@ public class ClassMemberTest {
   private PojoClass pojoClass;
   private Validator pojoValidator;
 
-  @Before
+  @BeforeEach
   public void setUp() {
 
     pojoClass = PojoClassFactory.getPojoClass(SampleClass.class);

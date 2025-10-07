@@ -28,8 +28,8 @@ import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -39,7 +39,7 @@ public class IssueTest {
   private Validator pojoValidator;
   private PojoClass pojoClass;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     pojoClass = PojoClassFactory.getPojoClass(ClassAggregatingAbstractClass.class);
     RandomGeneratorService randomGeneratorService = ServiceRegistrar.getInstance().getRandomGeneratorService();

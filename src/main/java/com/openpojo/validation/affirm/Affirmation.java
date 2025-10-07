@@ -24,15 +24,15 @@ package com.openpojo.validation.affirm;
 public interface Affirmation {
   void fail(final String message);
 
-  void affirmTrue(final String message, final boolean condition);
+  void affirmTrue(final boolean condition, final String message);
 
-  void affirmFalse(final String message, final boolean condition);
+  void affirmFalse(final boolean condition, final String message);
 
-  void affirmNotNull(final String message, final Object object);
+  void affirmNotNull(final Object object, final String message);
 
-  void affirmNull(final String message, final Object object);
+  void affirmNull(final Object object, final String message);
 
-  void affirmEquals(final String message, final Object expected, final Object actual);
+  void affirmEquals(final Object expected, final Object actual, final String message);
 
-  void affirmSame(final String message, final Object first, final Object second);
+  void affirmSame(final Object first, final Object second, final String message);
 }

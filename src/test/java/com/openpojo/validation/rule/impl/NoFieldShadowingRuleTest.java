@@ -30,9 +30,9 @@ import com.openpojo.validation.rule.impl.sampleclasses.NoShadowAParentClassWithO
 import com.openpojo.validation.rule.impl.sampleclasses.NoShadowChildOfChildOfSerializable;
 import com.openpojo.validation.rule.impl.sampleclasses.NoShadowChildOfSerializable;
 import com.openpojo.validation.rule.impl.sampleclasses.NoShadowSerializableChild;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.is;
 
@@ -42,7 +42,7 @@ import static org.hamcrest.Matchers.is;
 public class NoFieldShadowingRuleTest {
   private Validator validator;
 
-  @Before
+  @BeforeEach
   public void setup() {
     validator = ValidatorBuilder
         .create()

@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import com.openpojo.random.exception.RandomGeneratorException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

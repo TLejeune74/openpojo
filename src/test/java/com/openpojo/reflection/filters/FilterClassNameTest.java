@@ -25,7 +25,7 @@ import java.lang.reflect.Proxy;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoClassFilter;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FilterClassNameTest extends IdentitiesAreEqual {
 

@@ -22,12 +22,13 @@ import com.openpojo.business.BusinessIdentity;
 import com.openpojo.log.Logger;
 import com.openpojo.reflection.java.load.ClassUtil;
 
+
 /**
  * This class wraps the Log4J underlying layer.
  */
 public final class Log4JLogger extends Logger {
 
-  private final org.apache.log4j.Logger logger;
+  private final org.apache.logging.log4j.Logger  logger;
 
   static {
     final String className = "org.apache.log4j.Logger";
@@ -37,37 +38,37 @@ public final class Log4JLogger extends Logger {
   }
 
   private Log4JLogger(final String category) {
-    logger = org.apache.log4j.Logger.getLogger(category);
+    logger = org.apache.logging.log4j.LogManager.getLogger(category);
   }
 
   @Override
   public boolean isTraceEnabled() {
-    return logger.isEnabledFor(org.apache.log4j.Level.TRACE);
+    return logger.isTraceEnabled();
   }
 
   @Override
   public boolean isDebugEnabled() {
-    return logger.isEnabledFor(org.apache.log4j.Level.DEBUG);
+    return logger.isDebugEnabled();
   }
 
   @Override
   public boolean isInfoEnabled() {
-    return logger.isEnabledFor(org.apache.log4j.Level.INFO);
+    return logger.isInfoEnabled();
   }
 
   @Override
   public boolean isErrorEnabled() {
-    return logger.isEnabledFor(org.apache.log4j.Level.ERROR);
+    return logger.isErrorEnabled();
   }
 
   @Override
   public boolean isFatalEnabled() {
-    return logger.isEnabledFor(org.apache.log4j.Level.FATAL);
+    return logger.isFatalEnabled();
   }
 
   @Override
   public boolean isWarnEnabled() {
-    return logger.isEnabledFor(org.apache.log4j.Level.WARN);
+    return logger.isWarnEnabled();
   }
 
   @Override

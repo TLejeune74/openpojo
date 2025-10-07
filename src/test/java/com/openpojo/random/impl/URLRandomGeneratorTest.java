@@ -26,13 +26,11 @@ import com.openpojo.random.exception.RandomGeneratorException;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author oshoukry
@@ -44,7 +42,7 @@ public class URLRandomGeneratorTest {
     PojoClass urlPojoClass = PojoClassFactory.getPojoClass(URLRandomGenerator.class);
     for (PojoMethod constructor : urlPojoClass.getPojoConstructors()) {
       if (!constructor.isSynthetic())
-        assertTrue(constructor + " should be private", constructor.isPrivate());
+        assertTrue(constructor.isPrivate(), constructor + " should be private");
     }
   }
 
@@ -94,13 +92,15 @@ public class URLRandomGeneratorTest {
     assertNotNull(generatedURL);
   }
 
-  @Test (expected = RandomGeneratorException.class)
+  @Test
   public void willThrowExceptionWhenHostPrefixMalformed() {
-    URLRandomGenerator.getInstance().setUrlPrefix("");
-    URLRandomGenerator.getInstance().doGenerate(URL.class);
+    assertThrows(RandomGeneratorException.class, () -> {
+        URLRandomGenerator.getInstance().setUrlPrefix("");
+        URLRandomGenerator.getInstance().doGenerate(URL.class);
+    });
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     URLRandomGenerator.getInstance().setUrlPrefix("http://randomurl.openpojo.com/");
   }

@@ -23,7 +23,7 @@ import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.test.impl.sampleclasses.DefaultValueNotNullClass;
 import com.openpojo.validation.test.impl.sampleclasses.DefaultValueNullClass;
 import com.openpojo.validation.test.impl.sampleclasses.DefaultValueNullClassWithBusinessKeys;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

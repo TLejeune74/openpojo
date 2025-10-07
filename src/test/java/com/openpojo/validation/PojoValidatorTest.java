@@ -31,8 +31,8 @@ import com.openpojo.validation.sample.AnAbstractClassWithGetterSetter;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * This is a logging tester used for testing.

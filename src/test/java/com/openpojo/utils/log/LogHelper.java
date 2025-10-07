@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Properties;
 
 import com.openpojo.utils.log.LogEvent.Priority;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.PropertyConfigurator;
 
 /**
  * @author oshoukry

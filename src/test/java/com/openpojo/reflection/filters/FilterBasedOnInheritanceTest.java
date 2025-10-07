@@ -18,8 +18,10 @@
 
 package com.openpojo.reflection.filters;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -37,14 +39,14 @@ public class FilterBasedOnInheritanceTest extends IdentitiesAreEqual {
   public void givenDifferentInterfaces_shouldNotBeEqual() {
     FilterBasedOnInheritance instanceOne = new FilterBasedOnInheritance(SomeInterface.class);
     FilterBasedOnInheritance instanceTwo = new FilterBasedOnInheritance(SomeOtherInterface.class);
-    Assert.assertFalse(instanceOne.equals(instanceTwo));
-    Assert.assertFalse(instanceTwo.equals(instanceOne));
-    Assert.assertTrue(instanceOne.hashCode() != instanceTwo.hashCode());
+    assertFalse(instanceOne.equals(instanceTwo));
+    assertFalse(instanceTwo.equals(instanceOne));
+    assertTrue(instanceOne.hashCode() != instanceTwo.hashCode());
 
     FilterBasedOnInheritance instanceThree = new FilterBasedOnInheritance(null);
-    Assert.assertFalse(instanceOne.equals(instanceThree));
-    Assert.assertFalse(instanceThree.equals(instanceOne));
-    Assert.assertTrue(instanceOne.hashCode() != instanceThree.hashCode());
+    assertFalse(instanceOne.equals(instanceThree));
+    assertFalse(instanceThree.equals(instanceOne));
+    assertTrue(instanceOne.hashCode() != instanceThree.hashCode());
   }
 
   public interface SomeInterface {

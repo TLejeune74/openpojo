@@ -29,15 +29,13 @@ import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.apache.log4j.Level;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.apache.logging.log4j.Level;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -45,7 +43,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class IssueTest {
   private SpyAppender appender;
 
-  @Before
+  @BeforeEach
   public void setup() {
     appender = new SpyAppender();
     appender.startCaptureForLogger(GetterTester.class);
@@ -53,7 +51,7 @@ public class IssueTest {
     LoggerFactory.setActiveLogger(Log4JLogger.class);
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     appender.stopCaptureForLogger(GetterTester.class);
     appender.stopCaptureForLogger(SetterTester.class);
@@ -70,8 +68,8 @@ public class IssueTest {
     final PojoClass pojoClass = PojoClassFactory.getPojoClass(AClassWithXMLGregorianCalendar.class);
     validator.validate(pojoClass);
 
-    Assert.assertThat(appender.getEventsForLogger(GetterTester.class).size(), is(1));
-    Assert.assertThat(appender.getEventsForLogger(SetterTester.class).size(), is(1));
+    assertEquals(1, appender.getEventsForLogger(GetterTester.class).size());
+      assertEquals(1, appender.getEventsForLogger(SetterTester.class).size());
 
     PojoField xmlGregorianCalendarPojoField = pojoClass.getPojoFields().get(0);
     final String message = "Testing Field [" + xmlGregorianCalendarPojoField + "] with value [";
@@ -81,8 +79,8 @@ public class IssueTest {
   }
 
   private void validateLogMessages(SpyAppender appender, Class<?> testerClassName, String message) {
-    Assert.assertThat(appender.getEventsForLogger(testerClassName).get(0).getRenderedMessage(), containsString(message));
-    Assert.assertThat(appender.getEventsForLogger(testerClassName).get(0).getLevel(), is(Level.DEBUG));
-    Assert.assertThat(appender.getEventsForLogger(testerClassName).get(0).getLoggerName(), is(testerClassName.getName()));
+      assertTrue(appender.getEventsForLogger(testerClassName).get(0).getRenderedMessage().contains(message));
+      assertEquals(Level.DEBUG, appender.getEventsForLogger(testerClassName).get(0).getLevel());
+      assertEquals(testerClassName.getName(), appender.getEventsForLogger(testerClassName).get(0).getLoggerName());
   }
 }

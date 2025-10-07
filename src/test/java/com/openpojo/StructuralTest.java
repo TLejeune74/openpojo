@@ -33,8 +33,8 @@ import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.affirm.Affirm;
 import com.openpojo.validation.rule.impl.TestClassMustBeProperlyNamedRule;
 import com.openpojo.validation.test.Tester;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.impl.PojoClassFactory.getPojoClass;
 import static com.openpojo.reflection.impl.PojoClassFactory.getPojoClassesRecursively;
@@ -88,7 +88,7 @@ public class StructuralTest {
 
   private Validator validator;
 
-  @Before
+  @BeforeEach
   public void setup() {
     validator = ValidatorBuilder.create()
         .with(new TestClassMustBeProperlyNamedRule())

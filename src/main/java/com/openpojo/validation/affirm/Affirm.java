@@ -55,31 +55,31 @@ public class Affirm {
    * @param condition
    *     The condition being affirmed.
    */
-  public static void affirmTrue(final String message, final boolean condition) {
-    getAffirmation().affirmTrue(message, condition);
+  public static void affirmTrue(final boolean condition, final String message) {
+    getAffirmation().affirmTrue(condition,message);
   }
 
-  public static void affirmFalse(final String message, final boolean condition) {
-    getAffirmation().affirmFalse(message, condition);
+  public static void affirmFalse(final boolean condition, final String message) {
+    getAffirmation().affirmFalse(condition, message);
   }
 
-  public static void affirmNotNull(final String message, final Object object) {
-    getAffirmation().affirmNotNull(message, object);
+  public static void affirmNotNull(final Object object, final String message) {
+    getAffirmation().affirmNotNull(object, message);
   }
 
-  public static void affirmNull(final String message, final Object object) {
-    getAffirmation().affirmNull(message, object);
+  public static void affirmNull(final Object object, final String message) {
+    getAffirmation().affirmNull(object, message);
   }
 
-  public static void affirmEquals(final String message, final Object first, final Object second) {
-    getAffirmation().affirmEquals(message, first, second);
+  public static void affirmEquals(final Object first, final Object second, final String message) {
+    getAffirmation().affirmEquals(first, second, message);
   }
 
-  public static void affirmSame(final String message, final Object first, final Object second) {
-    getAffirmation().affirmSame(message, first, second);
+  public static void affirmSame(final Object first, final Object second, final String message) {
+    getAffirmation().affirmSame(first, second, message);
   }
 
-  public static void affirmContains(final String message, final Object expected, final Collection<?> collection) {
+  public static void affirmContains(final Object expected, final Collection<?> collection, final String message) {
     for (Object entry : collection) {
       if (expected == null) {
         if (entry == null) {

@@ -21,8 +21,9 @@ package com.openpojo.issues.issue98;
 import java.util.TimeZone;
 
 import com.openpojo.random.RandomFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author oshoukry
@@ -31,6 +32,6 @@ public class IssueTest {
 
   @Test
   public void canGenerateRandomZonedDateTime() {
-    Assert.assertNotNull(RandomFactory.getRandomValue(TimeZone.class));
+    assertNotNull(RandomFactory.getRandomValue(TimeZone.class));
   }
 }

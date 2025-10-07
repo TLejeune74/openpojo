@@ -31,39 +31,38 @@ import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
 import com.openpojo.validation.impl.DefaultValidator;
 import com.openpojo.validation.test.Tester;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ValidationHelperTest {
   @Test
   public void testIsStaticFinal() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(StaticFinalData.class);
     List<PojoField> pojoFields = pojoClass.getPojoFields();
-    Assert.assertEquals(4, pojoFields.size());
+    assertEquals(4, pojoFields.size());
     for (PojoField fieldEntry : pojoFields) {
       if (fieldEntry.getName().equals("staticAndNotFinal")) {
-        Assert.assertTrue("Static and not Final test failed!!",
+        assertTrue(
             fieldEntry.isStatic()
                 && !fieldEntry.isFinal()
-                && !ValidationHelper.isStaticFinal(fieldEntry));
+                && !ValidationHelper.isStaticFinal(fieldEntry), "Static and not Final test failed!!");
       }
       if (fieldEntry.getName().equals("notStaticAndNotFinal")) {
-        Assert.assertTrue("Not static OR final test failed!!",
+        assertTrue(
             !fieldEntry.isStatic()
                 && !fieldEntry.isFinal()
-                && !ValidationHelper.isStaticFinal(fieldEntry));
+                && !ValidationHelper.isStaticFinal(fieldEntry), "Not static OR final test failed!!");
       }
       if (fieldEntry.getName().equals("STATIC_AND_FINAL")) {
-        Assert.assertTrue("Static AND Final test failed!!!",
-            fieldEntry.isStatic()
-                && fieldEntry.isFinal()
-                && ValidationHelper.isStaticFinal(fieldEntry));
+        assertTrue(fieldEntry.isStatic() && fieldEntry.isFinal() && ValidationHelper.isStaticFinal(fieldEntry), "Static AND Final test failed!!!");
       }
       if (fieldEntry.getName().equals("finalAndNotStatic")) {
-        Assert.assertTrue("Final and not Static test failed!!",
+        assertTrue(
             !fieldEntry.isStatic()
                 && fieldEntry.isFinal()
-                && !ValidationHelper.isStaticFinal(fieldEntry));
+                && !ValidationHelper.isStaticFinal(fieldEntry),"Final and not Static test failed!!");
       }
     }
   }
@@ -80,10 +79,10 @@ public class ValidationHelperTest {
     LogHelper.initialize(MockAppenderLog4J.class);
     validator.validate(PojoClassFactory.getPojoClass(this.getClass()));
     List<LogEvent> warnEvents = LogHelper.getWarnEvents(MockAppenderLog4J.class, DefaultValidator.class.getName());
-    Assert.assertEquals(1, warnEvents.size());
+    assertEquals(1, warnEvents.size());
     String expectedMessage = "ASM not loaded while attempting to execute behavioural tests on non-constructable class["
         + this.getClass() + "], either filter abstract classes or add asm to your classpath.";
-    Assert.assertEquals(expectedMessage, warnEvents.get(0).getMessage());
+    assertEquals(expectedMessage, warnEvents.get(0).getMessage());
   }
 
   private static class StaticFinalData {

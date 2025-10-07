@@ -18,12 +18,11 @@
 
 package com.openpojo.validation.affirm;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author oshoukry
@@ -32,7 +31,7 @@ public abstract class AbstractAffirmationTest {
 
   public abstract Affirmation getAffirmation();
 
-  @Before
+  @BeforeEach
   public void setup() {
     AffirmationFactory.getInstance().setActiveAffirmation(getAffirmation());
   }
@@ -47,7 +46,7 @@ public abstract class AbstractAffirmationTest {
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.fail(String) failed to fail :)!!");
+      Affirm.fail("Affirm.fail(String) failed to fail :)!!");
   }
 
   @Test
@@ -57,95 +56,95 @@ public abstract class AbstractAffirmationTest {
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.fail(null) failed to fail :)!!");
+      Affirm.fail("Affirm.fail(null) failed to fail :)!!");
   }
 
   /**
-   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmTrue(java.lang.String, boolean)}.
+   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmTrue(boolean, java.lang.String)}.
    */
   @Test
   public void testAffirmTrue() {
-    Affirm.affirmTrue("Affirm.affirmTrue on true failed!!", true);
+    Affirm.affirmTrue(true, "Affirm.affirmTrue on true failed!!");
     try {
-      Affirm.affirmTrue("Affirm.affirmTrue on false passed!!", false);
+      Affirm.affirmTrue( false, "Affirm.affirmTrue on false passed!!");
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.affirmTrue call on false passed!!");
+      Affirm.fail("Affirm.affirmTrue call on false passed!!");
   }
 
   /**
-   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmFalse(java.lang.String, boolean)}.
+   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmFalse( boolean, java.lang.String)}.
    */
   @Test
   public void testAffirmFalse() {
-    Affirm.affirmFalse("Affirm.affirmFalse on false failed!!", false);
+    Affirm.affirmFalse( false, "Affirm.affirmFalse on false failed!!");
     try {
-      Affirm.affirmFalse("Affirm.affirmTrue on true passed!!", true);
+      Affirm.affirmFalse(true, "Affirm.affirmTrue on true passed!!");
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.affirmFalse call on true passed!!");
+      Affirm.fail("Affirm.affirmFalse call on true passed!!");
   }
 
   /**
-   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmNotNull(java.lang.String, java.lang.Object)}.
+   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmNotNull(java.lang.Object, java.lang.String)}.
    */
   @Test
   public void testAffirmNotNull() {
-    Affirm.affirmNotNull("Affirm.affirmNotNull on non-null failed!!", new Object());
+    Affirm.affirmNotNull(new Object(), "Affirm.affirmNotNull on non-null failed!!");
     try {
-      Affirm.affirmNotNull("Affirm.affirmNotNull on null passed!!", null);
+      Affirm.affirmNotNull( null, "Affirm.affirmNotNull on null passed!!");
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.affirmNotNull call on null passed!!");
+      Affirm.fail("Affirm.affirmNotNull call on null passed!!");
   }
 
   /**
-   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmNull(java.lang.String, java.lang.Object)}.
+   * Test method for {@link com.openpojo.validation.affirm.Affirm#affirmNull( java.lang.Object, java.lang.String)}.
    */
   @Test
   public void testAffirmNull() {
-    Affirm.affirmNull("Affirm.affirmNull on null failed!!", null);
+    Affirm.affirmNull( null, "Affirm.affirmNull on null failed!!");
     try {
-      Affirm.affirmNull("Affirm.affirmNull on non-null passed!!", new Object());
+      Affirm.affirmNull( new Object(), "Affirm.affirmNull on non-null passed!!");
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.affirmNull call on non-null passed!!");
+      Affirm.fail("Affirm.affirmNull call on non-null passed!!");
   }
 
   /**
    * Test method for
-   * {@link com.openpojo.validation.affirm.Affirm#affirmEquals(java.lang.String, java.lang.Object, java.lang.Object)}.
+   * {@link com.openpojo.validation.affirm.Affirm#affirmEquals(java.lang.Object, java.lang.Object, java.lang.String, )}.
    */
   @Test
   @SuppressWarnings("UnnecessaryBoxing")
   public void testAffirmEquals() {
-    Integer five = new Integer(5);
-    Integer anotherFive = new Integer(5);
-    Integer six = new Integer(6);
+    Integer five = Integer.valueOf(5);
+    Integer anotherFive = Integer.valueOf(5);
+    Integer six = Integer.valueOf(6);
 
-    Affirm.affirmEquals("Affirm.affirmEquals on equal objects failed", five, anotherFive);
+    Affirm.affirmEquals( five, anotherFive, "Affirm.affirmEquals on equal objects failed");
     try {
-      Affirm.affirmEquals("Affirm.affirmEquals on non-equal objects should have failed.", five, six);
+      Affirm.affirmEquals( five, six, "Affirm.affirmEquals on non-equal objects should have failed.");
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.affirmEquals call on non-equal objects passed!");
+      Affirm.fail("Affirm.affirmEquals call on non-equal objects passed!");
   }
 
   @Test
   public void testAffirmSame() {
     Object o = new Object();
-    Affirm.affirmSame("Affirm.affirmSame on same objects failed", o, o);
+    Affirm.affirmSame(o, o, "Affirm.affirmSame on same objects failed");
     try {
-      Affirm.affirmSame("Affirm.affirmSame on non-same objects should have failed", new Object(), new Object());
+      Affirm.affirmSame( new Object(), new Object(), "Affirm.affirmSame on non-same objects should have failed");
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.affirmSame call on non-same objects passed");
+      Affirm.fail("Affirm.affirmSame call on non-same objects passed");
   }
 
   @Test
@@ -154,14 +153,14 @@ public abstract class AbstractAffirmationTest {
     myList.add("This");
     myList.add("is");
     myList.add("mylist");
-    Affirm.affirmContains("should find the word 'is' in my list", "is", myList);
+    Affirm.affirmContains( "is", myList, "should find the word 'is' in my list");
 
     try {
-      Affirm.affirmContains("should not find the word 'WHAT' in my list", "WHAT", myList);
+      Affirm.affirmContains( "WHAT", myList, "should not find the word 'WHAT' in my list");
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.affirmContains failed to detect that 'WHAT' is not part of the collection");
+      Affirm.fail("Affirm.affirmContains failed to detect that 'WHAT' is not part of the collection");
   }
 
   @Test
@@ -172,43 +171,58 @@ public abstract class AbstractAffirmationTest {
     myList.add("mylist");
     myList.add(null);
 
-    Affirm.affirmContains("Should find a null in the list", null, myList);
+    Affirm.affirmContains(null, myList,"Should find a null in the list");
     myList.remove(null);
 
     try {
-      Affirm.affirmContains("Should not find a null in the list", null, myList);
+      Affirm.affirmContains( null, myList, "Should not find a null in the list");
     } catch (AssertionError e) {
       return;
     }
-    Assert.fail("Affirm.affirmContains failed to detect a missing null in the list");
+      Affirm.fail("Affirm.affirmContains failed to detect a missing null in the list");
   }
 
-  @Test(expected = java.lang.AssertionError.class)
+  @Test
   public void shouldFailWhenArraysNotEqualSizes() {
-    byte[] expected = new byte[] { (byte) 0xaa, (byte) 0xbb, (byte) 0xcc };
-    byte[] actual = new byte[] { (byte) 0xaa };
-    Affirm.affirmEquals("Should fail due to size", expected, actual);
+    try {
+        byte[] expected = new byte[] { (byte) 0xaa, (byte) 0xbb, (byte) 0xcc };
+        byte[] actual = new byte[] { (byte) 0xaa };
+        Affirm.affirmEquals( expected, actual, "Should fail due to size");
+    } catch (AssertionError e) {
+        throw new RuntimeException(e);
+    }
+      Affirm.fail("Should fail due to size");
   }
 
   @Test
   public void whenArrayIsClonedEqualityShouldPass() {
-    byte[] expected = new byte[] { (byte) 0xaa, (byte) 0xbb, (byte) 0xcc };
-    byte[] actual = expected.clone();
-    Affirm.affirmEquals("Array clone should be equal", expected, actual);
-
+    try {
+        byte[] expected = new byte[]{(byte) 0xaa, (byte) 0xbb, (byte) 0xcc};
+        byte[] actual = expected.clone();
+        Affirm.affirmEquals(expected, actual, "Array clone should be equal");
+    } catch (AssertionError exError) {}
+      Affirm.fail("Array clone should pass");
   }
 
-  @Test(expected = java.lang.AssertionError.class)
+  @Test
   public void shouldFailWhenArrayItemMismatch() {
-    byte[] expected = new byte[] { (byte) 0xaa, (byte) 0xbb, (byte) 0xcc };
-    byte[] actual = new byte[] { (byte) 0xaa, (byte) 0xbb, (byte) 0xdd };
-    Affirm.affirmEquals("Should fail due to element mismatch", expected, actual);
+    try {
+        byte[] expected = new byte[]{(byte) 0xaa, (byte) 0xbb, (byte) 0xcc};
+        byte[] actual = new byte[]{(byte) 0xaa, (byte) 0xbb, (byte) 0xdd};
+        Affirm.affirmEquals(expected, actual, "Should fail due to element mismatch");
+    } catch (AssertionError e) {
+        throw new RuntimeException(e);
+    }
+      Affirm.fail("Should fail due to element mismatch");
   }
 
-  @Test(expected = java.lang.AssertionError.class)
+  @Test
   public void shouldNotFailWhenArrayIsNull() {
-    byte[] expected = new byte[] { (byte) 0xaa, (byte) 0xbb, (byte) 0xcc };
-    Affirm.affirmEquals("Should not fail due to null", expected, null);
+    try {
+        byte[] expected = new byte[] { (byte) 0xaa, (byte) 0xbb, (byte) 0xcc };
+        Affirm.affirmEquals(expected, null, "Should not fail due to null");
+    } catch (AssertionError exError) {}
+      Affirm.fail("Should not fail due to null");
   }
 
 }

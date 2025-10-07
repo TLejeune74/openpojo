@@ -66,7 +66,7 @@ public class SerializableTester implements Tester {
       try {
         byte[] serializedObject = serialize(pojoClass, instance);
         Object instance2 = deSerialize(serializedObject, instance.getClass());
-        Affirm.affirmNotNull("Failed to load serialized object [" + instance + "]", instance2);
+        Affirm.affirmNotNull(instance2, "Failed to load serialized object [" + instance + "]");
       } catch (Exception e) {
         Affirm.fail("Failed to run " + this.getClass().getName() + " - Got exception [" + e + "] on PojoClass " + pojoClass);
       }

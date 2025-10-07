@@ -21,20 +21,16 @@ package com.openpojo.validation.utils;
 import java.io.Closeable;
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * @author oshoukry
  */
 public class CloseableHelperTest {
-
-  @Rule
-  public ExpectedException expectedEx = ExpectedException.none();
 
   @Test
   public void shouldNotFailIfNull() {
@@ -49,28 +45,28 @@ public class CloseableHelperTest {
   @Test
   public void shouldCallCloseOnClosable() {
     CloseableSpy closeableSpy = new CloseableSpy();
-    Assert.assertThat(closeableSpy.closeCalled, is(false));
+    assertFalse(closeableSpy.closeCalled);
 
     CloseableHelper.closeResources(closeableSpy);
-    Assert.assertThat(closeableSpy.closeCalled, is(true));
+    assertTrue(closeableSpy.closeCalled);
   }
 
   @Test
   public void nullEntryShouldNotblockCloseCallOnSubsequentClosable() {
     CloseableSpy closeableSpy = new CloseableSpy();
-    Assert.assertThat(closeableSpy.closeCalled, is(false));
+    assertFalse(closeableSpy.closeCalled);
 
     CloseableHelper.closeResources(null, closeableSpy);
-    Assert.assertThat(closeableSpy.closeCalled, is(true));
+    assertTrue(closeableSpy.closeCalled);
   }
 
   @Test
   public void exceptionalEntryShouldNotBlockCloseCallOnSubsequentClosable() {
     CloseableSpy closeableSpy = new CloseableSpy();
-    Assert.assertThat(closeableSpy.closeCalled, is(false));
+    assertFalse(closeableSpy.closeCalled);
 
     CloseableHelper.closeResources(new ExceptionalCloseable(), closeableSpy);
-    Assert.assertThat(closeableSpy.closeCalled, is(true));
+    assertTrue(closeableSpy.closeCalled);
 
   }
 

@@ -18,7 +18,8 @@
 
 package com.openpojo.reflection.filters;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

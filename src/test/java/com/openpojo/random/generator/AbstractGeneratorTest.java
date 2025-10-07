@@ -26,10 +26,11 @@ import com.openpojo.random.RandomGenerator;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.java.load.ClassUtil;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * @author oshoukry
@@ -42,25 +43,25 @@ public abstract class AbstractGeneratorTest {
 
   protected abstract RandomGenerator getRandomGenerator();
 
-  @Before
+  @BeforeEach
   public void before() {
-    Assume.assumeTrue(getTypeName() != null);
+    assumeTrue(getTypeName() != null);
   }
 
   @Test
   public void singlePrivateConstructor() {
     List<PojoMethod> constructors = getPojoClass().getPojoConstructors();
-    Assert.assertEquals("Should have only one constructor", 1, constructors.size());
-    Assert.assertTrue("Constructor should be private", constructors.get(0).isPrivate());
+    assertEquals(1, constructors.size(), "Should have only one constructor");
+    assertTrue(constructors.get(0).isPrivate(), "Constructor should be private");
   }
 
   @Test
   public void canConstruct() {
-    Assert.assertNotNull("Should be able to construct", getRandomGenerator());
+    assertNotNull(getRandomGenerator(),"Should be able to construct");
   }
 
   private void assumeClassIsLoaded() {
-    Assume.assumeTrue(ClassUtil.isClassLoaded(getTypeName()));
+    assumeTrue(ClassUtil.isClassLoaded(getTypeName()));
   }
 
   @Test
@@ -68,8 +69,8 @@ public abstract class AbstractGeneratorTest {
     assumeClassIsLoaded();
 
     Collection<Class<?>> types = getRandomGenerator().getTypes();
-    Assert.assertEquals("Should only declare one type", 1, types.size());
-    Assert.assertEquals(getTypeName(), types.iterator().next().getName());
+    assertEquals(1, types.size(), "Should only declare one type");
+    assertEquals(getTypeName(), types.iterator().next().getName());
   }
 
   @Test
@@ -77,21 +78,19 @@ public abstract class AbstractGeneratorTest {
     assumeClassIsLoaded();
 
     Object first = getRandomGenerator().doGenerate(null);
-    Assert.assertNotNull("First should not be null", first);
+    assertNotNull(first, "First should not be null");
 
     Object second = getRandomGenerator().doGenerate(null);
-    Assert.assertNotNull("Second should not be null", second);
+    assertNotNull(second, "Second should not be null");
 
     Class<?> expectedClass = ClassUtil.loadClass(getTypeName());
-    Assert.assertTrue("Expected an instance assignable from [" + expectedClass + "] but was [" + first.getClass() + "]",
-        expectedClass.isAssignableFrom(first.getClass()));
-    Assert.assertTrue("Expected an instance assignable from [" + expectedClass + "] but was [" + second.getClass() + "]",
-        expectedClass.isAssignableFrom(second.getClass()));
+    assertTrue(expectedClass.isAssignableFrom(first.getClass()), "Expected an instance assignable from [" + expectedClass + "] but was [" + first.getClass() + "]");
+    assertTrue(expectedClass.isAssignableFrom(second.getClass()), "Expected an instance assignable from [" + expectedClass + "] but was [" + second.getClass() + "]");
 
     if (first.equals(second)) // by chance same object, try one more time.
       second = getRandomGenerator().doGenerate(null);
 
-    Assert.assertNotEquals(first, second);
+    assertNotEquals(first, second);
   }
 
   @Test
@@ -100,7 +99,7 @@ public abstract class AbstractGeneratorTest {
 
     Class<?> type = ClassUtil.loadClass(getTypeName());
     Object instance = RandomFactory.getRandomValue(type);
-    Assert.assertNotNull("Should not generated null", instance);
-    Assert.assertTrue("Should generate compatible type", type.isAssignableFrom(instance.getClass()));
+    assertNotNull(instance, "Should not generated null");
+    assertTrue(type.isAssignableFrom(instance.getClass()), "Should generate compatible type");
   }
 }

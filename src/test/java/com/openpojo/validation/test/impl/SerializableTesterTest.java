@@ -35,13 +35,13 @@ import com.openpojo.validation.test.impl.sampleclasses.SerializerTest_Serializab
 import com.openpojo.validation.test.impl.sampleclasses.SerializerTest_SerializableThatThrowsExceptionOnWriteObject;
 import org.apache.log4j.spi.LoggingEvent;
 import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Test.assertThat;
 
 /**
  * @author oshoukry
@@ -55,7 +55,7 @@ public class SerializableTesterTest {
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     testerClass = SerializableTester.class;
     serializableTester = new SerializableTester();

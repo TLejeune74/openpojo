@@ -21,14 +21,11 @@ package com.openpojo.reflection.java.bytecode.asm;
 import com.openpojo.reflection.java.bytecode.ByteCodeFactory;
 import com.openpojo.reflection.java.load.ClassUtil;
 import com.openpojo.reflection.java.version.Version;
-import com.openpojo.reflection.java.version.VersionFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * @author oshoukry
@@ -38,13 +35,13 @@ public class ASMDetectorTest {
 
   @Test
   public void canDetectASMLoaded() {
-    assertThat(asmDetector.isASMLoaded(), is(true));
+    assertTrue(asmDetector.isASMLoaded());
   }
 
   @Test
   public void canGetBundleVersion() {
     Version currentVersion = asmDetector.getBundleVersion(ClassUtil.loadClass(ASMDetector.ASM_CLASS_NAME));
-    assertThat(currentVersion, notNullValue());
+    assertNotNull(currentVersion);
 
     assertGreaterOrEqualToMinimumExpected(currentVersion);
     assertLesserOrEqualToMaxExpected(currentVersion);
@@ -53,15 +50,15 @@ public class ASMDetectorTest {
   @Test
   public void shouldNotThrowNullPointerExceptionIfClassIsNotLoaded() {
     Version version = asmDetector.getBundleVersion(null);
-    assertThat(version, notNullValue());
+      assertNotNull(version);
   }
 
   private void assertGreaterOrEqualToMinimumExpected(Version version) {
-    assertThat(version.compareTo(ByteCodeFactory.ASM_MIN_VERSION), greaterThanOrEqualTo(0));
+    assertTrue(version.compareTo(ByteCodeFactory.ASM_MIN_VERSION) >= 0);
   }
 
   private void assertLesserOrEqualToMaxExpected(Version version) {
     System.out.println("Version compareTo Max: " + version.compareTo(ByteCodeFactory.ASM_MAX_VERSION));
-    assertThat(version.getVersion(), version.compareTo(ByteCodeFactory.ASM_MAX_VERSION), lessThanOrEqualTo(0));
+    assertTrue(version.compareTo(ByteCodeFactory.ASM_MAX_VERSION) <= 0);
   }
 }

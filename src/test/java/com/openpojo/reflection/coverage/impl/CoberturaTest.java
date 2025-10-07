@@ -19,8 +19,10 @@
 package com.openpojo.reflection.coverage.impl;
 
 import com.openpojo.reflection.adapt.impl.CoberturaPojoClassAdapter;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author oshoukry
@@ -29,22 +31,22 @@ public class CoberturaTest {
 
   @Test
   public void shouldHaveCoberturaPojoClassAdapter() {
-    Assert.assertEquals(CoberturaPojoClassAdapter.class, Cobertura.getInstance().getPojoClassAdapter().getClass());
+    assertEquals(CoberturaPojoClassAdapter.class, Cobertura.getInstance().getPojoClassAdapter().getClass());
   }
 
   @Test
   public void shouldHaveNoFilter() {
-    Assert.assertNull(Cobertura.getInstance().getPojoClassFilter());
+    assertNull(Cobertura.getInstance().getPojoClassFilter());
   }
 
   @Test
   public void nameIsCobertura() {
-    Assert.assertEquals("Cobertura", Cobertura.getInstance().getName());
+    assertEquals("Cobertura", Cobertura.getInstance().getName());
   }
 
   @Test
   public void coverageClassNameIs__netDOTsourceforgeDOTcoberturaDOTcoveragedataDOTLightClassmapListener() {
-    Assert.assertEquals("net.sourceforge.cobertura.coveragedata.LightClassmapListener",
+    assertEquals("net.sourceforge.cobertura.coveragedata.LightClassmapListener",
         Cobertura.getInstance().getCoverageClassName());
   }
 }

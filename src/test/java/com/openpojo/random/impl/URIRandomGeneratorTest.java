@@ -26,13 +26,9 @@ import com.openpojo.random.exception.RandomGeneratorException;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author oshoukry
@@ -101,7 +97,7 @@ public class URIRandomGeneratorTest {
     URIRandomGenerator.getInstance().doGenerate(URI.class);
   }
 
-  @After
+  @AfterEach
   public void tearDown() {
     URIRandomGenerator.getInstance().setUriPrefix("http://randomuri.openpojo.com/");
   }

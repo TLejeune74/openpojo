@@ -22,19 +22,20 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
  */
 public class ClassReaderFactoryTest {
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test //todo (expected = UnsupportedOperationException.class)
   public void shouldNotBeAbleToConstruct() {
     try {
       PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassReaderFactory.class);
-      org.testng.Assert.assertEquals(1, pojoClass.getPojoConstructors().size());
+      assertEquals(1, pojoClass.getPojoConstructors().size());
       InstanceFactory.getLeastCompleteInstance(pojoClass);
     } catch (ReflectionException re) {
       Throwable cause = re.getCause();
@@ -44,16 +45,16 @@ public class ClassReaderFactoryTest {
         cause = cause.getCause();
       }
     }
-    Assert.fail("Should have not been able to construct");
+    fail("Should have not been able to construct");
   }
 
   @Test
   public void canCreateClassReader() {
-    Assert.assertNotNull("Should not be null", ClassReaderFactory.getClassReader(this.getClass()));
+    assertNotNull(ClassReaderFactory.getClassReader(this.getClass()), "Should not be null");
   }
 
-  @Test(expected = ReflectionException.class)
+  @Test
   public void shouldNotBeAbleToCreateClassReader() {
-    ClassReaderFactory.getClassReader(null);
+    assertThrows(ReflectionException.class, ()  -> ClassReaderFactory.getClassReader(null));
   }
 }

@@ -23,8 +23,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.openpojo.reflection.java.packageloader.impl.URLToFileSystemAdapter;
-import org.junit.Test;
-import org.testng.Assert;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author oshoukry
@@ -42,6 +43,6 @@ public class IssueTest {
 
     URLToFileSystemAdapter urlToFileSystemAdapter = new URLToFileSystemAdapter(url);
 
-    Assert.assertEquals(expectedFile, urlToFileSystemAdapter.getAsFile());
+    assertEquals(expectedFile, urlToFileSystemAdapter.getAsFile());
   }
 }

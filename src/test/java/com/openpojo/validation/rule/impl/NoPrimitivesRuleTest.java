@@ -22,7 +22,7 @@ import com.openpojo.validation.CommonCode;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.rule.impl.sampleclasses.NoPrimitivesDoesClass;
 import com.openpojo.validation.rule.impl.sampleclasses.NoPrimitivesDoesntClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

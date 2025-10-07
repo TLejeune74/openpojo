@@ -27,11 +27,10 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.reflection.impl.PojoClassFactory.*;
-import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IssueTest {
 
@@ -46,7 +45,7 @@ public class IssueTest {
 
     List<PojoClass> classes = getPojoClassesRecursively(this.getClass().getPackage().getName() + ".sample", null);
 
-    Assert.assertThat(classes.size(), is(3));
+    assertEquals(3, classes.size());
     validator.validate(classes);
   }
 }

@@ -25,8 +25,8 @@ import java.util.Date;
 
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.openpojo.random.impl.CommonCode.testDoGenerateForClass;
 
@@ -34,7 +34,7 @@ public class BasicRandomGeneratorTest {
   private RandomGenerator basicRandomGenerator;
   private static final int EXPECTED_BASIC_TYPES = 21;
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     basicRandomGenerator = BasicRandomGenerator.getInstance();
   }

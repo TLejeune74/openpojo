@@ -23,7 +23,7 @@ import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.test.impl.sampleclasses.ABusinessPojoDispatchingHashCodeAndEquals;
 import com.openpojo.validation.test.impl.sampleclasses.ABusinessPojoNotDispatchingEquals;
 import com.openpojo.validation.test.impl.sampleclasses.ABusinessPojoNotDispatchingHashCode;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BusinessIdentityTesterTest {
   private Class<?>[] failClasses = new Class<?>[] { ABusinessPojoNotDispatchingHashCode.class, ABusinessPojoNotDispatchingEquals.class };

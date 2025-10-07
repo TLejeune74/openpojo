@@ -24,8 +24,9 @@ import java.util.concurrent.CountDownLatch;
 
 import com.openpojo.business.identity.IdentityFactory;
 import com.openpojo.business.identity.IdentityHandler;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -51,8 +52,7 @@ public class IssueTest {
 
     boolean firstJobResult = firstJob.hasCompletedSuccessfully();
     boolean secondJobResult = secondJob.hasCompletedSuccessfully();
-    Assert.assertTrue(String.format("Threads failed to completed [1: %s, 2: %s]", firstJobResult, secondJobResult),
-        firstJobResult && secondJobResult);
+    assertTrue(firstJobResult && secondJobResult, String.format("Threads failed to completed [1: %s, 2: %s]", firstJobResult, secondJobResult));
   }
 
   @Test
@@ -68,7 +68,7 @@ public class IssueTest {
   }
 
   private void verifyMethodIsSynchronized(Method method) {
-    Assert.assertTrue(Modifier.isSynchronized(method.getModifiers()));
+    assertTrue(Modifier.isSynchronized(method.getModifiers()));
   }
 
   @Test
@@ -91,7 +91,7 @@ public class IssueTest {
   private void verifyMethodIsThreaded(int numberOfThreads, Method method) throws InterruptedException {
     IdentityFactoryThreadedness identityFactory = new IdentityFactoryThreadedness(method);
     identityFactory.execute(numberOfThreads);
-    Assert.assertTrue("IdentityFactory." + method.getName() + " is not MultiThreaded!!", identityFactory.isMultiThreaded());
+    assertTrue(identityFactory.isMultiThreaded(), "IdentityFactory." + method.getName() + " is not MultiThreaded!!");
   }
 
   private Method getIdentityFactoryDeclaredMethod(String methodName, Class<?>... parameters) throws NoSuchMethodException {

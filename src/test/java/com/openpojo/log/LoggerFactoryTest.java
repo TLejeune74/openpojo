@@ -20,9 +20,11 @@ package com.openpojo.log;
 
 import com.openpojo.log.impl.Log4JLogger;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author oshoukry
@@ -35,7 +37,7 @@ public class LoggerFactoryTest {
       "com.openpojo.log.impl.Log4JLogger",
       "com.openpojo.log.impl.JavaLogger" };
 
-  @Before
+  @BeforeEach
   public final void setUp() {
     LoggerFactory.setActiveLogger(defaultLoggerClass);
   }
@@ -43,15 +45,15 @@ public class LoggerFactoryTest {
   @Test
   public final void shouldReturnDefaultLoggerClassByClass() {
     final Logger log = LoggerFactory.getLogger(LoggerFactoryTest.class);
-    Assert.assertNotNull(log);
-    Assert.assertEquals(defaultLoggerClass.getName(), log.getClass().getName());
+    assertNotNull(log);
+    assertEquals(defaultLoggerClass.getName(), log.getClass().getName());
   }
 
   @Test
   public final void shouldReturnDefaultLoggerClassByCategory() {
     final Logger log = LoggerFactory.getLogger("TestLogger");
-    Assert.assertNotNull(log);
-    Assert.assertEquals(defaultLoggerClass.getName(), log.getClass().getName());
+    assertNotNull(log);
+    assertEquals(defaultLoggerClass.getName(), log.getClass().getName());
   }
 
   @Test

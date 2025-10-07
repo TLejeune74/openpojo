@@ -18,13 +18,11 @@
 
 package com.openpojo.validation.rule.impl.sampleclasses;
 
-import org.testng.annotations.Test;
 
 /**
  * @author oshoukry
  */
 
-@Test
 public class ATestNGClassEndsWithTest {
 
 }

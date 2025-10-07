@@ -23,7 +23,7 @@ import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.rule.impl.sampleclasses.BusinessClassWithComposite;
 import com.openpojo.validation.rule.impl.sampleclasses.BusinessClassWithNoRequired;
 import com.openpojo.validation.rule.impl.sampleclasses.BusinessClassWithRequired;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

@@ -25,15 +25,15 @@ import java.lang.reflect.Array;
  */
 public abstract class AbstractAffirmation implements Affirmation {
 
-  public void affirmArrayEquals(String message, Object expected, Object actual) {
+  public void affirmArrayEquals(Object expected, Object actual, String message) {
     Integer expectedLength = Array.getLength(expected);
-    affirmEquals(message + " : Arrays are not the same length", expectedLength, actual == null ? null : Array.getLength(actual));
+    affirmEquals(expectedLength, actual == null ? null : Array.getLength(actual), message + " : Arrays are not the same length");
 
     for (int i = 0; i < expectedLength; i++) {
       Object expectedArrayElement = Array.get(expected, i);
       Object actualArrayElement = Array.get(actual, i);
       try {
-        affirmEquals(message, actualArrayElement, expectedArrayElement);
+        affirmEquals(actualArrayElement, expectedArrayElement, message);
       } catch (AssertionError ae) {
         fail("Array element mismatch value at index [" + i + "] :" + ae.getMessage());
       }

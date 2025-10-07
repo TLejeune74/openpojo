@@ -24,7 +24,9 @@ import javax.management.Attribute;
 import javax.management.AttributeList;
 
 import com.openpojo.random.util.SerializableComparableObject;
-import org.junit.Assert;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author oshoukry
@@ -132,10 +134,10 @@ public class AClassWithExhaustiveCollection {
   }
 
   private void assertThatCollectionIsOf(Collection collection, Class<?>... type) {
-    Assert.assertNotNull("Should not be null", collection);
-    Assert.assertTrue("Should not be empty", collection.size() > 0);
+    assertNotNull(collection, "Should not be null");
+    assertTrue(collection.size() > 0, "Should not be empty");
     for (Object entry : collection) {
-      Assert.assertTrue("Expected type [" + type[0] + "], found type [" + entry.getClass() + "]", entry.getClass() == type[0]);
+      assertTrue(entry.getClass() == type[0], "Expected type [" + type[0] + "], found type [" + entry.getClass() + "]");
       if (type.length > 1) {
         Class<?>[] subTypes = new Class<?>[type.length - 1];
         System.arraycopy(type, 1, subTypes, 0, type.length - 1);

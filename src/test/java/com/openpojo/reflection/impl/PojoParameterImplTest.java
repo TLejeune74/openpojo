@@ -30,13 +30,14 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoMethod;
 import com.openpojo.reflection.PojoParameter;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -46,15 +47,15 @@ public class PojoParameterImplTest {
   public void isParameterized() {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(AClassWithParameterizedConstructors.class);
 
-    Assert.assertTrue(pojoClass.isNestedClass());
+    assertTrue(pojoClass.isNestedClass());
 
     for (PojoMethod constructor : pojoClass.getPojoConstructors()) {
       if (!constructor.isSynthetic()) {
         List<PojoParameter> pojoParameters = constructor.getPojoParameters();
-        Assert.assertThat(pojoParameters.size(), is(greaterThan(1)));
+        assertThat(pojoParameters.size(), is(greaterThan(1)));
         for (int i = 1; i < pojoParameters.size(); i++) {
           PojoParameter parameter = pojoParameters.get(i);
-          Assert.assertThat(parameter.isParameterized(), is(Matchers.equalTo(true)));
+          assertThat(parameter.isParameterized(), is(Matchers.equalTo(true)));
         }
       }
     }
@@ -88,7 +89,7 @@ public class PojoParameterImplTest {
   public void testConstructorWithAnnotatedParameter() {
     PojoClass aClassWithAnnotatedParameters = PojoClassFactory.getPojoClass(AClassWithAnnotatedParameters.class);
     List<PojoMethod> constructors = aClassWithAnnotatedParameters.getPojoConstructors();
-    Assert.assertEquals(1, constructors.size());
+    assertEquals(1, constructors.size());
 
     shouldHaveOneAnnotatedParameter(constructors);
   }
@@ -96,17 +97,17 @@ public class PojoParameterImplTest {
   private void shouldHaveOneAnnotatedParameter(List<PojoMethod> constructors) {
     PojoMethod constructor = constructors.get(0);
     List<PojoParameter> parameters = constructor.getPojoParameters();
-    Assert.assertEquals(1, parameters.size());
+    assertEquals(1, parameters.size());
 
     PojoParameter parameter = parameters.get(0);
 
-    Assert.assertEquals(1, parameter.getAnnotations().size());
+    assertEquals(1, parameter.getAnnotations().size());
 
-    Assert.assertTrue("Should've been annotatated with Annotated.class but was [" + parameter.getAnnotations().get(0) +
-        "]", parameter.getAnnotations().get(0) instanceof Annotated);
+    assertTrue(parameter.getAnnotations().get(0) instanceof Annotated, "Should've been annotatated with Annotated.class but was [" + parameter.getAnnotations().get(0) +
+            "]");
 
-    Assert.assertNull(parameter.getAnnotation(UnusedAnnotation.class));
-    Assert.assertNotNull(parameter.getAnnotation(Annotated.class));
+    assertNull(parameter.getAnnotation(UnusedAnnotation.class));
+    assertNotNull(parameter.getAnnotation(Annotated.class));
   }
 
   @SuppressWarnings("unused")
@@ -127,7 +128,7 @@ public class PojoParameterImplTest {
         methods.add(method);
     }
 
-    Assert.assertEquals(1, methods.size());
+    assertEquals(1, methods.size());
 
     shouldHaveOneAnnotatedParameter(methods);
   }

@@ -62,13 +62,13 @@ public final class BusinessIdentityTester implements Tester {
   }
 
   private void checkHashCode(Object firstPojoClassInstance, IdentityHandlerStub identityHandlerStub) {
-    Affirm.affirmTrue(String.format("Class=[%s] not dispatching 'hashCode()' calls to BusinessIdentity",
-        firstPojoClassInstance.getClass()), identityHandlerStub.getHashCodeReturn() == firstPojoClassInstance.hashCode());
+    Affirm.affirmTrue(identityHandlerStub.getHashCodeReturn() == firstPojoClassInstance.hashCode(), String.format("Class=[%s] not dispatching 'hashCode()' calls to BusinessIdentity",
+            firstPojoClassInstance.getClass()));
   }
 
   private void checkEquality(Object instance1, Object instance2, IdentityHandlerStub identityHandlerStub) {
-    Affirm.affirmTrue(String.format("Class=[%s] not dispatching 'equals()' calls to BusinessIdentity",
-        instance1.getClass()), identityHandlerStub.getAreEqualReturn() == instance1.equals(instance2));
+    Affirm.affirmTrue(identityHandlerStub.getAreEqualReturn() == instance1.equals(instance2), String.format("Class=[%s] not dispatching 'equals()' calls to BusinessIdentity",
+            instance1.getClass()));
   }
 
 }

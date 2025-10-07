@@ -25,8 +25,8 @@ import com.openpojo.reflection.PojoClassFilter;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.validation.test.Tester;
 import com.openpojo.validation.test.impl.sampleclasses.Good_AnAbstractClassWithAbstractSetterGetter;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
 public class GetterTesterAndSetterTesterTest {
   private static final String TESTPACKAGE = GetterTesterAndSetterTesterTest.class.getPackage().getName() + ".sampleclasses";

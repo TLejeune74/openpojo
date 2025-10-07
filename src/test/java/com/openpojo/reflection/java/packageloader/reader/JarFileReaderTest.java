@@ -27,8 +27,8 @@ import com.openpojo.reflection.impl.PojoClassFactory;
 import com.openpojo.reflection.java.Java;
 import com.openpojo.utils.samplejar.SampleJar;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry

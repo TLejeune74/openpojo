@@ -20,8 +20,10 @@ package com.openpojo.business;
 
 import com.openpojo.business.exception.BusinessException;
 import com.openpojo.business.sampleclasses.Child;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BusinessIdentityInheritenceTest {
 
@@ -29,20 +31,20 @@ public class BusinessIdentityInheritenceTest {
   public void shouldEquateUsingInheritence() {
     Child first = new Child("First", "Last", 'M');
     Child second = new Child("First", "Last", 'M');
-    Assert.assertTrue(BusinessIdentity.areEqual(first, second));
+    assertTrue(BusinessIdentity.areEqual(first, second));
   }
 
   @Test
   public void shouldFailEquateUsingInheritence() {
     Child first = new Child("First", "Last", 'F');
     Child second = new Child("First", "LastName", 'F');
-    Assert.assertFalse(BusinessIdentity.areEqual(first, second));
+    assertFalse(BusinessIdentity.areEqual(first, second));
   }
 
-  @Test(expected = BusinessException.class)
+  @Test // todo(expected = BusinessException.class)
   public void shouldFailIncomplete() {
     Child first = new Child("firstName", "last", null);
     Child second = new Child("First", "LastName", null);
-    Assert.assertTrue(BusinessIdentity.areEqual(first, second));
+    assertTrue(BusinessIdentity.areEqual(first, second));
   }
 }

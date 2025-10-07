@@ -34,9 +34,10 @@ import com.openpojo.reflection.impl.sample.classes.AClassWithSyntheticMethod;
 import com.openpojo.reflection.impl.sample.classes.ClassWithSyntheticConstructor;
 import com.openpojo.reflection.impl.sample.classes.PojoMethodClass;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
@@ -48,7 +49,7 @@ public class PojoMethodImplTest {
   /**
    * @throws java.lang.Exception
    */
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
     pojoClass = PojoClassFactory.getPojoClass(PojoMethodClass.class);
     pojoMethods = pojoClass.getPojoMethods();
@@ -218,14 +219,14 @@ public class PojoMethodImplTest {
 
   @Test
   public void classWithPrivateConstructorAndBuilder_hasSyntheticConstrutor() {
-    Assert.assertNotNull(ClassWithSyntheticConstructor.Builder.getInstance());
+    assertNotNull(ClassWithSyntheticConstructor.Builder.getInstance());
     PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassWithSyntheticConstructor.class);
-    Assert.assertEquals(2, pojoClass.getPojoConstructors().size());
+    assertEquals(2, pojoClass.getPojoConstructors().size());
     for (PojoMethod constructor : pojoClass.getPojoMethods()) {
       if (constructor.getParameterTypes().length == 0)
-        Assert.assertFalse("Synthatic constructor found!! [" + constructor + "]", constructor.isSynthetic());
+        assertFalse(constructor.isSynthetic(), "Synthatic constructor found!! [" + constructor + "]");
       else
-        Assert.assertTrue("None synthatic constructor found!! [" + constructor + "]", constructor.isSynthetic());
+        assertTrue(constructor.isSynthetic(), "None synthatic constructor found!! [" + constructor + "]");
     }
   }
 
@@ -242,9 +243,9 @@ public class PojoMethodImplTest {
       if (pojoMethod.getName().equals(expectedGetterName))
         hasAbstractGetterMethod = true;
     }
-    Assert.assertTrue(hasAbstractGetterMethod);
-    Assert.assertEquals(1, pojoClass.getPojoFields().size());
-    Assert.assertFalse(pojoField.hasGetter());
+    assertTrue(hasAbstractGetterMethod);
+    assertEquals(1, pojoClass.getPojoFields().size());
+    assertFalse(pojoField.hasGetter());
   }
 
   @Test
@@ -260,8 +261,8 @@ public class PojoMethodImplTest {
       if (pojoMethod.getName().equals(expectedSetterName))
         hasAbstractSetterMethod = true;
     }
-    Assert.assertTrue(hasAbstractSetterMethod);
-    Assert.assertEquals(1, pojoClass.getPojoFields().size());
-    Assert.assertFalse(pojoField.hasGetter());
+    assertTrue(hasAbstractSetterMethod);
+    assertEquals(1, pojoClass.getPojoFields().size());
+    assertFalse(pojoField.hasGetter());
   }
 }

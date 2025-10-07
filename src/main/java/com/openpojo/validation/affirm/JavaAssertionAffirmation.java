@@ -33,36 +33,36 @@ public class JavaAssertionAffirmation extends AbstractAffirmation implements Aff
     throw new AssertionError(message == null ? "" : message);
   }
 
-  public void affirmTrue(final String message, final boolean condition) {
+  public void affirmTrue(final boolean condition, final String message) {
     if (!condition) {
       fail(message);
     }
   }
 
-  public void affirmFalse(final String message, final boolean condition) {
+  public void affirmFalse(final boolean condition, final String message) {
     if (condition) {
       fail(message);
     }
   }
 
-  public void affirmNotNull(final String message, final Object object) {
+  public void affirmNotNull(final Object object, final String message) {
     if (object == null) {
       fail(message);
     }
   }
 
-  public void affirmNull(final String message, final Object object) {
+  public void affirmNull(final Object object, final String message) {
     if (object != null) {
       fail(message);
     }
   }
 
-  public void affirmEquals(final String message, final Object expected, final Object actual) {
+  public void affirmEquals(final Object expected, final Object actual, final String message) {
     if (objectPointersAreTheSame(expected, actual))
       return;
 
     if (isArray(expected)) {
-      affirmArrayEquals(message, expected, actual);
+      affirmArrayEquals(expected, actual, message);
       return;
     }
 
@@ -72,7 +72,7 @@ public class JavaAssertionAffirmation extends AbstractAffirmation implements Aff
     fail(MessageFormatter.format("{0} expected <{1}> but was <{2}>", message, expected, actual));
   }
 
-  public void affirmSame(String message, Object first, Object second) {
+  public void affirmSame(Object first, Object second, String message) {
     if (first != second)
       fail(message);
   }

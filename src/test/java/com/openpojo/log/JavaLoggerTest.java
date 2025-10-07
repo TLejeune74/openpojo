@@ -26,8 +26,8 @@ import com.openpojo.utils.log.LogHelper;
 import com.openpojo.utils.log.MockAppender;
 import com.openpojo.utils.log.MockAppenderJavaLogger;
 import com.openpojo.validation.affirm.Affirm;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author oshoukry
@@ -37,7 +37,7 @@ public class JavaLoggerTest extends AbstractLoggerBase {
   private static final int LOGLEVELS = 5; // TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 
 
-  @Before
+  @BeforeEach
   public void setup() {
     LogHelper.initializeJavaLogger();
     LoggerFactory.setActiveLogger(JavaLogger.class);

@@ -28,8 +28,10 @@ import com.openpojo.validation.impl.sample.DummyClass;
 import com.openpojo.validation.impl.sample.subpackage.AnotherDummyClass;
 import com.openpojo.validation.rule.Rule;
 import com.openpojo.validation.test.Tester;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultValidatorTest {
 
@@ -49,8 +51,8 @@ public class DefaultValidatorTest {
     String packageName = this.getClass().getPackage().getName() + ".sample";
     List<PojoClass> validatedPojoClasses = defaultValidator.validate(packageName, filterSpy);
 
-    Assert.assertEquals(1, validatedPojoClasses.size());
-    Assert.assertEquals(validatedPojoClasses.get(0), PojoClassFactory.getPojoClass(DummyClass.class));
+    assertEquals(1, validatedPojoClasses.size());
+    assertEquals(validatedPojoClasses.get(0), PojoClassFactory.getPojoClass(DummyClass.class));
     assertInvokedClasses(testerSpy.getInvocations(), DummyClass.class.getName());
     assertInvokedClasses(ruleSpy.getInvocations(), DummyClass.class.getName());
     assertInvokedClasses(filterSpy.getInvocations(), DummyClass.class.getName());
@@ -72,9 +74,9 @@ public class DefaultValidatorTest {
     String packageName = this.getClass().getPackage().getName() + ".sample";
     List<PojoClass> validatedPojoClasses = defaultValidator.validateRecursively(packageName, filterSpy);
 
-    Assert.assertEquals(2, validatedPojoClasses.size());
-    Assert.assertTrue(validatedPojoClasses.contains(PojoClassFactory.getPojoClass(DummyClass.class)));
-    Assert.assertTrue(validatedPojoClasses.contains(PojoClassFactory.getPojoClass(AnotherDummyClass.class)));
+    assertEquals(2, validatedPojoClasses.size());
+    assertTrue(validatedPojoClasses.contains(PojoClassFactory.getPojoClass(DummyClass.class)));
+    assertTrue(validatedPojoClasses.contains(PojoClassFactory.getPojoClass(AnotherDummyClass.class)));
 
     assertInvokedClasses(testerSpy.getInvocations(), DummyClass.class.getName(), AnotherDummyClass.class.getName());
     assertInvokedClasses(ruleSpy.getInvocations(), DummyClass.class.getName(), AnotherDummyClass.class.getName());
@@ -82,10 +84,10 @@ public class DefaultValidatorTest {
   }
 
   private void assertInvokedClasses(List<String> invocations, String... classNames) {
-    Assert.assertEquals(classNames.length, invocations.size());
+    assertEquals(classNames.length, invocations.size());
 
     for (String className : classNames)
-      Assert.assertTrue("Could not find call for class [" + className + "]", invocations.contains(className));
+      assertTrue(invocations.contains(className), "Could not find call for class [" + className + "]");
   }
 
   private static class TesterSpy implements Tester {

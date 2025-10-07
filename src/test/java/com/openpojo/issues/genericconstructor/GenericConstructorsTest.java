@@ -23,7 +23,7 @@ import com.openpojo.issues.genericconstructor.sample.ClassWithGenericSetEnumCons
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.testng.Assert;
 
 /**
@@ -36,12 +36,12 @@ public class GenericConstructorsTest {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassWithGenericListIntegerConstructor.class);
     ClassWithGenericListIntegerConstructor instance =
         (ClassWithGenericListIntegerConstructor) InstanceFactory.getMostCompleteInstance(pojoClass);
-    Assert.assertNotNull(instance);
-    Assert.assertNotNull(instance.getIntegers());
-    Assert.assertTrue(instance.getIntegers().size() > 0);
+    assertNotNull(instance);
+    assertNotNull(instance.getIntegers());
+    assertTrue(instance.getIntegers().size() > 0);
 
-    Assert.assertNotNull(instance.getMymap());
-    Assert.assertNotNull(instance.getString());
+    assertNotNull(instance.getMymap());
+    assertNotNull(instance.getString());
   }
 
   @Test
@@ -49,8 +49,8 @@ public class GenericConstructorsTest {
     PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassWithGenericSetEnumConstructor.class);
     ClassWithGenericSetEnumConstructor instance =
         (ClassWithGenericSetEnumConstructor) InstanceFactory.getMostCompleteInstance(pojoClass);
-    Assert.assertNotNull(instance);
-    Assert.assertNotNull(instance.getDaysOfTheWeek());
+    assertNotNull(instance);
+    assertNotNull(instance.getDaysOfTheWeek());
   }
 
 }

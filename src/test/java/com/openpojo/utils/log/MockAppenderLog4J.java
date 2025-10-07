@@ -21,9 +21,7 @@ package com.openpojo.utils.log;
 import java.util.List;
 
 import com.openpojo.utils.log.LogEvent.Priority;
-import org.apache.log4j.Level;
-import org.apache.log4j.WriterAppender;
-import org.apache.log4j.spi.LoggingEvent;
+import org.apache.logging.log4j.Level;
 
 /**
  * @author oshoukry

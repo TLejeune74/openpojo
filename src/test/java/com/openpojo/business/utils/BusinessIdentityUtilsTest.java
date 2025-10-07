@@ -24,12 +24,13 @@ import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BusinessIdentityUtilsTest {
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test(UnsupportedOperationException.class)
   public void shouldNotBeAbleToConstruct() {
     try {
       PojoClass pojoClass = PojoClassFactory.getPojoClass(BusinessIdentityUtils.class);
@@ -43,16 +44,16 @@ public class BusinessIdentityUtilsTest {
         cause = cause.getCause();
       }
     }
-    Assert.fail("Should have not been able to construct");
+    fail("Should have not been able to construct");
   }
 
   @Test
   public void shouldThrowBusinessExceptionWhenNullParameter() {
     try {
       BusinessIdentityUtils.anyNull((Object[]) null);
-      Assert.fail("Expected BusinessException not thrown");
+      fail("Expected BusinessException not thrown");
     } catch (final BusinessException be) {
-      Assert.assertEquals("objects parameter cannot be null", be.getMessage());
+      assertEquals(be.getMessage(), "objects parameter cannot be null");
     }
   }
 
