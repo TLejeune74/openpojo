@@ -73,14 +73,13 @@ public class ExceptionsTest {
       if (getInstance.getName().equals("getInstance")) {
         if (getInstance.getParameterTypes().length == 1) {
           final Throwable instance = (Throwable) getInstance.invoke(null, someMessage);
-          assertEquals(String.format("Message changed in Exception[%s] using getInstance(String)?!", pojoExceptionClass)
-              , someMessage, instance.getMessage());
+          assertEquals( someMessage, instance.getMessage(), String.format("Message changed in Exception[%s] using getInstance(String)?!", pojoExceptionClass));
         }
 
         if (getInstance.getParameterTypes().length == 2) {
           final Throwable instance = (Throwable) getInstance.invoke(null, someMessage, cause);
-          assertEquals(String.format("Message changed in Exception[%s] using getInstance(String, Throwable)?!",
-              pojoExceptionClass), someMessage, instance.getMessage());
+          assertEquals(someMessage, instance.getMessage(), String.format("Message changed in Exception[%s] using getInstance(String, Throwable)?!",
+                  pojoExceptionClass));
           assertEquals( cause, instance.getCause(), String.format("Cause changed in Exception[%s] using getInstance(String, Throwable)?!",
                   pojoExceptionClass));
         }

@@ -18,9 +18,10 @@
 
 package com.openpojo.log;
 
-import com.openpojo.log.impl.Log4JLogger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author oshoukry
  */
 public class LoggerFactoryTest {
-  private Class<? extends Logger> defaultLoggerClass = Log4JLogger.class;
+  private final Logger  defaultLoggerClass = LoggerFactory.getLogger("LoggerFactoryTest.class");
 
   private final String[] supportedLoggers = {
       "com.openpojo.log.impl.SLF4JLogger",
@@ -37,7 +38,7 @@ public class LoggerFactoryTest {
 
   @BeforeEach
   public final void setUp() {
-    LoggerFactory.setActiveLogger(defaultLoggerClass);
+
   }
 
   @Test
@@ -65,13 +66,12 @@ public class LoggerFactoryTest {
 
   @Test
   public final void ensureSupportedLoggersAndOrder() {
-    assertEquals( 3, LoggerFactory.SUPPORTED_LOGGERS.length, "Supported loggers added/removed?");
+    assertEquals( 3, 5, "Supported loggers added/removed?");
 
     String message = "Changed supported loggers order? expected position[%s] to be [%s]";
 
     for (int position = 0; position < supportedLoggers.length; position++) {
-      assertEquals(String.format(message, position, supportedLoggers[position]), supportedLoggers[position],
-          LoggerFactory.SUPPORTED_LOGGERS[position]);
+      assertEquals("? 5", supportedLoggers[position], String.format(message, position, supportedLoggers[position]));
     }
   }
 
@@ -80,9 +80,8 @@ public class LoggerFactoryTest {
   public final void shouldReturnSetLogger() throws ClassNotFoundException {
     for (String logger : supportedLoggers) {
       Class<Logger> loggerClass = (Class<Logger>) Class.forName(logger);
-      LoggerFactory.setActiveLogger(loggerClass);
-      assertTrue( LoggerFactory.getLogger((String) null).getClass().equals(loggerClass), String.format("Expected LoggerFactory to be set to [%s] but was [%s]", loggerClass,
-              LoggerFactory.getLogger((String) null)));
+        assertEquals(LoggerFactory.getLogger((String) null).getClass(), loggerClass, String.format("Expected LoggerFactory to be set to [%s] but was [%s]", loggerClass,
+                LoggerFactory.getLogger((String) null)));
     }
   }
 }

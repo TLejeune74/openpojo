@@ -24,23 +24,26 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.openpojo.log.LoggerFactory;
 import com.openpojo.reflection.java.Java;
 import com.openpojo.reflection.java.packageloader.reader.JarFileReader;
 import com.openpojo.reflection.java.packageloader.utils.Helper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author oshoukry
  */
 public class JavaClassPathClassLoader {
-  private static final String DEFAULT_CLASS_PATH_PROPERTY_NAMES[] = {
+    private static final Logger logger = LoggerFactory.getLogger(JavaClassPathClassLoader.class);
+
+    private static final String[] DEFAULT_CLASS_PATH_PROPERTY_NAMES = {
       "java.library.path", "java.class.path", "java.ext.dirs", "sun.boot.class.path"
   };
 
   private static final JavaClassPathClassLoader INSTANCE = new JavaClassPathClassLoader();
 
-  private final Set<String> classPathPropertyNames = new HashSet<String>();
-  private Set<String> classNames = new HashSet<String>();
+  private final Set<String> classPathPropertyNames = new HashSet<>();
+  private final Set<String> classNames = new HashSet<>();
 
   private JavaClassPathClassLoader(String... propertyNames) {
     classPathPropertyNames.addAll(Arrays.asList(propertyNames));
@@ -77,16 +80,16 @@ public class JavaClassPathClassLoader {
       if (envProperty != null) {
         String[] entries = envProperty.split(Java.CLASSPATH_DELIMITER);
         for (String entry : entries) {
-          LoggerFactory.getLogger(this.getClass()).info("Loading classes from: {0}", entry);
+            logger.info("Loading classes from: {}", entry);
 
           JarFileReader jarFileReader = JarFileReader.getInstance(entry);
           if (jarFileReader.isValid())
             classNames.addAll(jarFileReader.getClassNames());
           else
-            LoggerFactory.getLogger(this.getClass()).warn("Failed to load entries from: [{0}]", entry);
+              logger.warn("Failed to load entries from: [{}]", entry);
         }
       } else
-        LoggerFactory.getLogger(this.getClass()).warn("Failed to get value for environment variable: [{0}]", name);
+          logger.warn("Failed to get value for environment variable: [{}]", name);
     }
   }
 

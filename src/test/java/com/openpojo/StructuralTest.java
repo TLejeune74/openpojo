@@ -46,7 +46,6 @@ public class StructuralTest {
   private static final Class<?>[] NON_INSTANTIABLES = new Class<?>[] {
       com.openpojo.reflection.PojoParameter.class
       ,com.openpojo.random.RandomFactory.class
-      ,com.openpojo.log.LoggerFactory.class
       ,com.openpojo.business.BusinessIdentity.class
       ,com.openpojo.cache.CacheStorageFactory.class
       ,com.openpojo.reflection.impl.PojoMethodFactory.class
@@ -83,7 +82,6 @@ public class StructuralTest {
       ,com.openpojo.reflection.java.bytecode.asm.ClassReaderFactory.class
       ,com.openpojo.reflection.java.packageloader.utils.Helper.class
       ,com.openpojo.random.generator.time.util.ReflectionHelper.class
-      ,com.openpojo.validation.affirm.Affirm.class
   };
 
   private Validator validator;
@@ -114,7 +112,7 @@ public class StructuralTest {
   private static class NonInstantiableTester implements Tester {
     public void run(PojoClass pojoClass) {
       assertEquals(1, pojoClass.getPojoConstructors().size(), "Should have only one constructor [" + pojoClass.getName() + "]");
-      PojoMethod constructor = pojoClass.getPojoConstructors().get(0);
+      PojoMethod constructor = pojoClass.getPojoConstructors().getFirst();
       assertTrue(constructor.isPrivate(), "Constructor should be private [" + pojoClass.getName() + "]");
       try {
         InstanceFactory.getInstance(pojoClass);
@@ -145,7 +143,7 @@ public class StructuralTest {
   }
 
   private static class NonStaticClassesFilter implements PojoClassFilter {
-    private Set<String> excluded = new HashSet<String>();
+    private final Set<String> excluded = new HashSet<>();
 
     private NonStaticClassesFilter() {
       excluded.add(com.openpojo.random.util.SomeRoleUnresolved.class.getName());
@@ -162,9 +160,10 @@ public class StructuralTest {
         return false;
 
       boolean includeReturn = true;
-      for (PojoMethod method : pojoClass.getPojoMethods())
-      if (!method.isSynthetic() && !method.isConstructor())
-        includeReturn &= method.isStatic();
+      for (PojoMethod method : pojoClass.getPojoMethods()) {
+          if (!method.isSynthetic() && !method.isConstructor())
+              includeReturn &= method.isStatic();
+      }
 
       return includeReturn;
     }

@@ -18,8 +18,8 @@
 
 package com.openpojo.random;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.random.exception.RandomGeneratorException;
 import com.openpojo.random.service.RandomGeneratorService;
 import com.openpojo.random.thread.GeneratedRandomValues;
@@ -83,7 +83,7 @@ public class RandomFactory {
   @SuppressWarnings("unchecked")
   public static <T> T getRandomValue(final Class<T> type) {
     if (GeneratedRandomValues.contains(type)) {
-      logger.warn("Cyclic dependency on random generator for type=[{0}] detected, returning null", type);
+      logger.warn("Cyclic dependency on random generator for type=[{}] detected, returning null", type);
       return null; // seen before, break loop.
     }
 

@@ -30,27 +30,23 @@ import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.impl.PojoClassFactory;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author oshoukry
  */
 public class BusinessPojoHelperTest {
 
-  @Test  // todo(expected = UnsupportedOperationException.class)
-  public void shouldThrowExeptionIfConstructed() throws Throwable {
+  @Test
+  public void shouldThrowExeptionIfConstructed() {
     PojoClass businessPojoHelper = PojoClassFactory.getPojoClass(BusinessPojoHelper.class);
 
     List<PojoMethod> pojoConstructors = businessPojoHelper.getPojoConstructors();
     assertEquals( 1, pojoConstructors.size(), "Should have only one constructor");
     assertTrue(pojoConstructors.getFirst().isPrivate(), "Constructor must be private");
 
-    try {
-      businessPojoHelper.getPojoConstructors().getFirst().invoke(null, (Object[]) null);
-    } catch (ReflectionException re) {
-      throw re.getCause().getCause();
-    }
+    // old UnsupportedOperationException.class
+    assertThrows(ReflectionException.class, () -> businessPojoHelper.getPojoConstructors().getFirst().invoke(null, (Object[]) null));
   }
 
   @Test

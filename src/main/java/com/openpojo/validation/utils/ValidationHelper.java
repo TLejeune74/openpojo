@@ -20,8 +20,8 @@ package com.openpojo.validation.utils;
 
 import java.util.List;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
 import com.openpojo.reflection.construct.InstanceFactory;
@@ -83,7 +83,7 @@ public final class ValidationHelper {
     final Logger logger = LoggerFactory.getLogger(DefaultValidator.class);
 
     if (pojoClass.isSynthetic()) {
-      logger.warn("Attempt to validate synthetic class=[{0}] ignored, consider using FilterSyntheticClasses filter when " +
+      logger.warn("Attempt to validate synthetic class=[{}] ignored, consider using FilterSyntheticClasses filter when " +
           "calling PojoClassFactory", pojoClass.getClazz());
       return;
     }
@@ -92,8 +92,8 @@ public final class ValidationHelper {
       rule.evaluate(pojoClass);
     }
 
-    if ((pojoClass.isInterface() || pojoClass.isEnum()) && testers.size() > 0) {
-      logger.warn("Attempt to execute behavioural test on non-constructable class=[{0}] ignored", pojoClass.getClazz());
+    if ((pojoClass.isInterface() || pojoClass.isEnum()) && !testers.isEmpty()) {
+      logger.warn("Attempt to execute behavioural test on non-constructable class=[{}] ignored", pojoClass.getClazz());
       return;
     }
 
@@ -102,7 +102,7 @@ public final class ValidationHelper {
         tester.run(pojoClass);
       }
     } catch (ASMNotLoadedException asmNotLoaded) {
-      logger.warn("ASM not loaded while attempting to execute behavioural tests on non-constructable class[{0}], either " +
+      logger.warn("ASM not loaded while attempting to execute behavioural tests on non-constructable class[{}], either " +
           "filter " + "abstract classes or add asm to your classpath.", pojoClass.getClazz());
     }
   }

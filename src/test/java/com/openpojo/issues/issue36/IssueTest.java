@@ -18,8 +18,8 @@
 
 package com.openpojo.issues.issue36;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.jupiter.api.Test;
 
 public class IssueTest {

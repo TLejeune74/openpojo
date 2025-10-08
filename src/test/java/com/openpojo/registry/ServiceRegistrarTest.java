@@ -21,8 +21,8 @@ package com.openpojo.registry;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.random.service.RandomGeneratorService;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ServiceRegistrarTest {
 
-  private String javaVersion = System.getProperty("java.version");
+  private final String javaVersion = System.getProperty("java.version");
   private final String[] expectedDefaultTypeNames = new String[] {
       // @formatter:off
             "java.awt.image.BufferedImage"
@@ -137,7 +137,7 @@ public class ServiceRegistrarTest {
 
   @BeforeEach
   public void setup() {
-    expectedDefaultTypes = new HashSet<Class<?>>();
+    expectedDefaultTypes = new HashSet<>();
 
     // Add the primitives
     expectedDefaultTypes.add(boolean.class);
@@ -154,7 +154,7 @@ public class ServiceRegistrarTest {
       try {
         expectedDefaultTypes.add(Class.forName(type));
       } catch (final ClassNotFoundException e) {
-        LoggerFactory.getLogger(this.getClass()).warn("Failed for: [{0}]", e.getMessage(), e);
+        LoggerFactory.getLogger(this.getClass()).warn("Failed for: [{}]", e.getMessage(), e);
       }
     }
 
@@ -165,7 +165,10 @@ public class ServiceRegistrarTest {
         || javaVersion.startsWith("1.6")
         || javaVersion.startsWith("1.7")
         || javaVersion.startsWith("1.8")
-        || javaVersion.startsWith("9.0")))
+        || javaVersion.startsWith("9.0")
+        || javaVersion.startsWith("11.0")
+        || javaVersion.startsWith("17.0")
+        || javaVersion.startsWith("21.0")))
       throw new UnsupportedOperationException("Unknown java version found " + javaVersion + " please check " +
           "the correct number of expected registered classes and register type here - (found " + randomGeneratorService
           .getRegisteredTypes().size() + ")");
@@ -179,7 +182,7 @@ public class ServiceRegistrarTest {
 
   private void reportDifferences() {
     Logger logger = LoggerFactory.getLogger(this.getClass());
-    logger.info("Found that many types: [{0}]", expectedDefaultTypes.size());
+    logger.info("Found that many types: [{}]", expectedDefaultTypes.size());
     logger.info("List of Entries in the expected List but not in the registered list:");
     for (Class<?> expectedEntry : expectedDefaultTypes) {
       if (!randomGeneratorService.getRegisteredTypes().contains(expectedEntry))
@@ -196,8 +199,8 @@ public class ServiceRegistrarTest {
   public void RandomGeneratedValue() {
     final RandomGenerator defaultRandomGenerator = randomGeneratorService.getDefaultRandomGenerator();
     for (final Class<?> type : expectedDefaultTypes) {
-      assertFalse(defaultRandomGenerator.equals(randomGeneratorService.getRandomGeneratorByType(type)), String.format("Error default random generator returned when expected a registered " + "type " +
-              "[%s]", type));
+      assertFalse(defaultRandomGenerator.equals(randomGeneratorService.getRandomGeneratorByType(type)),
+              String.format("Error default random generator returned when expected a registered " + "type " + "[%s]", type));
     }
   }
 }

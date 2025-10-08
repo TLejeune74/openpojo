@@ -57,9 +57,9 @@ public class ClassMemberTest {
     boolean validated = false;
     for (PojoField pojoField : pojoClass.getPojoFields()) {
       if (pojoField.getName().equals(fieldName)) {
-        assertEquals("Field type changed?", Class.class.getName(), pojoField.getType().getName());
-        assertTrue( pojoField.hasGetter() && pojoField.hasSetter(), String.format("Getter/Setter removed from field[%s]",
-                pojoField));
+        assertEquals(Class.class.getName(), pojoField.getType().getName(), "Field type changed ?");
+        assertTrue( pojoField.hasGetter() && pojoField.hasSetter(),
+                String.format("Getter/Setter removed from field[%s]", pojoField));
         validated = true;
       }
     }

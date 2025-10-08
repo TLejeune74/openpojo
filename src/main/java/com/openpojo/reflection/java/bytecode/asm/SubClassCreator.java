@@ -20,8 +20,8 @@ package com.openpojo.reflection.java.bytecode.asm;
 
 import java.util.Arrays;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.reflection.java.bytecode.asm.method.MethodHandler;
 import com.openpojo.reflection.java.bytecode.asm.method.MethodHandlerFactory;
 import org.objectweb.asm.ClassVisitor;

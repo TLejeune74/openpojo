@@ -18,7 +18,7 @@
 
 package com.openpojo.validation.test.impl;
 
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
@@ -49,12 +49,12 @@ public class GetterTester implements Tester {
 
         SameInstanceIdentityHandlerStub.registerIdentityHandlerStubForValue(value);
 
-        LoggerFactory.getLogger(this.getClass()).debug("Testing Field [{0}] with value [{1}]", fieldEntry, safeToString(value));
+        LoggerFactory.getLogger(this.getClass()).debug("Testing Field [{}] with value [{}]", fieldEntry, safeToString(value));
 
         assertEquals(value, fieldEntry.invokeGetter(classInstance), "Getter returned non equal value for field=[" + fieldEntry + "]");
         SameInstanceIdentityHandlerStub.unregisterIdentityHandlerStubForValue(value);
       } else {
-        LoggerFactory.getLogger(this.getClass()).debug("Field [{0}] has no getter skipping", fieldEntry);
+        LoggerFactory.getLogger(this.getClass()).debug("Field [{}] has no getter skipping", fieldEntry);
       }
     }
   }

@@ -19,12 +19,12 @@
 package com.openpojo.log;
 
 import com.openpojo.log.common.AbstractLoggerBase;
-import com.openpojo.log.impl.Log4JLogger;
-import com.openpojo.log.impl.SLF4JLogger;
 import com.openpojo.utils.log.MockAppender;
 import com.openpojo.utils.log.MockAppenderLog4J;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -52,7 +52,6 @@ public class Log4JLoggerTest extends AbstractLoggerBase {
 
   @BeforeEach
   public final void setUp() {
-    LoggerFactory.setActiveLogger(Log4JLogger.class);
   }
 
   @Test
@@ -71,6 +70,6 @@ public class Log4JLoggerTest extends AbstractLoggerBase {
     assertTrue(
         log.toString().startsWith("com.openpojo.log.impl.Log4JLogger [@")
             && log.toString().contains(": logger=org.apache.log4j.Logger@")
-            && log.toString().endsWith("]"), String.format("toString() failed on [%s]!", SLF4JLogger.class.getName()));
+            && log.toString().endsWith("]"), String.format("toString() failed on [%s]!", LoggerFactory.getLogger(this.getClass())));
   }
 }

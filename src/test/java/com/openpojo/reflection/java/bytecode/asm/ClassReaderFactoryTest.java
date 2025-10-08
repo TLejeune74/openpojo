@@ -31,21 +31,23 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class ClassReaderFactoryTest {
 
-  @Test //todo (expected = UnsupportedOperationException.class)
+  @Test
   public void shouldNotBeAbleToConstruct() {
-    try {
-      PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassReaderFactory.class);
-      assertEquals(1, pojoClass.getPojoConstructors().size());
-      InstanceFactory.getLeastCompleteInstance(pojoClass);
-    } catch (ReflectionException re) {
-      Throwable cause = re.getCause();
-      while (cause != null) {
-        if (cause instanceof UnsupportedOperationException)
-          throw (UnsupportedOperationException) cause;
-        cause = cause.getCause();
-      }
-    }
-    fail("Should have not been able to construct");
+      assertThrows(UnsupportedOperationException.class, () -> {
+          try {
+              PojoClass pojoClass = PojoClassFactory.getPojoClass(ClassReaderFactory.class);
+              assertEquals(1, pojoClass.getPojoConstructors().size());
+              InstanceFactory.getLeastCompleteInstance(pojoClass);
+          } catch (ReflectionException re) {
+              Throwable cause = re.getCause();
+              while (cause != null) {
+                  if (cause instanceof UnsupportedOperationException)
+                      throw cause;
+                  cause = cause.getCause();
+              }
+          }
+          fail("Should have not been able to construct");
+      });
   }
 
   @Test

@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoClassFilter;
 import com.openpojo.reflection.PojoPackage;
@@ -69,7 +69,7 @@ public class DefaultPojoClassLookupService implements Service, PojoClassLookupSe
       } catch (LinkageError le) {
         if (clazz.getName().endsWith(GENERATED_CLASS_POSTFIX))
           throw le;
-        LoggerFactory.getLogger(this.getClass()).warn("Failed to load class [{0}], exception [{1}]", clazz, le);
+        LoggerFactory.getLogger(this.getClass()).warn("Failed to load class [{}], exception [{}]", clazz, le);
       }
       PojoCache.addPojoClass(clazz.getName(), pojoClass);
     }
@@ -85,12 +85,12 @@ public class DefaultPojoClassLookupService implements Service, PojoClassLookupSe
   }
 
   public List<PojoClass> getPojoClassesRecursively(final String packageName, final PojoClassFilter pojoClassFilter) {
-    final List<PojoClass> pojoClasses = new LinkedList<PojoClass>();
+    final List<PojoClass> pojoClasses = new LinkedList<>();
     final PojoClassFilter finalFilterChain = getFinalFilterChain(pojoClassFilter);
 
     final PojoPackage pojoPackage = PojoPackageFactory.getPojoPackage(packageName);
 
-    Queue<PojoPackage> pending = new ConcurrentLinkedQueue<PojoPackage>();
+    Queue<PojoPackage> pending = new ConcurrentLinkedQueue<>();
     pending.add(pojoPackage);
 
     while (!pending.isEmpty()) {

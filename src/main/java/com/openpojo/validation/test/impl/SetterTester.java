@@ -18,7 +18,7 @@
 
 package com.openpojo.validation.test.impl;
 
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
@@ -45,7 +45,7 @@ public class SetterTester implements Tester {
         value = RandomFactory.getRandomValue(fieldEntry);
 
         SameInstanceIdentityHandlerStub.registerIdentityHandlerStubForValue(value);
-        LoggerFactory.getLogger(this.getClass()).debug("Testing Field [{0}] with value [{1}]",
+        LoggerFactory.getLogger(this.getClass()).debug("Testing Field [{}] with value [{}]",
             fieldEntry, safeToString(value));
 
         fieldEntry.invokeSetter(classInstance, value);
@@ -54,7 +54,7 @@ public class SetterTester implements Tester {
 
         SameInstanceIdentityHandlerStub.unregisterIdentityHandlerStubForValue(value);
       } else {
-        LoggerFactory.getLogger(this.getClass()).debug("Field [{0}] has no setter skipping", fieldEntry);
+        LoggerFactory.getLogger(this.getClass()).debug("Field [{}] has no setter skipping", fieldEntry);
       }
     }
   }

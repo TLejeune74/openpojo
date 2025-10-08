@@ -18,8 +18,8 @@
 
 package com.openpojo.reflection.coverage.service;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.reflection.coverage.CoverageDetector;
 import com.openpojo.reflection.coverage.impl.Clover3;
 import com.openpojo.reflection.coverage.impl.Clover4;
@@ -39,10 +39,10 @@ public class PojoCoverageFilterServiceFactory {
     };
 
   public static PojoCoverageFilterService configureAndGetPojoCoverageFilterService() {
+      Logger logger = LoggerFactory.getLogger(PojoCoverageFilterServiceFactory.class);
     PojoCoverageFilterService pojoCoverageFilterService = new DefaultPojoCoverageFilterService();
     for (CoverageDetector coverageDetector : KNOWN_COVERAGE_DETECTORS) {
       if (coverageDetector.isLoaded()) {
-        Logger logger = LoggerFactory.getLogger(PojoCoverageFilterServiceFactory.class);
         logger.info(coverageDetector.getName() + " detected, auto-configuring OpenPojo to ignore its structures.");
         pojoCoverageFilterService.registerCoverageDetector(coverageDetector);
       }

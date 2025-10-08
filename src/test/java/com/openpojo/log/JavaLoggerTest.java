@@ -21,12 +21,13 @@ package com.openpojo.log;
 import com.openpojo.log.common.AbstractLoggerBase;
 import com.openpojo.log.common.LoggerMsgTestData;
 import com.openpojo.log.common.LoggerVarArgsTestData;
-import com.openpojo.log.impl.JavaLogger;
 import com.openpojo.utils.log.LogHelper;
 import com.openpojo.utils.log.MockAppender;
 import com.openpojo.utils.log.MockAppenderJavaLogger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,7 +43,6 @@ public class JavaLoggerTest extends AbstractLoggerBase {
   @BeforeEach
   public void setup() {
     LogHelper.initializeJavaLogger();
-    LoggerFactory.setActiveLogger(JavaLogger.class);
   }
 
   /**
@@ -101,7 +101,7 @@ public class JavaLoggerTest extends AbstractLoggerBase {
     }
 
     for (LoggerMsgTestData variance : getMsgVariations()) {
-      log.error(variance.getMessage());
+      log.error(variance.getExpected());
       logEvents = LogHelper.getFatalEvents(getMockAppender(), getCategory());
 
       assertEquals(count + 1, logEvents.size(), String.format("Lost [%s] message?", "ERROR"));
@@ -117,6 +117,6 @@ public class JavaLoggerTest extends AbstractLoggerBase {
   public void testToString() {
     Logger log = LoggerFactory.getLogger(getCategory());
     assertTrue(log.toString().startsWith("com.openpojo.log.impl.JavaLogger [@") && log.toString().contains(": logger=java.util" +
-        ".logging.Logger@") && log.toString().endsWith("]"), String.format("toString() failed on [%s] got [%s]!", JavaLogger.class.getName(), log.toString()) );
+        ".logging.Logger@") && log.toString().endsWith("]"), String.format("toString() failed on [%s] got [%s]!", "JavaLogger", log) );
   }
 }

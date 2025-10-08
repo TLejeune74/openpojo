@@ -19,8 +19,6 @@
 package com.openpojo.issues.issue112;
 
 import com.openpojo.issues.issue112.sample.AClassWithXMLGregorianCalendar;
-import com.openpojo.log.LoggerFactory;
-import com.openpojo.log.impl.Log4JLogger;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
 import com.openpojo.reflection.impl.PojoClassFactory;
@@ -48,7 +46,6 @@ public class IssueTest {
     appender = new SpyAppender();
     appender.startCaptureForLogger(GetterTester.class);
     appender.startCaptureForLogger(SetterTester.class);
-    LoggerFactory.setActiveLogger(Log4JLogger.class);
   }
 
   @AfterEach

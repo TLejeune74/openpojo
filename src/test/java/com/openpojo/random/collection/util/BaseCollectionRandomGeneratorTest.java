@@ -28,6 +28,7 @@ import com.openpojo.random.ParameterizableRandomGenerator;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.random.collection.support.ALeafChildClass;
+import com.openpojo.random.exception.RandomGeneratorException;
 import com.openpojo.random.util.SerializableComparableObject;
 import com.openpojo.reflection.Parameterizable;
 import com.openpojo.reflection.PojoClass;
@@ -65,7 +66,7 @@ public abstract class BaseCollectionRandomGeneratorTest {
     final Class<?> randomGeneratorClass = getGeneratorClass();
     PojoClass randomGeneratorPojo = PojoClassFactory.getPojoClass(randomGeneratorClass);
 
-    List<PojoMethod> constructors = new ArrayList<PojoMethod>();
+    List<PojoMethod> constructors = new ArrayList<>();
 
     for (PojoMethod constructor : randomGeneratorPojo.getPojoConstructors()) {
       if (!constructor.isSynthetic())
@@ -74,7 +75,7 @@ public abstract class BaseCollectionRandomGeneratorTest {
     assertEquals(1,
         constructors.size(), "Should only have one constructor [" + randomGeneratorPojo.getPojoConstructors() + "]");
 
-    PojoMethod constructor = constructors.get(0);
+    PojoMethod constructor = constructors.getFirst();
 
     assertTrue(constructor.isPrivate());
   }
@@ -103,17 +104,12 @@ public abstract class BaseCollectionRandomGeneratorTest {
 
   @Test
   public void shouldThrowExceptionForDoGenerateForOtherThanCollectionClass() {
-      try {
-          getInstance().doGenerate(ALeafChildClass.class);
-      } catch (RuntimeException e) {
-          throw new RuntimeException(e);
-      }
-      fail("RandomGeneratorException");
+      assertThrows(RandomGeneratorException.class, () -> getInstance().doGenerate(ALeafChildClass.class));
   }
 
   @Test
   public void shouldThrowExceptionForDoGenerateForParameterizedOtherThanCollectionClass() {
-      try {
+      assertThrows(RandomGeneratorException.class, () -> {
           getInstance().doGenerate(new Parameterizable() {
               public Class<?> getType() {
                   return ALeafChildClass.class;
@@ -127,27 +123,24 @@ public abstract class BaseCollectionRandomGeneratorTest {
                   throw new IllegalStateException("Unimplemented!!");
               }
           });
-      } catch (RuntimeException e) {}
-      fail("RandomGeneratorException");
+    });
   }
-
   @Test
   public void shouldGenerateCorrectTypeCollectionForRequestedCollection() {
     Collection someObject = (Collection) getInstance().doGenerate(getExpectedTypeClass());
     assertNotNull(someObject, "Should not be null");
     assertEquals(getGeneratedTypeClass(), someObject.getClass(), "Should be a " + getGeneratedTypeClass().getName());
     if (validateCollectionContents())
-      assertTrue(someObject.size() > 0, "Should not be Empty");
+        assertFalse(someObject.isEmpty(), "Should not be Empty");
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   public void shouldGenerateParametrizableCorrectCollectionForRequest() {
     Collection<?> collectionOfType = (Collection) getInstance().doGenerate(getParameterizedType());
 
     assertNotNull(collectionOfType, "Should not be null");
     if (validateCollectionContents())
-      assertTrue(collectionOfType.size() > 0, "Should not be empty");
+        assertFalse(collectionOfType.isEmpty(), "Should not be empty");
     for (Object entry : collectionOfType) {
       assertNotNull(entry, "Should not be null");
       assertEquals(getGenericType(), entry.getClass(), "Entry should be " + getGenericType().getName());
@@ -164,7 +157,7 @@ public abstract class BaseCollectionRandomGeneratorTest {
     assertNotNull(generatedCollection, "Should not be null");
     assertEquals(getGeneratedTypeClass(), generatedCollection.getClass());
     if (validateCollectionContents())
-      assertTrue( generatedCollection.size() > 0, "Should not be empty");
+        assertFalse(generatedCollection.isEmpty(), "Should not be empty");
     for (Object entry : generatedCollection) {
       assertNotNull(entry, "Should not be null");
       assertEquals(type, entry.getClass(), "Entry should be " + type.getName());

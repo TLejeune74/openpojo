@@ -21,8 +21,8 @@ package com.openpojo.log.common;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.utils.log.LogEvent;
 import com.openpojo.utils.log.LogHelper;
 import com.openpojo.utils.log.MockAppender;
@@ -51,7 +51,7 @@ public abstract class AbstractLoggerBase {
    * This method is the real one that has all the variations our logging supports.
    */
   protected List<LoggerVarArgsTestData> getVarArgsVariations() {
-    List<LoggerVarArgsTestData> variations = new LinkedList<LoggerVarArgsTestData>();
+    List<LoggerVarArgsTestData> variations = new LinkedList<>();
 
     variations.add(new LoggerVarArgsTestData("Exception=[{0}]",
         new Object[] { new Exception("This is an exception") }));
@@ -66,7 +66,7 @@ public abstract class AbstractLoggerBase {
    */
   @SuppressWarnings("RedundantCast")
   protected List<LoggerMsgTestData> getMsgVariations() {
-    List<LoggerMsgTestData> variations = new LinkedList<LoggerMsgTestData>();
+    List<LoggerMsgTestData> variations = new LinkedList<>();
 
     variations.add(new LoggerMsgTestData("Simple message"));
     variations.add(new LoggerMsgTestData("old style message" + " some arg" + " some other arg"));
@@ -106,7 +106,7 @@ public abstract class AbstractLoggerBase {
           logEvents = LogHelper.getErrorEvents(getMockAppender(), getCategory());
           break;
         case FATAL:
-          log.fatal(variance.getMessage(), variance.getParams());
+          log.error(variance.getMessage(), variance.getParams());
           logEvents = LogHelper.getFatalEvents(getMockAppender(), getCategory());
           break;
         default:
@@ -121,27 +121,27 @@ public abstract class AbstractLoggerBase {
     for (LoggerMsgTestData variance : getMsgVariations()) {
       switch (logLevel) {
         case TRACE:
-          log.trace(variance.getMessage());
+          log.trace(variance.getExpected());
           logEvents = LogHelper.getTraceEvents(getMockAppender(), getCategory());
           break;
         case DEBUG:
-          log.debug(variance.getMessage());
+          log.debug(variance.getExpected());
           logEvents = LogHelper.getDebugEvents(getMockAppender(), getCategory());
           break;
         case INFO:
-          log.info(variance.getMessage());
+          log.info(variance.getExpected());
           logEvents = LogHelper.getInfoEvents(getMockAppender(), getCategory());
           break;
         case WARN:
-          log.warn(variance.getMessage());
+          log.warn(variance.getExpected());
           logEvents = LogHelper.getWarnEvents(getMockAppender(), getCategory());
           break;
         case ERROR:
-          log.error(variance.getMessage());
+          log.error(variance.getExpected());
           logEvents = LogHelper.getErrorEvents(getMockAppender(), getCategory());
           break;
         case FATAL:
-          log.fatal(variance.getMessage());
+          log.error(variance.getExpected());
           logEvents = LogHelper.getFatalEvents(getMockAppender(), getCategory());
           break;
         default:

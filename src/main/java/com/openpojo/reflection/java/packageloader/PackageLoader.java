@@ -27,13 +27,13 @@ import java.util.Set;
 
 import com.openpojo.business.BusinessIdentity;
 import com.openpojo.business.annotation.BusinessKey;
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
-import com.openpojo.log.utils.MessageFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.reflection.exception.ReflectionException;
 import com.openpojo.reflection.java.Java;
 import com.openpojo.reflection.java.packageloader.impl.FilePackageLoader;
 import com.openpojo.reflection.java.packageloader.impl.JARPackageLoader;
+import org.slf4j.helpers.MessageFormatter;
 
 /**
  * @author oshoukry
@@ -64,9 +64,9 @@ public abstract class PackageLoader {
     try {
       urls = getThreadClassLoader().getResources(normalizedPath);
     } catch (IOException e) {
-      throw ReflectionException.getInstance(MessageFormatter.format("Failed to getThreadResources for path[{0}]", path), e);
+      throw ReflectionException.getInstance(MessageFormatter.format("Failed to getThreadResources for path[{0}]", path).getMessage(), e);
     }
-    Set<URL> returnURLs = new HashSet<URL>();
+    Set<URL> returnURLs = new HashSet<>();
     while (urls.hasMoreElements()) {
       returnURLs.add(urls.nextElement());
     }

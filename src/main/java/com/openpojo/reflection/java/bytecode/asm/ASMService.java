@@ -20,8 +20,8 @@ package com.openpojo.reflection.java.bytecode.asm;
 
 import com.openpojo.cache.CacheStorage;
 import com.openpojo.cache.CacheStorageFactory;
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.reflection.exception.ReflectionException;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -30,9 +30,9 @@ import org.objectweb.asm.ClassWriter;
  * @author oshoukry
  */
 public class ASMService {
-  private SimpleClassLoader simpleClassLoader = new SimpleClassLoader();
-  private Logger logger = LoggerFactory.getLogger(this.getClass());
-  private CacheStorage<Class<?>> alreadyGeneratedClasses = CacheStorageFactory.getPersistentCacheStorage();
+  private final SimpleClassLoader simpleClassLoader = new SimpleClassLoader();
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  private final CacheStorage<Class<?>> alreadyGeneratedClasses = CacheStorageFactory.getPersistentCacheStorage();
 
   private ASMService() {
   }
@@ -51,7 +51,7 @@ public class ASMService {
     Class<? extends T> generatedClass = (Class<? extends T>) alreadyGeneratedClasses.get(subClassDefinition.getGeneratedClassName());
 
     if (generatedClass != null) {
-      logger.info("Reusing already generated sub-class for class [{0}]", clazz.getName());
+      logger.info("Reusing already generated sub-class for class [{}]", clazz.getName());
     } else {
       try {
         generatedClass = (Class<? extends T>) simpleClassLoader.loadThisClass(getSubClassByteCode(subClassDefinition),

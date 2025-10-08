@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.openpojo.random.util.MapCollectionAssertionHelper;
 import com.openpojo.random.util.SerializableComparableObject;
 

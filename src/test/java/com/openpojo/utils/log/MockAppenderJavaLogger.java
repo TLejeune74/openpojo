@@ -64,7 +64,7 @@ public class MockAppenderJavaLogger extends AbstractAppender implements MockAppe
         return EventLogger.getCountBySource(this.getClass(), source);
     }
 
-    public synchronized List<LogEvent> getLoggedEventsBySourceByPriority(final String source, final Priority priority) {
+    public synchronized List<com.openpojo.utils.log.LogEvent> getLoggedEventsBySourceByPriority(final String source, final Priority priority) {
         return EventLogger.getLoggedEventsByAppenderBySourceByPriority(this.getClass(), source, priority);
     }
 

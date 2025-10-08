@@ -1,9 +1,9 @@
 # OpenPojo [![Build Status](https://travis-ci.com/OpenPojo/openpojo.svg?branch=master)](https://travis-ci.com/OpenPojo/openpojo) [![Coverage Status](https://coveralls.io/repos/OpenPojo/openpojo/badge.svg?branch=master)](https://coveralls.io/r/OpenPojo/openpojo?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.openpojo/openpojo/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.openpojo/openpojo)
 POJO Testing &amp; Identity Management Made Trivial 
 
-Maven Group Plugin | Latest Version
------------------- | ---------------
-com.openpojo.openpojo | [0.9.1](https://github.com/oshoukry/openpojo/releases/tag/openpojo-0.9.1)
+| Maven Group Plugin     | Latest Version |
+|------------------------| ---------------|
+|  com.openpojo.openpojo | [0.9.1](https://github.com/oshoukry/openpojo/releases/tag/openpojo-0.9.1) |
 
 #### Testing Example
 ```java
@@ -18,7 +18,7 @@ public class PojoTest {
   public void ensureExpectedPojoCount() {
     List <PojoClass> pojoClasses = PojoClassFactory.getPojoClasses(POJO_PACKAGE,
                                                                    new FilterPackageInfo());
-    Affirm.affirmEquals("Classes added / removed?", EXPECTED_CLASS_COUNT, pojoClasses.size());
+    assertEquals(EXPECTED_CLASS_COUNT, pojoClasses.size(), "Classes added / removed?");
   }
 
   @Test

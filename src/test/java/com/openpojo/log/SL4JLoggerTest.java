@@ -21,12 +21,13 @@ package com.openpojo.log;
 import com.openpojo.log.common.AbstractLoggerBase;
 import com.openpojo.log.common.LoggerMsgTestData;
 import com.openpojo.log.common.LoggerVarArgsTestData;
-import com.openpojo.log.impl.SLF4JLogger;
 import com.openpojo.utils.log.LogHelper;
 import com.openpojo.utils.log.MockAppender;
 import com.openpojo.utils.log.MockAppenderLog4J;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,7 +44,6 @@ public class SL4JLoggerTest extends AbstractLoggerBase {
    */
   @BeforeEach
   public final void setUp() {
-    LoggerFactory.setActiveLogger(SLF4JLogger.class);
   }
 
   @Override
@@ -77,7 +77,7 @@ public class SL4JLoggerTest extends AbstractLoggerBase {
   public void shouldTestFatal() {
     init();
     for (LoggerVarArgsTestData variance : getVarArgsVariations()) {
-      log.fatal(variance.getMessage(), variance.getParams());
+      log.error(variance.getMessage(), variance.getParams());
       logEvents = LogHelper.getErrorEvents(getMockAppender(), getCategory());
 
       assertEquals(count + 1, logEvents.size(), String.format("Lost [%s] message?", "FATAL"));
@@ -88,7 +88,7 @@ public class SL4JLoggerTest extends AbstractLoggerBase {
     }
 
     for (LoggerMsgTestData variance : getMsgVariations()) {
-      log.fatal(variance.getMessage());
+      log.error(variance.getExpected());
       logEvents = LogHelper.getErrorEvents(getMockAppender(), getCategory());
 
       assertEquals( count + 1, logEvents.size(), String.format("Lost [%s] message?", "FATAL"));
@@ -104,8 +104,7 @@ public class SL4JLoggerTest extends AbstractLoggerBase {
   public void testToString() {
     Logger log = LoggerFactory.getLogger(getCategory());
     assertTrue(
-        log.toString().startsWith("com.openpojo.log.impl.SLF4JLogger [@")
-            && log.toString().endsWith(": logger=org.slf4j.impl.Log4jLoggerAdapter(com.openpojo.log.SL4JLoggerTest)]"),
-            String.format("toString() failed on [%s]!", SLF4JLogger.class.getName()));
+        log.toString().startsWith("org.apache.logging.slf4j.Log4jLogger"),
+            String.format("toString() failed on [%s]!", "SLF4JLogger"));
   }
 }

@@ -20,8 +20,8 @@ package com.openpojo.reflection.java.bytecode;
 
 import java.lang.reflect.Modifier;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.reflection.java.bytecode.asm.ASMDetector;
 import com.openpojo.reflection.java.bytecode.asm.ASMNotLoadedException;
 import com.openpojo.reflection.java.bytecode.asm.ASMService;
@@ -38,20 +38,20 @@ public class ByteCodeFactory {
   public static final Version ASM_MIN_VERSION = VersionFactory.getVersion("5.0.0");
   public static final Version ASM_MAX_VERSION = VersionFactory.getVersion("7.1.0");
 
-  private static boolean asm_enabled = ASMDetector.getInstance().isASMLoaded();
-  private static Version asm_version = ASMDetector.getInstance().getVersion();
+  private static final boolean asm_enabled = ASMDetector.getInstance().isASMLoaded();
+  private static final Version asm_version = ASMDetector.getInstance().getVersion();
 
 
   public static <T> Class<? extends T> getSubClass(Class<T> clazz) {
     if (isNull(clazz) || isAnInterface(clazz) || isAnEnum(clazz) || isPrimitive(clazz) || isAnArray(clazz) || isFinal(clazz)) {
-      LOGGER.error("Invalid request to generate a subclass for [{0}], argument must be [not null, not an interface, not an" +
+      LOGGER.error("Invalid request to generate a subclass for [{}], argument must be [not null, not an interface, not an" +
           " enum, not primitive, not an array or a final class", clazz);
       return null;
     }
 
     verifyASMLoadedAndMatchesRequiredVersions();
 
-    LOGGER.info("Generating subclass for class [{0}]", clazz);
+    LOGGER.info("Generating subclass for class [{}]", clazz);
     return ASMService.getInstance().createSubclassFor(clazz);
   }
 

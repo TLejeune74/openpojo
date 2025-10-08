@@ -19,6 +19,8 @@
 package com.openpojo.reflection.java.packageloader.env;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -89,13 +91,12 @@ public class JavaClassPathClassLoaderTest {
 
   @Test
   public void defaultClassPathVars() {
-    String[] expectedClassPathKeys = { "java.library.path", "java.class.path", "java.ext.dirs", "sun.boot.class.path" };
+    List<String> expectedClassPathKeys = Arrays.asList( "java.library.path", "java.class.path", "java.ext.dirs", "sun.boot.class.path" );
+    List<String> classPathKeys = new ArrayList<>(javaClassPathClassLoader.getClassPathKeys().stream().toList());
 
-    Set<String> classPathKeys = javaClassPathClassLoader.getClassPathKeys();
-
-      assertNotNull(classPathKeys);
-    assertEquals(expectedClassPathKeys.length, classPathKeys.size());
-    assertThat(classPathKeys, containsInAnyOrder(expectedClassPathKeys));
+    assertNotNull(classPathKeys);
+    assertEquals(expectedClassPathKeys.size(), classPathKeys.size());
+    expectedClassPathKeys.forEach( value -> assertTrue(classPathKeys.contains(value)));
   }
 
   @Test

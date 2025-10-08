@@ -51,8 +51,7 @@ public class RandomInstanceFromInterfaceRandomGeneratorTest {
 
   @Test
   public void shouldReturnANewInstanceEveryTime() {
-    assertFalse(aSimpleInterface.equals(proxyGenerator.doGenerate(ASimpleInterface.class)),
-            "Same instance returned or faulty equality implementation on proxy");
+      assertNotEquals(aSimpleInterface, proxyGenerator.doGenerate(ASimpleInterface.class), "Same instance returned or faulty equality implementation on proxy");
   }
 
   @Test
@@ -69,15 +68,15 @@ public class RandomInstanceFromInterfaceRandomGeneratorTest {
     final String name = aSimpleInterface.getName();
     final String otherName = aSimpleInterface.getName();
     if (name.equals(otherName)) { // Just in case they are the same by chance.
-      assertFalse(name.equals(aSimpleInterface.getName()), String.format("RandomProxyFactory=[%s] returned a non-Random Pojo Proxy",
-              RandomInstanceFromInterfaceRandomGenerator.getInstance()));
+        assertNotEquals(name, aSimpleInterface.getName(), String.format("RandomProxyFactory=[%s] returned a non-Random Pojo Proxy",
+                RandomInstanceFromInterfaceRandomGenerator.getInstance()));
     }
   }
 
   @Test
   public void shouldImplementAccuratetoStringAndhashCode() {
     final String toString = aSimpleInterface.toString();
-    assertNotNull("toString() on proxy returned null", toString);
+    assertNotNull(toString, "toString() on proxy returned null");
     assertTrue(toString.contains("$Proxy") && toString.contains("@"),
             String.format("toString returned [%s] expected it to begin with [%s] and contain [@]", toString, "$Proxy"));
 
@@ -102,7 +101,7 @@ public class RandomInstanceFromInterfaceRandomGeneratorTest {
     List<AConcreteClass> theList = anInterfaceWithGenericMethodReturnType.aListOfAConcreteClass();
 
     assertNotNull(theList, "Should not be null");
-    assertTrue(theList.size() > 0, "Should not be empty");
+      assertFalse(theList.isEmpty(), "Should not be empty");
     for (Object entry : theList)
       assertEquals(AConcreteClass.class, entry.getClass(), "Should be of correct type");
 
@@ -110,11 +109,11 @@ public class RandomInstanceFromInterfaceRandomGeneratorTest {
     assertNotNull( anIntArray, "Should not be null");
     assertTrue( anIntArray.length > 0, "Should not be empty");
     for (int entry : anIntArray)
-      assertFalse(entry == entry + 1, "should not be equal");
+        assertNotEquals(entry, entry + 1, "should not be equal");
 
     String aString = anInterfaceWithGenericMethodReturnType.aString();
     assertNotNull(aString, "Should not be null");
-    assertTrue(aString.length() > 0, "Should not be empty");
+      assertFalse(aString.isEmpty(), "Should not be empty");
 
     boolean voidMethodInvoked = false;
     PojoClass pojoClass = PojoClassFactory.getPojoClass(anInterfaceWithGenericMethodReturnType.getClass());

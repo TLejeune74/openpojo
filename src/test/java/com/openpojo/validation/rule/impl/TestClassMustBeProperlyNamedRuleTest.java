@@ -24,8 +24,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class TestClassMustBeProperlyNamedRuleTest {
@@ -34,20 +33,21 @@ public class TestClassMustBeProperlyNamedRuleTest {
   public void shouldThrowExceptionIfNoAnnotationsLoaded() {
     String noneExistentClass = this.getClass().getName() + "DoesNotExist";
 
-    Exception   exError = assertThrows(IllegalStateException.class, () -> {
-        new TestClassMustBeProperlyNamedRule(getEmptyList(), getEmptyList(), Arrays.asList(noneExistentClass));
-            });
+    Exception   exError = assertThrows(IllegalStateException.class, () ->
+        new TestClassMustBeProperlyNamedRule(getEmptyList(), getEmptyList(), Arrays.asList(noneExistentClass)));
     assertEquals("No annotations loaded, expected any of [" + noneExistentClass + "]", exError.getMessage());
   }
 
   @Test
   public void assertDefaultAnnotation() {
-    String[] expectedList = { "org.testng.annotations.Test", "org.junit.jupiter.api.Test", "org.junit.jupiter.api.Test" };
-    assertThat(Arrays.asList(TestClassMustBeProperlyNamedRule.DEFAULT_ANNOTATIONS),
-        containsInAnyOrder(expectedList));
+    List<String> expectedList = Arrays.asList("org.testng.annotations.Test", "org.junit.jupiter.api.Test", "org.junit.jupiter.api.Test");
+    List<String> testedList = Arrays.asList(TestClassMustBeProperlyNamedRule.DEFAULT_ANNOTATIONS);
+
+    assertEquals(expectedList.size(), testedList.size());
+    assertLinesMatch(expectedList, testedList);
   }
 
   private List<String> getEmptyList() {
-    return Collections.<String>emptyList();
+    return Collections.emptyList();
   }
 }

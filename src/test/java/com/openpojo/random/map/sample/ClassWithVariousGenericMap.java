@@ -27,12 +27,12 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.openpojo.log.LoggerFactory;
 import com.openpojo.random.map.support.EnumType1;
 import com.openpojo.random.map.support.SimpleType1;
 import com.openpojo.random.map.support.SimpleType2;
 import com.openpojo.random.util.MapCollectionAssertionHelper;
 import com.openpojo.random.util.SerializableComparableObject;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author oshoukry

@@ -32,20 +32,22 @@ public class BusinessIdentityUtilsTest {
 
   @Test
   public void shouldNotBeAbleToConstruct() {
-    try {
-      PojoClass pojoClass = PojoClassFactory.getPojoClass(BusinessIdentityUtils.class);
-      assertEquals(1, pojoClass.getPojoConstructors().size());
-      InstanceFactory.getLeastCompleteInstance(pojoClass);
-    } catch (ReflectionException re) {
-      Throwable cause = re.getCause();
-      while (cause != null) {
-        if (cause instanceof UnsupportedOperationException)
-          throw (UnsupportedOperationException) cause;
-        cause = cause.getCause();
-      }
-    }
-    fail("Should have not been able to construct");
-  }
+        assertThrows(UnsupportedOperationException.class, () -> {
+            try {
+                PojoClass pojoClass = PojoClassFactory.getPojoClass(BusinessIdentityUtils.class);
+                assertEquals(1, pojoClass.getPojoConstructors().size());
+                InstanceFactory.getLeastCompleteInstance(pojoClass);
+            } catch (ReflectionException re) {
+                Throwable cause = re.getCause();
+                while (cause != null) {
+                    if (cause instanceof UnsupportedOperationException)
+                        throw cause;
+                    cause = cause.getCause();
+                }
+            }
+            fail("Should have not been able to construct");
+        });
+   }
 
   @Test
   public void shouldThrowBusinessExceptionWhenNullParameter() {
@@ -53,7 +55,7 @@ public class BusinessIdentityUtilsTest {
       BusinessIdentityUtils.anyNull((Object[]) null);
       fail("Expected BusinessException not thrown");
     } catch (final BusinessException be) {
-      assertEquals(be.getMessage(), "objects parameter cannot be null");
+      assertEquals("objects parameter cannot be null", be.getMessage());
     }
   }
 

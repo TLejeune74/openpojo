@@ -26,8 +26,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.openpojo.random.RandomFactory;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.PojoField;
@@ -40,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This tester ensures that you are able to serialize and deserialize objects without any errors.
- *
  * If used with StrictValidation, the SerializableTester will fail if a member variable is an interface
  * and the interface doesn't explicitly extend Serializable.
  *

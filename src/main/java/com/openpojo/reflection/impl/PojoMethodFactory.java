@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.openpojo.log.LoggerFactory;
+import org.slf4j.LoggerFactory;
 import com.openpojo.reflection.PojoMethod;
 
 import static com.openpojo.reflection.utils.AttributeHelper.getFieldNameVariations;
@@ -48,7 +48,7 @@ public class PojoMethodFactory {
    * @return A list of all methods and constructors in a class.
    */
   public static List<PojoMethod> getPojoMethods(final Class<?> clazz) {
-    final List<PojoMethod> pojoMethods = new LinkedList<PojoMethod>();
+    final List<PojoMethod> pojoMethods = new LinkedList<>();
 
     for (final Constructor<?> constructor : clazz.getDeclaredConstructors()) {
       pojoMethods.add(new PojoMethodImpl(constructor));
@@ -96,14 +96,14 @@ public class PojoMethodFactory {
         if (pojoMethod.getReturnType().isAssignableFrom(field.getType())) {
           if (pojoMethod.isAbstract()) {
             LoggerFactory.getLogger(
-                PojoMethodFactory.class).warn("Getter=[{0}] in class=[{1}] rejected due to method being abstract",
+                PojoMethodFactory.class).warn("Getter=[{}] in class=[{}] rejected due to method being abstract",
                 pojoMethod.getName(), field.getDeclaringClass().getName());
             pojoMethod = null;
           }
           break;
         } else {
           LoggerFactory.getLogger(
-              PojoMethodFactory.class).warn("Getter=[{0}] in class=[{1}] rejected due non-equal return types [{2} != {3}]",
+              PojoMethodFactory.class).warn("Getter=[{}] in class=[{}] rejected due non-equal return types [{} != {}]",
               pojoMethod.getName(), field.getDeclaringClass().getName(), pojoMethod.getReturnType(), field.getType());
           pojoMethod = null;
         }
@@ -120,7 +120,7 @@ public class PojoMethodFactory {
    * @return List of candidate method names.
    */
   private static List<String> generateGetMethodNames(final Field field) {
-    final List<String> prefix = new LinkedList<String>();
+    final List<String> prefix = new LinkedList<>();
     prefix.addAll(appendFieldNamesWithPrefix("get", field));
     if (field.getType() == boolean.class || field.getType() == Boolean.class) {
       prefix.addAll(appendFieldNamesWithPrefix("is", field));
@@ -132,7 +132,7 @@ public class PojoMethodFactory {
   }
 
   private static List<String> appendFieldNamesWithPrefix(String prefix, Field field) {
-    List<String> appendedList = new ArrayList<String>();
+    List<String> appendedList = new ArrayList<>();
     for (String entry : getFieldNameVariations(field)) {
       appendedList.add(prefix + entry);
     }
@@ -156,7 +156,7 @@ public class PojoMethodFactory {
       if (pojoMethod != null) {
         if (pojoMethod.isAbstract()) {
           LoggerFactory.getLogger(
-              PojoMethodFactory.class).warn("Setter=[{0}] in class=[{1}] rejected due to method being abstract",
+              PojoMethodFactory.class).warn("Setter=[{}] in class=[{}] rejected due to method being abstract",
               pojoMethod.getName(), field.getDeclaringClass().getName());
           pojoMethod = null;
         }
@@ -174,7 +174,7 @@ public class PojoMethodFactory {
    * @return List of candidate setter names, or empty list if there are none.
    */
   private static List<String> generateSetMethodNames(final Field field) {
-    final List<String> prefix = new LinkedList<String>();
+    final List<String> prefix = new LinkedList<>();
     prefix.addAll(appendFieldNamesWithPrefix("set", field));
     String fieldName = field.getName();
     if (fieldName.length() > 2 && fieldName.startsWith("is") && Character.isUpperCase(fieldName.charAt(2)))

@@ -20,13 +20,13 @@ package com.openpojo.random.service.impl;
 
 import java.util.Collection;
 
-import com.openpojo.log.Logger;
-import com.openpojo.log.LoggerFactory;
-import com.openpojo.log.utils.MessageFormatter;
 import com.openpojo.random.ParameterizableRandomGenerator;
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.random.exception.RandomGeneratorException;
 import com.openpojo.reflection.Parameterizable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.MessageFormatter;
 
 /**
  * @author oshoukry
@@ -42,19 +42,19 @@ public final class RandomGeneratorAdapter implements RandomGenerator, Parameteri
     this.fromType = fromType;
     this.toType = toType;
     this.adaptedRandomGenerator = adaptedRandomGenerator;
-    LOGGER.debug("Mapping [{0}] to [{1}] for generator [{2}]", fromType, toType, adaptedRandomGenerator);
+    LOGGER.debug("Mapping [{}] to [{}] for generator [{}]", fromType, toType, adaptedRandomGenerator);
   }
 
   public Collection<Class<?>> getTypes() {
     throw RandomGeneratorException.getInstance(MessageFormatter.format("Illegal use of RandomGeneratorAdapter([{0}] to [{1}]",
-        fromType, toType));
+        fromType, toType).getMessage());
   }
 
   public Object doGenerate(final Class<?> type) {
     if (type == fromType) {
       return adaptedRandomGenerator.doGenerate(toType);
     }
-    throw RandomGeneratorException.getInstance(MessageFormatter.format("Unsupported type requested [{0}]", type));
+    throw RandomGeneratorException.getInstance(MessageFormatter.format("Unsupported type requested [{0}]", type).getMessage());
   }
 
   public Object doGenerate(Parameterizable parameterizedType) {

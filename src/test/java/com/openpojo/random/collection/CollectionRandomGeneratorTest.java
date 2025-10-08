@@ -57,17 +57,17 @@ public class CollectionRandomGeneratorTest {
     assertEquals(Collection.class, types.iterator().next());
   }
 
-  @Test //todo (expected = RandomGeneratorException.class)
+  @Test
   public void whenGenerateWithCollection_ThrowsException() {
-    CollectionRandomGenerator.getInstance().doGenerate(ALeafChildClass.class);
+    assertThrows(RandomGeneratorException.class, () -> CollectionRandomGenerator.getInstance().doGenerate(ALeafChildClass.class));
   }
 
   @Test
   public void whenGenerateWithCollection_ReturnNonEmpty() {
     Collection collection = CollectionRandomGenerator.getInstance().doGenerate(Collection.class);
     assertNotNull(collection, "Should not be null");
-    assertTrue(collection.size() > 0, "Should not be empty");
-    assertTrue(collection instanceof ArrayList, "Should be of type ArrayList");
+      assertFalse(collection.isEmpty(), "Should not be empty");
+      assertInstanceOf(ArrayList.class, collection, "Should be of type ArrayList");
 
   }
 
@@ -91,10 +91,10 @@ public class CollectionRandomGeneratorTest {
     Collection<String> aCollectionOfStrings;
     aCollectionOfStrings = (Collection<String>) CollectionRandomGenerator.getInstance().doGenerate(parameterizable);
     assertNotNull(aCollectionOfStrings, "Should not be null");
-    assertTrue(aCollectionOfStrings.size() > 0, "Should have entries");
+      assertFalse(aCollectionOfStrings.isEmpty(), "Should have entries");
     for (Object s : aCollectionOfStrings) {
       assertNotNull(s);
-      assertTrue(s instanceof String, "Should be String");
+        assertInstanceOf(String.class, s, "Should be String");
     }
   }
 
@@ -102,10 +102,10 @@ public class CollectionRandomGeneratorTest {
   public void testEndToEnd() {
     Collection collection = RandomFactory.getRandomValue(Collection.class);
     assertNotNull(collection, "Should not be null");
-    assertTrue(collection.size() > 0, "Should not be empty");
-    assertTrue( collection instanceof ArrayList, "Should be an ArrayList");
+      assertFalse(collection.isEmpty(), "Should not be empty");
+      assertInstanceOf(ArrayList.class, collection, "Should be an ArrayList");
     collection = RandomFactory.getRandomValue(Collection.class); // double check in case.
-    assertTrue(collection instanceof ArrayList, "Should be an ArrayList");
+      assertInstanceOf(ArrayList.class, collection, "Should be an ArrayList");
   }
 
   @Test

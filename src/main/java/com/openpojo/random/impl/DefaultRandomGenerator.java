@@ -20,7 +20,6 @@ package com.openpojo.random.impl;
 
 import java.util.Collection;
 
-import com.openpojo.log.LoggerFactory;
 import com.openpojo.random.RandomGenerator;
 import com.openpojo.random.dynamic.ArrayRandomGenerator;
 import com.openpojo.random.dynamic.EnumRandomGenerator;
@@ -29,6 +28,7 @@ import com.openpojo.random.exception.RandomGeneratorException;
 import com.openpojo.reflection.PojoClass;
 import com.openpojo.reflection.construct.InstanceFactory;
 import com.openpojo.reflection.impl.PojoClassFactory;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author oshoukry
@@ -58,8 +58,7 @@ public class DefaultRandomGenerator implements RandomGenerator {
       return arrayRandomGenerator.doGenerate(type);
     }
 
-    LoggerFactory.getLogger(DefaultRandomGenerator.class).debug("Creating basic instance for type=[{0}] using " +
-        "InstanceFactory", type);
+    LoggerFactory.getLogger(DefaultRandomGenerator.class).debug("Creating basic instance for type=[{}] using InstanceFactory", type);
     return InstanceFactory.getLeastCompleteInstance(PojoClassFactory.getPojoClass(type));
 
   }

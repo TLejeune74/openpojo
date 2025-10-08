@@ -22,8 +22,7 @@ import com.openpojo.business.exception.BusinessException;
 import com.openpojo.business.sampleclasses.Child;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BusinessIdentityInheritenceTest {
 
@@ -41,10 +40,10 @@ public class BusinessIdentityInheritenceTest {
     assertFalse(BusinessIdentity.areEqual(first, second));
   }
 
-  @Test // todo(expected = BusinessException.class)
+  @Test
   public void shouldFailIncomplete() {
     Child first = new Child("firstName", "last", null);
     Child second = new Child("First", "LastName", null);
-    assertTrue(BusinessIdentity.areEqual(first, second));
+    assertThrows(BusinessException.class, () -> BusinessIdentity.areEqual(first, second));
   }
 }

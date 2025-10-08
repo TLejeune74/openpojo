@@ -18,9 +18,6 @@
 
 package com.openpojo.issues.issue132;
 
-import java.io.Serializable;
-
-import com.openpojo.issues.issue132.sample.NonSerializableInterface;
 import com.openpojo.issues.issue132.sample.WithNoneSerializableInterface;
 import com.openpojo.issues.issue132.sample.WithSerializableInterface;
 import com.openpojo.issues.issue132.sample.WithTransientNonSerializableInterface;
@@ -30,44 +27,47 @@ import com.openpojo.validation.test.impl.SerializableTester;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.io.Serializable;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class IssueTest {
 
-  private SerializableTester serializableTester;
+    private SerializableTester serializableTester;
 
-  @BeforeEach
-  public void setup() {
-    serializableTester = new SerializableTester(true);
-  }
+    @BeforeEach
+    public void setup() {
+        serializableTester = new SerializableTester(true);
+    }
 
-  @Test
-  public void hasSerializableInterface() {
-    assertSerializable(WithSerializableInterface.class);
-  }
+    @Test
+    public void hasSerializableInterface() {
+        assertSerializable(WithSerializableInterface.class);
+    }
 
-  @Test
-  public void hasTransientNonSerializableInterface() {
-    assertSerializable(WithTransientNonSerializableInterface.class);
-  }
+    @Test
+    public void hasTransientNonSerializableInterface() {
+        assertSerializable(WithTransientNonSerializableInterface.class);
+    }
 
-  @Test
-  public void hasNonSerializableInterface() {
-    assertThrows(AssertionError.class, () -> assertSerializable(WithNoneSerializableInterface.class));
-    // todo expectMessage("Field [someInterface] is an interface that allows non-Serializable types on a Serializable [" + clazz + "]");
-  }
+    @Test
+    public void hasNonSerializableInterface() {
+        Class<?>       clazz = WithNoneSerializableInterface.class;
+        AssertionError exception = assertThrows(AssertionError.class, () -> assertSerializable(clazz));
 
-  @Test
-  public void shouldPassWithNonSerializableInterfaceAndNonStrictValidation() {
-    serializableTester = new SerializableTester(false);
-    assertSerializable(WithNoneSerializableInterface.class);
-  }
+        assertEquals("Field [someInterface] is an interface that allows non-Serializable types on a Serializable [" + clazz + "]", exception.getMessage());
+    }
 
-  private void assertSerializable(Class serializableClass) {
-    PojoClass serializablePojoClass = PojoClassFactory.getPojoClass(serializableClass);
-    assertTrue(serializablePojoClass .extendz(Serializable.class));
-    serializableTester.run(serializablePojoClass);
-  }
+    @Test
+    public void shouldPassWithNonSerializableInterfaceAndNonStrictValidation() {
+        serializableTester = new SerializableTester(false);
+        assertSerializable(WithNoneSerializableInterface.class);
+    }
+
+    private void assertSerializable(Class serializableClass) {
+        PojoClass serializablePojoClass = PojoClassFactory.getPojoClass(serializableClass);
+        assertTrue(serializablePojoClass.extendz(Serializable.class));
+        serializableTester.run(serializablePojoClass);
+    }
 }
